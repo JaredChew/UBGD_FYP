@@ -5,9 +5,9 @@
 
 # // !!! MANUALLY ADDED !! // #
 Build/*
-!Dependencies\GLAD\include\glad\glad.c
 Dependencies/*
 Media/*
+Game/log_export.txt
 
 # User-specific files
 *.rsuser

@@ -93,9 +93,6 @@
     <ClCompile Include="src\Math\straightLineEquation.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="src\Math\generalMath.cpp">
-      <Filter>Header Files\Math</Filter>
-    </ClCompile>
     <ClCompile Include="src\Compound\transform.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
@@ -185,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="src\glad.c">
       <Filter>Essential</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math\generalMath.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
