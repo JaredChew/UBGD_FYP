@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Compound\transform.cpp" />
+    <ClCompile Include="src\Data Structure\bitData.cpp" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\Manipulators\geometry.cpp" />
+    <ClCompile Include="src\Manipulators\openGL.cpp" />
+    <ClCompile Include="src\Manipulators\resourcesLoader.cpp" />
+    <ClCompile Include="src\Manipulators\shader.cpp" />
+    <ClCompile Include="src\Math\generalMath.cpp" />
+    <ClCompile Include="src\Math\straightLineEquation.cpp" />
+    <ClCompile Include="src\Modules BackEnd\boundary.cpp" />
+    <ClCompile Include="src\Modules BackEnd\camera.cpp" />
+    <ClCompile Include="src\Modules BackEnd\keyboard.cpp" />
+    <ClCompile Include="src\Modules BackEnd\mouse.cpp" />
+    <ClCompile Include="src\Modules BackEnd\physics.cpp" />
+    <ClCompile Include="src\Modules BackEnd\window.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\audio.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\boidEntity.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\flockingBehaviour.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\particleEntity.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\particleSystem.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\pathNode.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\sprite.cpp" />
+    <ClCompile Include="src\Specification\entity.cpp" />
+    <ClCompile Include="src\Specification\session.cpp" />
+    <ClCompile Include="src\Utilities\bitOperation.cpp" />
+    <ClCompile Include="src\Utilities\crypto.cpp" />
+    <ClCompile Include="src\Utilities\debug.cpp" />
+    <ClCompile Include="src\Utilities\generalUtil.cpp" />
+    <ClCompile Include="src\Utilities\logger.cpp" />
+    <ClCompile Include="src\Utilities\random.cpp" />
+    <ClCompile Include="src\Utilities\timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Compound\transform.h" />
+    <ClInclude Include="src\Data Structure\binaryTree.hpp" />
+    <ClInclude Include="src\Data Structure\bitData.h" />
+    <ClInclude Include="src\Data Structure\circularQueue.hpp" />
+    <ClInclude Include="src\Data Structure\doubleLinkedList.hpp" />
+    <ClInclude Include="src\Data Structure\hashMap.hpp" />
+    <ClInclude Include="src\Data Structure\linkedList.hpp" />
+    <ClInclude Include="src\Data Structure\node2D.hpp" />
+    <ClInclude Include="src\Manipulators\geometry.h" />
+    <ClInclude Include="src\Manipulators\openGL.h" />
+    <ClInclude Include="src\Manipulators\resourcesLoader.h" />
+    <ClInclude Include="src\Manipulators\shader.h" />
+    <ClInclude Include="src\Math\generalMath.h" />
+    <ClInclude Include="src\Math\straightLineEquation.h" />
+    <ClInclude Include="src\Modules BackEnd\boundary.h" />
+    <ClInclude Include="src\Modules BackEnd\camera.h" />
+    <ClInclude Include="src\Modules BackEnd\keyboard.h" />
+    <ClInclude Include="src\Modules BackEnd\mouse.h" />
+    <ClInclude Include="src\Modules BackEnd\physics.h" />
+    <ClInclude Include="src\Modules BackEnd\window.h" />
+    <ClInclude Include="src\Modules FrontEnd\audio.h" />
+    <ClInclude Include="src\Modules FrontEnd\boidEntity.h" />
+    <ClInclude Include="src\Modules FrontEnd\flockingBehaviour.h" />
+    <ClInclude Include="src\Modules FrontEnd\particleAffector.h" />
+    <ClInclude Include="src\Modules FrontEnd\particleEntity.h" />
+    <ClInclude Include="src\Modules FrontEnd\particleSystem.h" />
+    <ClInclude Include="src\Modules FrontEnd\pathFinder.h" />
+    <ClInclude Include="src\Modules FrontEnd\pathNode.h" />
+    <ClInclude Include="src\Modules FrontEnd\sprite.h" />
+    <ClInclude Include="src\Specification\entity.h" />
+    <ClInclude Include="src\Specification\session.h" />
+    <ClInclude Include="src\Utilities\bitOperation.h" />
+    <ClInclude Include="src\Utilities\crypto.h" />
+    <ClInclude Include="src\Utilities\debug.h" />
+    <ClInclude Include="src\Utilities\generalUtil.h" />
+    <ClInclude Include="src\Utilities\logger.h" />
+    <ClInclude Include="src\Utilities\random.h" />
+    <ClInclude Include="src\Utilities\timer.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7D417D45-F05D-4255-A75C-1AAAADF5DB07}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>shader_blur_2pass</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Engine</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\Output\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Build\Output\$(ProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FmodEx\api\lib;$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\OpenAL Soft\libs\Win32;$(SolutionDir)Dependencies\Box2D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2-debug.lib;assimp-vc142-mtd.lib;OpenAL32.lib;%(AdditionalDependencies);box2d.lib;openAL32.lib</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FmodEx\api\lib;$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2-debug.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FmodEx\api\lib;$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\OpenAL Soft\libs\Win32;$(SolutionDir)Dependencies\Box2D\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2.lib;assimp-vc142-mtd.lib;OpenAL32.lib;%(AdditionalDependencies);box2d.lib;openAL32.lib</AdditionalDependencies>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\FmodEx\api\lib;$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
