@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# // !!! MANUALLY ADDED !! // #
+Build/*
+!Dependencies\GLAD\include\glad\glad.c
+Dependencies/*
+Media/*
+
 # User-specific files
 *.rsuser
 *.suo
