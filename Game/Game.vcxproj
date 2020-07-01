@@ -69,7 +69,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

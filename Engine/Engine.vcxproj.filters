@@ -85,9 +85,6 @@
     <Filter Include="Source Files\Modules\Front End\Particles">
       <UniqueIdentifier>{be890b1f-cf56-4ea2-804f-a8f72ed16d11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Essential">
-      <UniqueIdentifier>{3a8ab81f-6810-494e-9881-f58a18bc2bcc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Math\straightLineEquation.cpp">
@@ -180,11 +177,11 @@
     <ClCompile Include="src\Data Structure\bitData.cpp">
       <Filter>Source Files\Data Structures</Filter>
     </ClCompile>
-    <ClCompile Include="src\glad.c">
-      <Filter>Essential</Filter>
-    </ClCompile>
     <ClCompile Include="src\Math\generalMath.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

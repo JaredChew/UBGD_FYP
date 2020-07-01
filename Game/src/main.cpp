@@ -1,12 +1,6 @@
 #define GLFW_INCLUDE_NONE 1
 #define GLFW_DLL 1
-
 //#define GL_GLEXT_PROTOTYPES
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <thread>
-#include <cstdlib> 
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -107,6 +101,9 @@ int main(void) {
 
 	delete game;
 	game = nullptr;
+
+	delete Global::wnd;
+	Global::wnd = nullptr;
 
 	glfwTerminate();
 
