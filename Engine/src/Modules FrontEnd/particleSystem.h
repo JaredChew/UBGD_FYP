@@ -43,7 +43,7 @@ public:
 	void setMaxParticlesEmittable(const int &maxParticlesEmittable);
 	void setParticleAffector(ParticleAffector *const particleAffector);
 
-	void update();
+	void update(const float& deltaTime_Seconds);
 	void render();
 
 	//ParticleObject getParticle(const int &index);

@@ -28,7 +28,7 @@ public:
 
 	void revive(const glm::vec3 &position, const glm::vec3 &velocity, const glm::vec3 &acceleration);
 
-	void update();
+	void update(const float& deltaTime_Seconds);
 	void render();
 
 	float getLifespan();

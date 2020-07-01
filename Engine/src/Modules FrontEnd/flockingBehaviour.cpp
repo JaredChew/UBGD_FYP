@@ -146,7 +146,7 @@ void FlockingBehaviour::processSeperation(BoidEntity *const current) {
 
 }
 
-void FlockingBehaviour::update() {
+void FlockingBehaviour::update(const float& deltaTime_Seconds) {
 
 	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->update(); }
 
@@ -160,7 +160,7 @@ void FlockingBehaviour::update() {
 
 	}
 
-	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->postUpdate(); }
+	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->postUpdate(deltaTime_Seconds); }
 
 }
 

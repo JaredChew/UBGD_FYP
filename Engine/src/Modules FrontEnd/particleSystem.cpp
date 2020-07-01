@@ -79,7 +79,7 @@ void ParticleSystem::setParticleAffector(ParticleAffector *const particleAffecto
 
 }
 
-void ParticleSystem::update() {
+void ParticleSystem::update(const float& deltaTime_Seconds) {
 
 	for (int i = 0; i < maxParticlesEmittable; ++i) {
 
@@ -99,13 +99,13 @@ void ParticleSystem::update() {
 		particlesEmitted[i]->transform->rotateLocal(particleAffector->getRotateAffector());
 		particlesEmitted[i]->transform->scaleLocal(glm::vec3(particleAffector->getSizeAffector().x, particleAffector->getSizeAffector().y, 0.0f));
 
-		particlesEmitted[i]->update();
+		particlesEmitted[i]->update(deltaTime_Seconds);
 
 	}
 
 	particleAffector->update();
 
-	if (emittionCooldown > 0.0) { emittionCooldown -= Window::getDeltaTime_Seconds(); }
+	if (emittionCooldown > 0.0) { emittionCooldown -= deltaTime_Seconds; }
 
 }
 

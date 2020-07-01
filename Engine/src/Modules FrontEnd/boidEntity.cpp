@@ -88,7 +88,7 @@ void BoidEntity::update() {
 
 }
 
-void BoidEntity::postUpdate() {
+void BoidEntity::postUpdate(const float &deltaTime_Seconds) {
 
 	if (glm::length(resultant) > velLimit) { resultant = glm::normalize(resultant) * velLimit; }
 
@@ -96,7 +96,7 @@ void BoidEntity::postUpdate() {
 
 	transform->setRotationLocal(glm::vec3(0.0f, 0.0f, -rotate));
 
-	physics->setVelocity(resultant * (float)Window::getDeltaTime_Seconds());
+	physics->setVelocity(resultant * deltaTime_Seconds);
 	physics->update();
 
 }

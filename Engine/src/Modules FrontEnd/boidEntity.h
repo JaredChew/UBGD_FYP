@@ -50,7 +50,7 @@ public:
 	~BoidEntity();
 
 	void update();
-	void postUpdate();
+	void postUpdate(const float& deltaTime_Seconds);
 
 	void addAttractor(Transform *const attractor);
 	void addRepeller(Transform *const repeller);

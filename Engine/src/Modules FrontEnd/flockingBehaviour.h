@@ -43,7 +43,7 @@ public:
 	FlockingBehaviour(const int &maxmimumBoids);
 	~FlockingBehaviour();
 
-	void update();
+	void update(const float& deltaTime_Seconds);
 
 	bool addBoid(BoidEntity *const boid);
 	bool removeBoid(const int &amount);

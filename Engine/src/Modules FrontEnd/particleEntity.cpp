@@ -34,15 +34,15 @@ void ParticleEntity::revive(const glm::vec3 &position, const glm::vec3 &velocity
 
 }
 
-void ParticleEntity::update() {
+void ParticleEntity::update(const float& deltaTime_Seconds) {
 
 	if (isDead()) { return; }
 
 	velocity += acceleration;
 
-	transform->translate(velocity * (float)Window::getDeltaTime_Seconds());
+	transform->translate(velocity * deltaTime_Seconds);
 
-	if (age > 0.0f) { age -= Window::getDeltaTime_Seconds(); }
+	if (age > 0.0f) { age -= deltaTime_Seconds; }
 	
 }
 
