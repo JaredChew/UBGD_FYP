@@ -16,6 +16,7 @@
 
 #include "game.h"
 #include "defaultSettings.h"
+#include "global.h"
 
 static void error_callback(int error, const char *description) {
 	Logger::getInstance()->customLog("GLFW ERROR", description);
@@ -23,8 +24,6 @@ static void error_callback(int error, const char *description) {
 }
 
 int main(void) {
-
-	Window *wnd;
 
 	Game *game;
 
@@ -50,9 +49,9 @@ int main(void) {
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
 
 	//Create and open a window
-	wnd = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 0, NULL);
+	Global::wnd = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, 0, NULL);
 
-	if (!wnd->successfulCreation()) {
+	if (!Global::wnd->successfulCreation()) {
 
 		Logger::getInstance()->errorLog("glfwCreateWindow Error");
 
@@ -62,11 +61,11 @@ int main(void) {
 
 	}
 
-	glfwMakeContextCurrent(wnd->getWindow());
+	glfwMakeContextCurrent(Global::wnd->getWindow());
 
-	wnd->setVsync(VSYNC);
-	wnd->setFpsLimit(MAX_FPS);
-	wnd->setDisplayFps(DISPLAY_FPS);
+	Global::wnd->setVsync(VSYNC);
+	Global::wnd->setFpsLimit(MAX_FPS);
+	Global::wnd->setDisplayFps(DISPLAY_FPS);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		Logger::getInstance()->errorLog("Failed to initialize OpenGL context");
@@ -80,8 +79,8 @@ int main(void) {
 
 		Logger::getInstance()->errorLog("Your device must support OpenGL 3.2+");
 
-		delete wnd;
-		wnd = nullptr;
+		delete Global::wnd;
+		Global::wnd = nullptr;
 
 		glfwTerminate();
 
@@ -89,19 +88,17 @@ int main(void) {
 
 	}
 
-	game = new Game(wnd);
+	game = new Game(Global::wnd);
 
 	//Window loop
-	while (!glfwWindowShouldClose(wnd->getWindow())) {
+	while (!glfwWindowShouldClose(Global::wnd->getWindow())) {
 
 		game->gameLoop();
 
-		//wnd->recordTock();
-		wnd->update();
-		//wnd->recordTick();
+		Global::wnd->update();
 
 		//Swap front and back buffer
-		glfwSwapBuffers(wnd->getWindow());
+		glfwSwapBuffers(Global::wnd->getWindow());
 
 		//Get window and input events
 		glfwPollEvents();

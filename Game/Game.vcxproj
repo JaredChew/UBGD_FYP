@@ -17,6 +17,7 @@
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h" />
     <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\global.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

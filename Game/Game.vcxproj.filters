@@ -32,5 +32,8 @@
     <ClInclude Include="src\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
