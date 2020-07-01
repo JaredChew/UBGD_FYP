@@ -68,3 +68,11 @@ long double Timer::getTimeElapsedSeconds() {
 unsigned long long int Timer::getTimeElapsed() {
 	return timeElapsed.count();
 }
+
+std::chrono::steady_clock::time_point Timer::getTick() {
+	return tick;
+}
+
+std::chrono::steady_clock::time_point Timer::getTock() {
+	return tock;
+}

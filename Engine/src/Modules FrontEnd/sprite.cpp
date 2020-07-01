@@ -17,7 +17,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Sprite::Sprite(Window *const wnd, Camera *const camera, const char *directory, GLuint *const targetRender, const int &spriteWidth, const int &spriteHeight, const int &sheetRow, const int &sheetCol, const int &animationFrameRate) : wnd(wnd), camera(camera), targetRender(targetRender) {
+Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, GLuint* const targetRender, const int& spriteWidth, const int& spriteHeight, const int& sheetRow, const int& sheetCol, const int& animationFrameRate) : wnd(wnd), camera(camera), targetRender(targetRender) {
 
 	glGenFramebuffers(1, &frameBuffer);
 
@@ -25,7 +25,7 @@ Sprite::Sprite(Window *const wnd, Camera *const camera, const char *directory, G
 
 	textureWidth = bitmap.GetWidth();
 	textureHeight = bitmap.GetHeight();
-	
+
 	OpenGL::initTexture(texture, 1, textureWidth, textureHeight);
 	OpenGL::initTexture(textureProcessed, 1, textureWidth, textureHeight);
 	OpenGL::initTexture(textureToRender, 1, wnd->getWidth(), wnd->getHeight());
@@ -61,7 +61,6 @@ Sprite::Sprite(Window *const wnd, Camera *const camera, const char *directory, G
 	colourBlend = glm::vec4(0.0f);
 
 	timer = new Timer();
-	timer->recordTick();
 
 	OpenGL::loadTexture(bitmap, texture);
 
@@ -100,7 +99,7 @@ void Sprite::blendColourAndTexture() {
 
 }
 
-glm::mat4 Sprite::transform(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
+glm::mat4 Sprite::transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension) {
 
 	return glm::translate(glm::mat4(1.0f), glm::vec3(position)) *
 
@@ -112,12 +111,12 @@ glm::mat4 Sprite::transform(const glm::vec3 &position, const glm::vec3 &rotation
 
 }
 
-glm::mat4 Sprite::produceModelViewMatrix(const glm::mat4 &modelMatrix) {
+glm::mat4 Sprite::produceModelViewMatrix(const glm::mat4& modelMatrix) {
 
 	glm::mat4 modelViewMatrix = camera->getViewMatrix() * modelMatrix;
 
 	if (isBillboard) {
-		
+
 		// 1st colunm
 		glm::value_ptr(modelViewMatrix)[0] = 1.0;
 		glm::value_ptr(modelViewMatrix)[1] = 0.0;
@@ -132,14 +131,14 @@ glm::mat4 Sprite::produceModelViewMatrix(const glm::mat4 &modelMatrix) {
 		glm::value_ptr(modelViewMatrix)[8] = 0.0;
 		glm::value_ptr(modelViewMatrix)[9] = 0.0;
 		glm::value_ptr(modelViewMatrix)[10] = 1.0;
-		
+
 	}
 
 	return modelViewMatrix;
 
 }
 
-void Sprite::setIsAnimationOneShot(const bool &isAnimationOneShot) {
+void Sprite::setIsAnimationOneShot(const bool& isAnimationOneShot) {
 
 	this->isAnimationOneShot = isAnimationOneShot;
 
@@ -150,22 +149,22 @@ void Sprite::setIsAnimationOneShot(const bool &isAnimationOneShot) {
 
 }
 
-void Sprite::setIsBillboard(const bool &isBillboard) {
+void Sprite::setIsBillboard(const bool& isBillboard) {
 	this->isBillboard = isBillboard;
 }
 
-void Sprite::setBlendColour(const glm::vec4 &colourBlend) {
+void Sprite::setBlendColour(const glm::vec4& colourBlend) {
 	this->colourBlend = colourBlend;
 }
 
-void Sprite::setBlendType(const BlendType &blendType, const bool &isAlphaBlend) {
+void Sprite::setBlendType(const BlendType& blendType, const bool& isAlphaBlend) {
 
 	this->blendType = blendType;
 	this->isAlphaBlend = isAlphaBlend;
 
 }
 
-void Sprite::renderSprite(const glm::mat4 &mvpMatrix) {
+void Sprite::renderSprite(const glm::mat4& mvpMatrix) {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
@@ -186,7 +185,7 @@ void Sprite::renderSprite(const glm::mat4 &mvpMatrix) {
 
 }
 
-void Sprite::renderSprite(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
+void Sprite::renderSprite(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension) {
 
 	glm::mat4 modelMatrix = transform(position, rotation, dimension);
 
@@ -196,7 +195,7 @@ void Sprite::renderSprite(const glm::vec3 &position, const glm::vec3 &rotation, 
 
 }
 
-void Sprite::renderSprite(Transform &transform) {
+void Sprite::renderSprite(Transform& transform) {
 
 	glm::mat4 modelViewMatrix = produceModelViewMatrix(transform.getModelMatrix());
 
@@ -204,7 +203,7 @@ void Sprite::renderSprite(Transform &transform) {
 
 }
 
-void Sprite::renderSprite(const glm::mat4 &mvpMatrix, const int &frameRow, const int &frameCol) {
+void Sprite::renderSprite(const glm::mat4& mvpMatrix, const int& frameRow, const int& frameCol) {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
@@ -223,7 +222,7 @@ void Sprite::renderSprite(const glm::mat4 &mvpMatrix, const int &frameRow, const
 
 }
 
-void Sprite::renderSprite(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension, const int &frameRow, const int &frameCol) {
+void Sprite::renderSprite(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension, const int& frameRow, const int& frameCol) {
 
 	glm::mat4 modelMatrix = transform(position, rotation, dimension);
 
@@ -233,7 +232,7 @@ void Sprite::renderSprite(const glm::vec3 &position, const glm::vec3 &rotation, 
 
 }
 
-void Sprite::renderSprite(Transform &transform, const int &frameRow, const int &frameCol) {
+void Sprite::renderSprite(Transform& transform, const int& frameRow, const int& frameCol) {
 
 	glm::mat4 modelViewMatrix = produceModelViewMatrix(transform.getModelMatrix());
 
@@ -241,7 +240,7 @@ void Sprite::renderSprite(Transform &transform, const int &frameRow, const int &
 
 }
 
-void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
+void Sprite::renderAnimation(const glm::mat4& mvpMatrix) {
 
 	if (!isAnimatedSprite) { return; }
 
@@ -249,7 +248,9 @@ void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
 
 	timer->recordTock();
 
-	if (totalFramesPassed >= animationFrameRate && timer->getDeltaTime() < 1000000000) {
+	deltaTime += timer->getDeltaTime();
+
+	if (totalFramesPassed >= animationFrameRate && deltaTime < 1000000000) {
 
 		renderSprite(mvpMatrix, animationRow, animationCol);
 
@@ -261,11 +262,13 @@ void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
 			animationRow = 0;
 		}
 
+		deltaTime = 0;
+
 	}
 
-	//if (timer->getDeltaTime() >= 1000000000) { deltaTime = std::chrono::nanoseconds(0); }
+	if (deltaTime >= 1000000000) { deltaTime = 0; }
 
-	timer = new Timer();
+	timer->recordTick();
 
 	if (!isAnimationOneShot && animationFrame >= totalAnimationFrames) { animationFrame = 0; }
 
@@ -273,7 +276,7 @@ void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
 
 }
 
-void Sprite::renderAnimation(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
+void Sprite::renderAnimation(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension) {
 
 	glm::mat4 modelMatrix = transform(position, rotation, dimension);
 
@@ -281,13 +284,13 @@ void Sprite::renderAnimation(const glm::vec3 &position, const glm::vec3 &rotatio
 
 }
 
-void Sprite::renderAnimation(Transform &transform) {
+void Sprite::renderAnimation(Transform& transform) {
 
 	renderAnimation(transform.getModelMatrix() * camera->projectionMatrix * camera->getViewMatrix());
 
 }
 
-void Sprite::setAnimationFrameRate(const int &animationFrameRate) {
+void Sprite::setAnimationFrameRate(const int& animationFrameRate) {
 	this->animationFrameRate = animationFrameRate;
 }
 

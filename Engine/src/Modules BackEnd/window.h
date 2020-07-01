@@ -2,12 +2,13 @@
 
 #include <GLFW/glfw3.h>
 
-#include <chrono>
 #include <string>
 
 #define MINIMUM_SLEEP_TIME 10000000.0
 
 #define DYNAMIC_WINDOW_TITLE_SIZE 80
+
+class Timer;
 
 class Window {
 
@@ -36,15 +37,10 @@ private:
 	long double totalFrames;
 	long double targetDeltaTime;
 
-	std::chrono::steady_clock::time_point tick;
-	std::chrono::steady_clock::time_point tock;
-
-	static std::chrono::duration<long double, std::nano> deltaTime;
-	static std::chrono::duration<long double, std::nano> timeElapsed;
+	Timer* timer;
 
 private:
 
-	void recordTime();
 	void limitFps();
 	void fpsCounter();
 
@@ -72,11 +68,11 @@ public:
 
 	float getWindowRatio();
 
-	static long double getDeltaTime();
-	static long double getDeltaTime_Seconds();
+	long double getDeltaTime();
+	long double getDeltaTime_Seconds();
 
-	static long double getTimeElapsed();
-	static long double getTimeElapsed_Seconds();
+	long double getTimeElapsed();
+	long double getTimeElapsed_Seconds();
 
 	GLFWwindow *getWindow() const;
 

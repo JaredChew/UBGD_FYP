@@ -1,14 +1,13 @@
 #include "window.h"
 
+#include "../Utilities/timer.h"
+
 #include <thread>
 
 int Window::width;
 int Window::height;
 
 float Window::windowRatio;
-
-std::chrono::duration<long double, std::nano> Window::deltaTime;
-std::chrono::duration<long double, std::nano> Window::timeElapsed;
 
 Window::Window(const int &width, const int &height, const std::string &title, GLFWmonitor *const monitor, GLFWwindow *const share) {
 
@@ -33,29 +32,16 @@ Window::Window(const int &width, const int &height, const std::string &title, GL
 	targetDeltaTime = 0;
 	currentTime = 0;
 
-	deltaTime = std::chrono::duration<long double, std::nano>(0.0);
-
-	timeElapsed = std::chrono::duration<long double, std::nano>(0.0);
-
 	// Hook window resize.
 	glfwSetWindowSizeCallback(window, onWindowResized);
 
-	tock = std::chrono::high_resolution_clock::now();
-	tick = std::chrono::high_resolution_clock::now();
+	timer = new Timer();
 
 }
 
 Window::~Window() {
 
 	glfwDestroyWindow(window);
-
-}
-
-void Window::recordTime() {
-
-	deltaTime = tock - tick;
-
-	timeElapsed += deltaTime;
 
 }
 
@@ -68,12 +54,13 @@ void Window::limitFps() {
 		if (targetDeltaTime - currentTime > MINIMUM_SLEEP_TIME) { //1000000.0
 
 			std::chrono::duration<double, std::nano> deltaTargetCurrent(0.7 * (targetDeltaTime - currentTime));
-			std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTargetCurrent));
+			//std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTargetCurrent));
 
 		}
 
 		tock2 = std::chrono::high_resolution_clock::now();
-		currentTime = std::chrono::duration<long double, std::nano>(tock2 - tock).count();
+
+		currentTime = std::chrono::duration<long double, std::nano>(tock2 - this->timer->getTock()).count();
 
 	}
 
@@ -83,7 +70,7 @@ void Window::limitFps() {
 
 void Window::fpsCounter() {
 
-	currentTime = deltaTime.count();
+	currentTime = timer->getDeltaTime();
 
 	if (fpsLimit > 0.0) { limitFps(); }
 
@@ -122,12 +109,11 @@ bool Window::successfulCreation() {
 
 void Window::update() {
 
-	tock = std::chrono::high_resolution_clock::now();
+	timer->recordTock();
 
-	recordTime();
 	fpsCounter();
 
-	tick = std::chrono::high_resolution_clock::now();
+	timer->recordTick();
 
 }
 /*
@@ -172,19 +158,19 @@ float Window::getWindowRatio() {
 }
 
 long double Window::getDeltaTime() {
-	return deltaTime.count();
+	return timer->getDeltaTime();
 }
 
 long double Window::getDeltaTime_Seconds() {
-	return deltaTime.count() / 1000000000.0;
+	return timer->getDeltaTimeSeconds();
 }
 
 long double Window::getTimeElapsed() {
-	return timeElapsed.count();
+	return timer->getTimeElapsed();
 }
 
 long double Window::getTimeElapsed_Seconds() {
-	return timeElapsed.count() / 1000000000.0;
+	return timer->getTimeElapsedSeconds();
 }
 
 GLFWwindow *Window::getWindow() const {
