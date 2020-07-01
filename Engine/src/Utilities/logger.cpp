@@ -1,5 +1,11 @@
 #include "logger.h"
 
+#include <iostream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+
 Logger *Logger::instance;
 
 void Logger::init(const std::string &title, const std::string &version, const bool &exportToFile, const std::string &directory) {

@@ -1,5 +1,7 @@
 #include "physics.h"
 
+#include "../Compound/transform.h"
+
 Physics::Physics(Transform *const transform) : transform(transform) {
 
 	velocity = glm::vec3(0.0f);

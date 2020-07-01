@@ -1,7 +1,5 @@
 #pragma once
 
-#include <math.h>
-
 namespace Utilities {
 	namespace BitOp {
 

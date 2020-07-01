@@ -1,12 +1,9 @@
 #pragma once
 
-#include <thread>
-#include <cstdlib> 
+#include <GLFW/glfw3.h>
+
 #include <chrono>
 #include <string>
-#include <iostream>
-
-#include <GLFW/glfw3.h>
 
 #define MINIMUM_SLEEP_TIME 10000000.0
 

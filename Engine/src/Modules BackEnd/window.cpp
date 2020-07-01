@@ -1,5 +1,7 @@
 #include "window.h"
 
+#include <thread>
+
 int Window::width;
 int Window::height;
 

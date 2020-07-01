@@ -1,11 +1,6 @@
 #pragma once
 
 #include <fmod.hpp>
-#include <fmod_errors.h>
-
-#include "../Utilities/logger.h"
-
-// !!! switch to latest fmod or check openAL difficulty !!! //
 
 class Audio {
 

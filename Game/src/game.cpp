@@ -1,5 +1,18 @@
 #include "game.h"
 
+#include "defaultSettings.h"
+
+#include "Specification/session.h"
+
+#include "Modules BackEnd/window.h"
+#include "Modules BackEnd/camera.h"
+#include "Modules BackEnd/keyboard.h"
+#include "Modules BackEnd/mouse.h"
+
+#include <GLFW/glfw3.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+
 Game::Game(Window *const wnd) : wnd(wnd) {
 
 	//Init Opengl state
@@ -59,6 +72,8 @@ void Game::gameLoop() {
 	camera->update();
 
 	mse->preUpdate();
+
+	if (session == nullptr) { return; }
 
 	session->preUpdate();
 	session->update();

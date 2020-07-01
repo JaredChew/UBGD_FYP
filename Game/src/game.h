@@ -1,18 +1,10 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <glm/mat4x4.hpp>
-
-#include "Modules BackEnd/window.h"
-#include "Modules BackEnd/camera.h"
-#include "Modules BackEnd/keyboard.h"
-#include "Modules BackEnd/mouse.h"
-
-#include "Specification/session.h"
-
-#include "defaultSettings.h"
+class Window;
+class Keyboard;
+class Mouse;
+class Camera;
+class Session;
 
 class Game {
 

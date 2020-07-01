@@ -1,5 +1,7 @@
 #include "crypto.h"
 
+#include "random.h"
+
 template<typename dataType>
 dataType Utilities::Cypto::encrypt(const std::string &key, const dataType &data, int &generatedKey) {
 

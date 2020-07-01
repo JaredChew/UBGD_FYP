@@ -1,11 +1,9 @@
 #pragma once
 
-#include <utility>
-
 #include<glm/vec3.hpp>
 #include<glm/vec4.hpp>
 
-#include "../Compound/transform.h"
+class Transform;
 
 class Boundary {
 

@@ -1,5 +1,22 @@
 #include "sprite.h"
 
+#include "bitmap.h"
+
+#include "../Utilities/logger.h"
+#include "../Utilities/timer.h"
+
+#include "../Manipulators/openGL.h"
+#include "../Manipulators/geometry.h"
+#include "../Manipulators/shader.h"
+
+#include "../Compound/transform.h"
+
+#include "../Modules BackEnd/window.h"
+#include "../Modules BackEnd/camera.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 Sprite::Sprite(Window *const wnd, Camera *const camera, const char *directory, GLuint *const targetRender, const int &spriteWidth, const int &spriteHeight, const int &sheetRow, const int &sheetCol, const int &animationFrameRate) : wnd(wnd), camera(camera), targetRender(targetRender) {
 
 	glGenFramebuffers(1, &frameBuffer);
@@ -43,10 +60,8 @@ Sprite::Sprite(Window *const wnd, Camera *const camera, const char *directory, G
 
 	colourBlend = glm::vec4(0.0f);
 
-	deltaTime = std::chrono::nanoseconds(0);
-	deltaTime_s = std::chrono::duration<double>(0.0);
-
-	tick = std::chrono::high_resolution_clock::now();
+	timer = new Timer();
+	timer->recordTick();
 
 	OpenGL::loadTexture(bitmap, texture);
 
@@ -232,12 +247,9 @@ void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
 
 	if (isAnimationOneShot && animationFrame >= totalAnimationFrames) { return; }
 
-	tock = std::chrono::high_resolution_clock::now();
+	timer->recordTock();
 
-	deltaTime += std::chrono::duration_cast<std::chrono::nanoseconds>(tock - tick);
-	//deltaTime_s += tock - tick;
-
-	if (totalFramesPassed >= animationFrameRate && deltaTime.count() < 1000000000) {
+	if (totalFramesPassed >= animationFrameRate && timer->getDeltaTime() < 1000000000) {
 
 		renderSprite(mvpMatrix, animationRow, animationCol);
 
@@ -249,13 +261,11 @@ void Sprite::renderAnimation(const glm::mat4 &mvpMatrix) {
 			animationRow = 0;
 		}
 
-		deltaTime = std::chrono::nanoseconds(0);
-
 	}
 
-	if (deltaTime.count() >= 1000000000) { deltaTime = std::chrono::nanoseconds(0); }
+	//if (timer->getDeltaTime() >= 1000000000) { deltaTime = std::chrono::nanoseconds(0); }
 
-	tick = tock;
+	timer = new Timer();
 
 	if (!isAnimationOneShot && animationFrame >= totalAnimationFrames) { animationFrame = 0; }
 

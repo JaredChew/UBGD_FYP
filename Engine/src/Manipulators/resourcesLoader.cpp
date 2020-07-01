@@ -1,5 +1,7 @@
 #include "resourcesLoader.h"
 
+#include "bitmap.h"
+
 void Utilities::ResourcesLoader::loadTexture(const char* path, GLuint &textureID) {
 
 	glGenTextures(1, &textureID);

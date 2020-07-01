@@ -1,5 +1,7 @@
 #include "openGL.h"
 
+#include "../Utilities/logger.h"
+
 bool OpenGL::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShader) {
 
 	GLuint programObject = glCreateProgram();

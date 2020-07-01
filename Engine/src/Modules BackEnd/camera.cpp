@@ -1,5 +1,11 @@
 #include "camera.h"
 
+#include "window.h"
+#include "mouse.h"
+#include "keyboard.h"
+
+#include <glm/gtc/matrix_transform.hpp>
+
 Camera::Camera(Window *const wnd, Keyboard *const kbd, Mouse *const mse, const float &cameraSpeed, const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) : wnd(wnd), kbd(kbd), mse(mse) {
 
 	this->position = position;

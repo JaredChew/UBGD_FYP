@@ -1,8 +1,8 @@
 #pragma once
 
-#include <glm/gtx/norm.hpp>
+#include <glm/vec3.hpp>
 
-#include "boidEntity.h"
+class BoidEntity;
 
 class FlockingBehaviour {
 

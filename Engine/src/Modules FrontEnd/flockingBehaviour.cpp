@@ -1,5 +1,9 @@
 #include "flockingBehaviour.h"
 
+#include "boidEntity.h"
+
+#include <glm/gtx/norm.hpp>
+
 FlockingBehaviour::FlockingBehaviour(const int &maxmimumBoids) {
 
 	currentTotalBoids = 0;

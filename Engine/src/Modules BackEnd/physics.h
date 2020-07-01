@@ -1,9 +1,8 @@
 #pragma once
 
 #include <glm/vec3.hpp>
-#include <glm/common.hpp>
 
-#include "../Compound/transform.h"
+class Transform;
 
 class Physics {
 

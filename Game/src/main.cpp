@@ -14,8 +14,8 @@
 #include "Utilities/logger.h"
 #include "Modules BackEnd/window.h"
 
-#include "defaultSettings.h"
 #include "game.h"
+#include "defaultSettings.h"
 
 static void error_callback(int error, const char *description) {
 	Logger::getInstance()->customLog("GLFW ERROR", description);

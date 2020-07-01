@@ -1,7 +1,11 @@
 #pragma once
 
+#include <glm/vec3.hpp>
+
 #include "../Specification/entity.h"
-#include "sprite.h"
+
+class Entity;
+class Sprite;
 
 class ParticleEntity : public Entity {
 

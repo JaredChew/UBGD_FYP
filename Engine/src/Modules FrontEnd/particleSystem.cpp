@@ -1,5 +1,15 @@
 #include "particleSystem.h"
 
+#include "sprite.h"
+#include "particleEntity.h"
+#include "particleAffector.h"
+
+#include "../Compound/transform.h"
+
+#include "../Utilities/random.h"
+
+#include "../Modules BackEnd/window.h"
+
 ParticleSystem::ParticleSystem(ParticleEntity *const particle, const int &maxParticlesEmittable, const float &emittionDelay, const bool &isEmittionEnable) {
 
 	Utilities::Random::seedRandom();
@@ -10,6 +20,8 @@ ParticleSystem::ParticleSystem(ParticleEntity *const particle, const int &maxPar
 	this->maxParticlesEmittable = maxParticlesEmittable;
 	this->emittionDelay = emittionDelay;
 	this->isEmittionEnable = isEmittionEnable;
+
+	transform = new Transform();
 
 	//particleAffector = new DefaultParticleEffect();
 
@@ -41,6 +53,9 @@ ParticleSystem::~ParticleSystem() {
 	delete particle;
 	particle = nullptr;
 
+	delete transform;
+	transform = nullptr;
+
 }
 
 void ParticleSystem::setEmittionDelay(const float &emittionDelay) {
@@ -71,7 +86,7 @@ void ParticleSystem::update() {
 		if(particlesEmitted[i]->isDead() && emittionCooldown <= 0.0) {
 
 			particlesEmitted[i]->revive(
-				transform.getPosition() + particleAffector->getSpawnAffector(),
+				transform->getPosition() + particleAffector->getSpawnAffector(),
 				particleAffector->getSpeedAffector() *particleAffector->getDirectionAffector(),
 				particleAffector->getAccelerationAffector() *particleAffector->getDirectionAffector()
 			);
@@ -81,8 +96,8 @@ void ParticleSystem::update() {
 		}
 
 		particlesEmitted[i]->sprite->setBlendColour(particleAffector->getColourAffector());
-		particlesEmitted[i]->transform.rotateLocal(particleAffector->getRotateAffector());
-		particlesEmitted[i]->transform.scaleLocal(glm::vec3(particleAffector->getSizeAffector().x, particleAffector->getSizeAffector().y, 0.0f));
+		particlesEmitted[i]->transform->rotateLocal(particleAffector->getRotateAffector());
+		particlesEmitted[i]->transform->scaleLocal(glm::vec3(particleAffector->getSizeAffector().x, particleAffector->getSizeAffector().y, 0.0f));
 
 		particlesEmitted[i]->update();
 

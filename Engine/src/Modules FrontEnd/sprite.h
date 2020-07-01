@@ -1,26 +1,18 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <glfw/glfw3.h>
+
+#include <chrono>
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
-#include "bitmap.h"
-
-#include "../Modules BackEnd/window.h"
-#include "../Modules BackEnd/camera.h"
-
-#include "../Utilities/logger.h"
-
-#include "../Manipulators/openGL.h"
-#include "../Manipulators/geometry.h"
-#include "../Manipulators/shader.h"
-
-#include "../Compound/transform.h"
+class Transform;
+class Window;
+class Camera;
+class Timer;
 
 class Sprite {
 
@@ -72,11 +64,7 @@ private:
 	bool isBillboard;
 	bool isAlphaBlend;
 
-	std::chrono::steady_clock::time_point tick;
-	std::chrono::steady_clock::time_point tock;
-
-	std::chrono::nanoseconds deltaTime;
-	std::chrono::duration<double> deltaTime_s;
+	Timer* timer;
 
 private:
 

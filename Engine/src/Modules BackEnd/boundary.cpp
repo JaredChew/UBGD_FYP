@@ -1,5 +1,9 @@
 #include "boundary.h"
 
+#include "../Compound/transform.h"
+
+#include <utility>
+
 Boundary::Boundary(Transform *const transform, const glm::vec4 &dimension, const BoundaryShape &type) : transform(transform) {
 
 	w = dimension.x;

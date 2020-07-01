@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../Manipulators/openGL.h"
-#include "../Manipulators/shader.h"
-#include "../Manipulators/geometry.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 class Session {
 

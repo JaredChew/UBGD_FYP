@@ -1,13 +1,11 @@
 #pragma once
 
-#include <vector>
-
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include "bitmap.h"
+#include <vector>
 
-#include "../Utilities/logger.h"
+#include "bitmap.h"
 
 namespace OpenGL {
 

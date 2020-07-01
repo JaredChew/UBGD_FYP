@@ -1,16 +1,14 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <glfw/glfw3.h>
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
-#include "window.h"
-#include "mouse.h"
-#include "keyboard.h"
+class Window;
+class Mouse;
+class Keyboard;
 
 #define ENABLE_FREE_MOVEMENT true
 

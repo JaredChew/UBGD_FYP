@@ -1,5 +1,7 @@
 #include "mouse.h"
 
+#include "window.h"
+
 glm::vec2 Mouse::position;
 glm::vec2 Mouse::positionOffset;
 glm::vec2 Mouse::positionDirection;

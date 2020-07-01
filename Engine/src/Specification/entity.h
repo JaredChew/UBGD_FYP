@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../Compound/transform.h"
-
-#include "../Modules BackEnd/boundary.h"
-#include "../Modules BackEnd/physics.h"
+class Transform;
+class Physics;
+class Boundary;
 
 class Entity {
 
 public:
-	Transform transform;
+	Transform *transform;
 
 	Boundary *boundary; //Collision* collision;
 	Physics *physics;

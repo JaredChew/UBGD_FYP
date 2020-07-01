@@ -1,13 +1,10 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <utility> 
 #include <queue>
 
-#include "PathNode.h"
-
-#include "../Data Structure/bitData.h"
+class PathNode;
 
 class PathFinder {
 

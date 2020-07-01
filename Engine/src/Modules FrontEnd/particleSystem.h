@@ -1,12 +1,10 @@
 #pragma once
 
-#include <array>
+#include <glad/glad.h>
 
-#include "sprite.h"
-#include "particleEntity.h"
-#include "particleAffector.h"
-
-#include "../Utilities/random.h"
+class Transform;
+class ParticleEntity;
+class ParticleAffector;
 
 class ParticleSystem {
 
@@ -32,7 +30,7 @@ private:
 
 public:
 
-	Transform transform;
+	Transform *transform;
 
 public:
 

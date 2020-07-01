@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-#include "window.h"
+class Window;
 
 #define SET_1_KEYS_START 32
 #define SET_2_KEYS_START 161

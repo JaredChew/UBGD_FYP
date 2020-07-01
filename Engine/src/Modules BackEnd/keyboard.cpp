@@ -1,5 +1,7 @@
 #include "keyboard.h"
 
+#include "window.h"
+
 int Keyboard::keyPressStatus_set1[SET_1_KEYS];
 int Keyboard::keyPressStatus_set2[SET_2_KEYS];
 

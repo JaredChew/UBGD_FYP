@@ -1,5 +1,7 @@
 #include "pathFinder.h"
 
+#include "PathNode.h"
+
 PathFinder::PathFinder(std::vector< std::vector<PathNode> > &grid, PathNode start, PathNode end,
 					   const bool &allowDiagonal, const bool &allowCrossCorners, const SearchType &searchType) : grid(grid) {
 

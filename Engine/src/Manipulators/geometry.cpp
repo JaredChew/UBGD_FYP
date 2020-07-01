@@ -1,5 +1,9 @@
 #include "geometry.h"
 
+#include <vector>
+
+#include <glm/gtc/constants.hpp>
+
 void Geometry::drawTriangle(const GLuint &texture) {
 
 	static GLfloat vVertices[] = {

@@ -1,6 +1,9 @@
 #include "boidEntity.h"
 
 #include "../Modules BackEnd/window.h"
+#include "../Modules BackEnd/physics.h"
+
+#include "../Compound/transform.h"
 
 BoidEntity::BoidEntity() : Entity(false, true) {
 
@@ -25,7 +28,7 @@ BoidEntity::BoidEntity() : Entity(false, true) {
 
 	physics->setVelocity(glm::vec3(Utilities::Random::randBetweenFloat(-10.0f, 10.0f), Utilities::Random::randBetweenFloat(-10.0f, 10.0f), 0.0f));
 
-	transform.setPosition(glm::vec3(Utilities::Random::randBetweenFloat(-50.0f, 50.0f), Utilities::Random::randBetweenFloat(-50.0f, 50.0f), 0.0f));
+	transform->setPosition(glm::vec3(Utilities::Random::randBetweenFloat(-50.0f, 50.0f), Utilities::Random::randBetweenFloat(-50.0f, 50.0f), 0.0f));
 
 }
 
@@ -39,7 +42,7 @@ bool BoidEntity::withinDistance(const glm::vec3 object, const float &distance) {
 
 	if (distance == 0.0f) { return true; }
 
-	return abs(glm::length2(transform.getPosition() - object)) < distance * distance;
+	return abs(glm::length2(transform->getPosition() - object)) < distance * distance;
 
 }
 
@@ -47,8 +50,8 @@ void BoidEntity::applyRepellent(const glm::vec3 &repeller) {
 
 	if (!withinDistance(repeller, repellerDistance)) { return; }
 
-	initial = glm::vec3(repeller.x - transform.getPosition().x, repeller.y - transform.getPosition().y, repeller.z - transform.getPosition().z);
-	acceleration = glm::vec3(transform.getPosition().x - physics->getVelocity().x, physics->getVelocity().y - transform.getPosition().y, physics->getVelocity().z - transform.getPosition().z);
+	initial = glm::vec3(repeller.x - transform->getPosition().x, repeller.y - transform->getPosition().y, repeller.z - transform->getPosition().z);
+	acceleration = glm::vec3(transform->getPosition().x - physics->getVelocity().x, physics->getVelocity().y - transform->getPosition().y, physics->getVelocity().z - transform->getPosition().z);
 
 	resultant += calculateResultant(initial, acceleration) * -repellerWeight;
 
@@ -58,7 +61,7 @@ void BoidEntity::applyAttraction(const glm::vec3 &attractor) {
 
 	if (!withinDistance(attractor, attractorDistance)) { return; }
 
-	initial = glm::vec3(physics->getVelocity().x - transform.getPosition().x, physics->getVelocity().y - transform.getPosition().y, physics->getVelocity().z - transform.getPosition().z);
+	initial = glm::vec3(physics->getVelocity().x - transform->getPosition().x, physics->getVelocity().y - transform->getPosition().y, physics->getVelocity().z - transform->getPosition().z);
 	acceleration = glm::vec3(attractor.x - physics->getVelocity().x, attractor.y - physics->getVelocity().y, attractor.z - physics->getVelocity().z);
 	
 	resultant += calculateResultant(initial, acceleration) * attractorWeight;
@@ -69,7 +72,7 @@ void BoidEntity::stayWithinBoundary() {
 
 	if (withinDistance(centerPosition, boundaryRadius)) { return; }
 
-	initial = glm::vec3(physics->getVelocity().x - transform.getPosition().x, physics->getVelocity().y - transform.getPosition().y, physics->getVelocity().z - transform.getPosition().z);
+	initial = glm::vec3(physics->getVelocity().x - transform->getPosition().x, physics->getVelocity().y - transform->getPosition().y, physics->getVelocity().z - transform->getPosition().z);
 	acceleration = glm::vec3(centerPosition.x - physics->getVelocity().x, centerPosition.y - physics->getVelocity().y, centerPosition.z - physics->getVelocity().z);
 
 	resultant += calculateResultant(initial, acceleration);
@@ -91,7 +94,7 @@ void BoidEntity::postUpdate() {
 
 	float rotate = atan2(resultant.y, resultant.x) * (float)(180.0f / glm::pi<float>());
 
-	transform.setRotationLocal(glm::vec3(0.0f, 0.0f, -rotate));
+	transform->setRotationLocal(glm::vec3(0.0f, 0.0f, -rotate));
 
 	physics->setVelocity(resultant * (float)Window::getDeltaTime_Seconds());
 	physics->update();
@@ -207,7 +210,7 @@ glm::vec3 BoidEntity::getResultant() {
 }
 
 glm::vec3 BoidEntity::getPosition() {
-	return transform.getPosition();
+	return transform->getPosition();
 }
 
 glm::vec3 BoidEntity::getVelocity() {

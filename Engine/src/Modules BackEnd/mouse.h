@@ -5,7 +5,7 @@
 
 #include <glm/vec2.hpp>
 
-#include "window.h"
+class Window;
 
 #define MOUSE_BUTTON_LEFT GLFW_MOUSE_BUTTON_1
 #define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_2

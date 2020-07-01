@@ -1,5 +1,7 @@
 #include "bitOperation.h"
 
+#include <math.h>
+
 int Utilities::BitOp::binaryToDenary(long long binary) {
 
 	/* https://www.programiz.com/cpp-programming/examples/binary-decimal-convert */

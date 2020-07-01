@@ -1,5 +1,10 @@
 #include "debug.h"
 
+#include "logger.h"
+
+#include <glfw/glfw3.h>
+#include <sstream>
+
 void Debug::clearError() {
 
 	if (!ENABLE_DEBUG) { return; }

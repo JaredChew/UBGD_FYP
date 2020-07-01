@@ -1,5 +1,11 @@
 #include "audio.h"
 
+#include "../Utilities/logger.h"
+
+#include <fmod_errors.h>
+
+#include <string>
+
 Audio::Audio(const char *audioDirectory, const int &spectrumSize) {
 
 	FMOD_RESULT result;

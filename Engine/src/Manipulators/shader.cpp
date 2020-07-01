@@ -1,5 +1,11 @@
 #include "shader.h"
 
+#include "openGL.h"
+
+#include "../Utilities/logger.h"
+
+#include <glm/gtc/type_ptr.hpp>
+
 void Shader::defaultDraw(const glm::mat4 &mvpMatrix) {
 
 	static GLuint shaderProgram_DefaultDraw = -1;

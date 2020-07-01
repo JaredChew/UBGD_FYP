@@ -1,5 +1,13 @@
 #include "particleEntity.h"
 
+#include "sprite.h"
+
+#include "particleEntity.h"
+
+#include "../Modules BackEnd/window.h"
+
+#include "../Compound/transform.h"
+
 ParticleEntity::ParticleEntity(Sprite *const sprite, const float &lifespan) : sprite (sprite) {
 
 	age = 0.0f;
@@ -17,7 +25,7 @@ ParticleEntity::~ParticleEntity() { }
 
 void ParticleEntity::revive(const glm::vec3 &position, const glm::vec3 &velocity, const glm::vec3 &acceleration) {
 
-	transform = Transform(position);
+	transform->setPosition(position);
 
 	this->velocity = velocity;
 	this->acceleration = acceleration;
@@ -32,7 +40,7 @@ void ParticleEntity::update() {
 
 	velocity += acceleration;
 
-	transform.translate(velocity * (float)Window::getDeltaTime_Seconds());
+	transform->translate(velocity * (float)Window::getDeltaTime_Seconds());
 
 	if (age > 0.0f) { age -= Window::getDeltaTime_Seconds(); }
 	
@@ -42,8 +50,8 @@ void ParticleEntity::render() {
 
 	if (isDead()) { return; }
 
-	if (sprite->getIsAnimatedSprite()) { sprite->renderAnimation(transform); }
-	else { sprite->renderSprite(transform); }
+	if (sprite->getIsAnimatedSprite()) { sprite->renderAnimation(*transform); }
+	else { sprite->renderSprite(*transform); }
 
 }
 

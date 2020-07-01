@@ -1,5 +1,9 @@
 #include "Session.h"
 
+#include "../Manipulators/openGL.h"
+#include "../Manipulators/shader.h"
+#include "../Manipulators/geometry.h"
+
 Session::Session() {
 
 	nextSession = nullptr;
