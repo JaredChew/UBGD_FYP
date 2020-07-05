@@ -12,6 +12,19 @@
 #include "defaultSettings.h"
 #include "global.h"
 
+#if  _DEBUG
+#include <Windows.h>
+void runDebugTools() {
+	STARTUPINFO startInfo = { 0 };
+	PROCESS_INFORMATION processInfo = { 0 };
+	//ShellExecuteA(NULL, NULL, "Tracy/Tracy.exe", NULL, NULL, SW_SHOW);
+	BOOL succes = CreateProcess(TEXT("..\\Tools\\Tracy\\Tracy.exe"), NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &startInfo, &processInfo);
+	Logger::getInstance()->debugLog(succes ? "Tracy has started" : "Tracy has failed to start");
+}
+#else
+void runDebugTools() {  }
+#endif
+
 static void error_callback(int error, const char *description) {
 	Logger::getInstance()->customLog("GLFW ERROR", description);
 
@@ -19,9 +32,11 @@ static void error_callback(int error, const char *description) {
 
 int main(void) {
 
-	Game *game;
-
 	Logger::init(WINDOW_TITLE, VERSION, true);
+
+	runDebugTools();
+
+	Game* game;
 
 	glfwSetErrorCallback(error_callback);
 

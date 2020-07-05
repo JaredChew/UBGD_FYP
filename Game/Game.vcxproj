@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h" />
@@ -69,7 +70,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\Tracy;%(AdditionalIncludeDirectories);$(SolutionDir)Dependencies\Tracy</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -87,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\FmodEx\api\inc;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\Tracy</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
