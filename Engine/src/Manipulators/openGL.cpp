@@ -2,6 +2,8 @@
 
 #include "../Utilities/logger.h"
 
+#include <SOIL2/SOIL2.h>
+
 bool OpenGL::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShader) {
 
 	GLuint programObject = glCreateProgram();
@@ -216,7 +218,11 @@ GLuint OpenGL::loadShaderFromFile(GLenum shaderType, std::string path) {
 
 void OpenGL::loadTexture(const char *path, GLuint &textureID) {
 
-	CBitmap bitmap(path);
+	int resolutionWidth, resolutionHeight;
+
+	unsigned char* image = SOIL_load_image(path, &resolutionWidth, &resolutionHeight, NULL, SOIL_LOAD_AUTO);
+
+	//if(image) { printf("SOIL loading error: '%s'\n", SOIL_last_result()); }
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -227,47 +233,14 @@ void OpenGL::loadTexture(const char *path, GLuint &textureID) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.GetWidth(), bitmap.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.GetBits());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-}
+	SOIL_free_image_data(image);
 
-void OpenGL::loadTexture(const char *path, GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, const GLuint &size) {
-
-	CBitmap bitmap(path);
-
-	glGenTextures(size, &textureID);
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// bilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.GetBits());
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-}
-
-void OpenGL::loadTexture(CBitmap &bitmap, GLuint &textureID) {
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// bilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap.GetWidth(), bitmap.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.GetBits());
-
-	glBindTexture(GL_TEXTURE_2D, 0);
+	delete image;
+	image = nullptr;
 
 }
 
@@ -290,41 +263,33 @@ void OpenGL::loadTexture(const void* image, GLuint& textureID, const GLuint& res
 
 }
 
-void OpenGL::loadTexture(CBitmap &bitmap, GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, const GLuint &size) {
-
-	glGenTextures(size, &textureID);
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// bilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.GetBits());
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-}
-
 void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint &textureID) {
 
+	unsigned char* image;
+
+	int resolutionWidth, resolutionHeight;
+
 	glActiveTexture(GL_TEXTURE0);
+
 	glEnable(GL_TEXTURE_CUBE_MAP);
+
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
 	for (unsigned int i = 0; i < facesPath.size(); i++) {
 
-		CBitmap bitmap(facesPath[i].c_str());
+		image = SOIL_load_image(facesPath[i].c_str(), &resolutionWidth, &resolutionHeight, NULL, SOIL_LOAD_AUTO);
 
-		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, bitmap.GetWidth(), bitmap.GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap.GetBits());
+		//if(image) { printf("SOIL loading error: '%s'\n", SOIL_last_result()); }
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, resolutionWidth, resolutionWidth, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+
+		SOIL_free_image_data(image);
 
 	}
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
+
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	//glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -332,6 +297,9 @@ void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint
 	glDisable(GL_TEXTURE_CUBE_MAP);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	delete image;
+	image = nullptr;
 
 }
 

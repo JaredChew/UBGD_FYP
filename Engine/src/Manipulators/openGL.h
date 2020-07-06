@@ -4,8 +4,7 @@
 #include <glfw/glfw3.h>
 
 #include <vector>
-
-#include "bitmap.h"
+#include <string>
 
 namespace OpenGL {
 
@@ -23,11 +22,6 @@ namespace OpenGL {
 	GLuint loadShaderFromFile(GLenum shaderType, std::string path);
 
 	void loadTexture(const char *path, GLuint &textureID);
-	void loadTexture(const char *path, GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, const GLuint &size);
-
-	void loadTexture(CBitmap &bitmap, GLuint &textureID);
-	void loadTexture(CBitmap &bitmap, GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, const GLuint &size);
-
 	void loadTexture(const void* image, GLuint& textureID, const GLuint& resolutionWidth, const GLuint& resolutionHeight);
 
 	void loadCubemapTexture(std::vector<std::string> facesPath, const GLuint &textureID);

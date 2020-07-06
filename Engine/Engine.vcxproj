@@ -16,7 +16,6 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\Manipulators\geometry.cpp" />
     <ClCompile Include="src\Manipulators\openGL.cpp" />
-    <ClCompile Include="src\Manipulators\resourcesLoader.cpp" />
     <ClCompile Include="src\Manipulators\shader.cpp" />
     <ClCompile Include="src\Math\generalMath.cpp" />
     <ClCompile Include="src\Math\straightLineEquation.cpp" />
@@ -56,7 +55,6 @@
     <ClInclude Include="src\Data Structure\node2D.hpp" />
     <ClInclude Include="src\Manipulators\geometry.h" />
     <ClInclude Include="src\Manipulators\openGL.h" />
-    <ClInclude Include="src\Manipulators\resourcesLoader.h" />
     <ClInclude Include="src\Manipulators\shader.h" />
     <ClInclude Include="src\Math\generalMath.h" />
     <ClInclude Include="src\Math\straightLineEquation.h" />
@@ -134,7 +132,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -145,7 +143,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\SDL2\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;soil2-debug.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;SDL2_ttf.lib;soil2-debug.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -157,7 +155,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\Bitmap;$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -170,7 +168,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\SDL2\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;soil2.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;SDL2_ttf.lib;soil2.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

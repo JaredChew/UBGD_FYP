@@ -99,9 +99,6 @@
     <ClCompile Include="src\Manipulators\openGL.cpp">
       <Filter>Source Files\Manipulators</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manipulators\resourcesLoader.cpp">
-      <Filter>Source Files\Manipulators</Filter>
-    </ClCompile>
     <ClCompile Include="src\Manipulators\shader.cpp">
       <Filter>Source Files\Manipulators</Filter>
     </ClCompile>
@@ -219,9 +216,6 @@
       <Filter>Header Files\Manipulators</Filter>
     </ClInclude>
     <ClInclude Include="src\Manipulators\openGL.h">
-      <Filter>Header Files\Manipulators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manipulators\resourcesLoader.h">
       <Filter>Header Files\Manipulators</Filter>
     </ClInclude>
     <ClInclude Include="src\Manipulators\shader.h">
