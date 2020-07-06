@@ -1,44 +1,50 @@
 #pragma once
 
-#include <fmod.hpp>
+#include <SDL_mixer.h>
 
 class Audio {
 
 public:
 
-	enum class AudioLoop { FOREVER = -1, ONCE = 0 };
+	static enum AudioType { SOUND, MUSIC };
 
 private:
 
-	FMOD::System *fmodSystem;
-	FMOD::Sound *music;
-	FMOD::Channel *musicChannel;
-
-	int spectrumSize; //should be value in power of 2
-
-	float *spectrumLeft;
-	float *spectrumRight;
+	enum class AudioController { PLAY, PAUSE, STOP, RESUME };
 
 private:
 
-	bool errorCheck(FMOD_RESULT result);
+	AudioType audioType;
+
+	Mix_Chunk *sound;
+	Mix_Music* music;
+
+	int soundChannel;
+
+	bool isLoop;
+
+private:
+
+	Mix_Chunk* loadSound(const char* directory);
+	Mix_Music* loadMusic(const char* directory);
+
+	void controller(const AudioController &action);
 
 public:
 
-	Audio(const char *audioDirectory, const int &spectrumSize);
+	Audio(const AudioType& audioType, const char* directory, const bool& isLoop, const int &soundChannel);
 	~Audio();
 
-	void switchAudio(const char *audioDirectory);
-	void changeSpectrumSize(const int &spectrumSize);
+	void play();
+	void stop();
 
-	void playAudio(const AudioLoop &loopType);
-	//void pauseAudio();
-	//void stopAudio();
-	//void restartAudio();
+	void pause();
+	void resume();
 
-	void update();
+	int getChannel();
+	void setChannel(const int &channel);
 
-	float getSpectrumRight(const int &index);
-	float getSpectrumLeft(const int &index);
+	bool getIsLoop();
+	void setIsLoop(const bool &isLoop);
 
 };

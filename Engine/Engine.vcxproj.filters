@@ -132,9 +132,6 @@
     <ClCompile Include="src\Utilities\timer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modules FrontEnd\sprite.cpp">
       <Filter>Source Files\Modules\Front End</Filter>
     </ClCompile>
@@ -182,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="src\glad.c">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
+      <Filter>Source Files\Modules\Front End</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +251,6 @@
     <ClInclude Include="src\Utilities\timer.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\audio.h">
-      <Filter>Header Files\Modules\Front End</Filter>
-    </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\sprite.h">
       <Filter>Header Files\Modules\Front End</Filter>
     </ClInclude>
@@ -298,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="src\Data Structure\bitData.h">
       <Filter>Header Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules FrontEnd\audio.h">
+      <Filter>Header Files\Modules\Front End</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
