@@ -1,6 +1,6 @@
 #include "sprite.h"
 
-#include "bitmap.h"
+//#include "bitmap.h"
 
 #include "../Utilities/logger.h"
 #include "../Utilities/timer.h"
@@ -21,10 +21,10 @@ Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, G
 
 	glGenFramebuffers(1, &frameBuffer);
 
-	CBitmap bitmap(directory);
+	//CBitmap bitmap(directory);
 
-	textureWidth = bitmap.GetWidth();
-	textureHeight = bitmap.GetHeight();
+	//textureWidth = bitmap.GetWidth();
+	//textureHeight = bitmap.GetHeight();
 
 	OpenGL::initTexture(texture, 1, textureWidth, textureHeight);
 	OpenGL::initTexture(textureProcessed, 1, textureWidth, textureHeight);
@@ -62,7 +62,7 @@ Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, G
 
 	timer = new Timer();
 
-	OpenGL::loadTexture(bitmap, texture);
+	OpenGL::loadTexture(directory, texture);
 
 	GLuint vertexShader = OpenGL::loadShaderFromFile(GL_VERTEX_SHADER, "../Shaders/default.vert");
 	GLuint fragmentShader = OpenGL::loadShaderFromFile(GL_FRAGMENT_SHADER, "../Shaders/default.frag");
