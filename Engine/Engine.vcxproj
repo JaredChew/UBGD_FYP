@@ -14,6 +14,7 @@
     <ClCompile Include="src\Compound\transform.cpp" />
     <ClCompile Include="src\Data Structure\bitData.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\json11.cpp" />
     <ClCompile Include="src\Manipulators\geometry.cpp" />
     <ClCompile Include="src\Manipulators\openGL.cpp" />
     <ClCompile Include="src\Manipulators\shader.cpp" />
@@ -36,6 +37,8 @@
     <ClCompile Include="src\Modules FrontEnd\sprite.cpp" />
     <ClCompile Include="src\Specification\entity.cpp" />
     <ClCompile Include="src\Specification\session.cpp" />
+    <ClCompile Include="src\texture-atlas.c" />
+    <ClCompile Include="src\texture-font.c" />
     <ClCompile Include="src\Utilities\bitOperation.cpp" />
     <ClCompile Include="src\Utilities\crypto.cpp" />
     <ClCompile Include="src\Utilities\debug.cpp" />
@@ -43,6 +46,7 @@
     <ClCompile Include="src\Utilities\logger.cpp" />
     <ClCompile Include="src\Utilities\random.cpp" />
     <ClCompile Include="src\Utilities\timer.cpp" />
+    <ClCompile Include="src\vector.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Compound\transform.h" />
@@ -132,7 +136,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Freetype-GL\include;$(SolutionDir)Dependencies\FmodEx\include;$(SolutionDir)Dependencies\JSON11\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -142,8 +146,8 @@
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2-debug.lib;assimp-vc142-mtd.lib;OpenAL32.lib;%(AdditionalDependencies);box2d.lib;openAL32.lib</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\SDL2\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;SDL2_ttf.lib;soil2-debug.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\SOIL2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\Freetype-GL\lib;$(SolutionDir)Dependencies\FmodEx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;soil2-debug.lib;freetype-gl.lib;fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,7 +159,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL 2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\SDL2\include;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\include;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Freetype-GL\include;$(SolutionDir)Dependencies\FmodEx\include;$(SolutionDir)Dependencies\JSON11\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -167,8 +171,8 @@
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2.lib;assimp-vc142-mtd.lib;OpenAL32.lib;%(AdditionalDependencies);box2d.lib;openAL32.lib</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\WIN32\lib-vc2019;$(SolutionDir)Dependencies\SOIL 2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\SDL2\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_mixer\lib\x86;$(SolutionDir)Dependencies\SDL2\SDL2_ttf\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;SDL2_mixer.lib;SDL2.lib;SDL2_ttf.lib;soil2.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies);SDL2_mixer.lib;SDL2_mixer.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\SOIL2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\Freetype-GL\lib;$(SolutionDir)Dependencies\FmodEx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;soil2.lib;freetype-gl.lib;fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

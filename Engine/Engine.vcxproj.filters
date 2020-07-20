@@ -183,6 +183,18 @@
     <ClCompile Include="src\Modules FrontEnd\text.cpp">
       <Filter>Source Files\Modules\Front End</Filter>
     </ClCompile>
+    <ClCompile Include="src\json11.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture-atlas.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture-font.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vector.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Math\straightLineEquation.h">
