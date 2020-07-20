@@ -5,71 +5,118 @@
 Physics::Physics(Transform *const transform) : transform(transform) {
 
 	velocity = glm::vec3(0.0f);
+	momentum = glm::vec3(0.0f);
 	acceleration = glm::vec3(0.0f);
+	resultantForce = glm::vec3(0.0f);
 
+	mass = 1.0f;
 	freefall = 9.81f;
 	airResistance = 1.0f;
 	surfaceResistance = 1.0f;
 
+	weight = mass * freefall;
+
 	gravity = false;
 	friction = false;
+
+	previousPosition = transform->getPosition();
 
 }
 
 Physics::~Physics() { }
 
-void Physics::push(const float &force) {
-	velocity += force; //velocity -= (transform.getFacingDirection() * force);
+void Physics::applyGravity(const float& deltaTime) {
+	if (gravity) { acceleration += (glm::vec3(0.0f, freefall - airResistance, 0.0f) * weight) * deltaTime; }
 }
 
-void Physics::drag(const float &force) {
+void Physics::applyFriction(const float& deltaTime) {
+	if (friction) { acceleration -= (surfaceResistance * weight) * deltaTime; }
+}
 
-	if (glm::length(velocity) > 0.0f) {
+void Physics::calculateVelocity(const float& deltaTime) {
+	velocity = (transform->getPosition() - previousPosition) / deltaTime;
+}
 
-		velocity -= force; //velocity -= transform.getFacingDirection() * force;
+void Physics::calculateResultantForce(const float& deltaTime) {
 
-		if (glm::length(velocity) < 0.0f) { velocity = glm::vec3(0.0f); }
+	glm::vec3 oldMomentum = momentum;
 
-	}
+	momentum = mass * velocity;
 
+	resultantForce = (momentum - oldMomentum) / deltaTime;
+
+}
+
+void Physics::pushPull(const float &force, const glm::vec3 &acceleration) {
+	this->acceleration += ((force) * acceleration);
 }
 
 void Physics::accelerate(const glm::vec3 &acceleration) {
-	this->acceleration += acceleration;
+	this->acceleration += mass * acceleration;
 }
 
-void Physics::setVelocity(const glm::vec3 &velocity) {
-	this->velocity = velocity;
-}
-
-void Physics::setAcceleration(const glm::vec3 &acceleration) {
-	this->acceleration = acceleration;
-}
-
-void Physics::setGravity(const bool &gravity) {
+void Physics::enableGravity(const bool& gravity) {
 	this->gravity = gravity;
+}
+
+void Physics::enableFriction(const bool& friction) {
+	this->friction = friction;
+}
+
+bool Physics::isGravityEnabled() {
+	return gravity;
+}
+
+bool Physics::isFrictionEnabled() {
+	return friction;
+}
+
+void Physics::setMass(const float& mass) {
+
+	this->mass = mass;
+
+	weight = mass * freefall;
+
+}
+
+void Physics::setFreefall(const float& freefall) {
+	this->freefall = freefall;
+}
+
+void Physics::setAirResistance(const float& airResistance) {
+	this->airResistance = airResistance;
+}
+
+void Physics::setSurfaceResistance(const float& surfaceResistance) {
+	this->surfaceResistance = surfaceResistance;
 }
 
 glm::vec3 Physics::getVelocity() {
 	return velocity;
 }
 
+glm::vec3 Physics::getMomentum() {
+	return momentum;
+}
+
 glm::vec3 Physics::getAcceleration() {
 	return acceleration;
 }
 
-bool Physics::getGravity() {
-	return gravity;
+glm::vec3 Physics::getResultantForce() {
+	return resultantForce;
 }
 
-void Physics::update() {
+void Physics::update(const float& deltaTime) {
 
-	velocity += acceleration;
+	calculateVelocity(deltaTime);
+	calculateResultantForce(deltaTime);
 
-	if (gravity) { velocity += glm::vec3(0.0f, freefall - airResistance, 0.0f); }
+	applyGravity(deltaTime);
+	applyFriction(deltaTime);
 
-	if (friction) { velocity -= surfaceResistance; }
+	transform->translate(acceleration);
 
-	transform->translate(velocity); //* Window::getDeltaTime_Seconds();
+	previousPosition = transform->getPosition();
 
 }
