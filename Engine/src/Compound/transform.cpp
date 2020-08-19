@@ -190,7 +190,7 @@ glm::vec3 Transform::getPivotPoint() {
 	return pivotPoint;
 }
 
-glm::mat4 Transform::getModelMatrix() {
+const glm::mat4& const Transform::getModelMatrix() {
 
 	updateModelMatrix();
 

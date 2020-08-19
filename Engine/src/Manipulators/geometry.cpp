@@ -498,3 +498,63 @@ void Geometry::drawSkyBox(const GLuint &texture) {
 	glBindVertexArray(0);
 
 }
+
+void Geometry::setSquare(const GLuint& shaderProgramID, GLuint& vertexArrayObject, SetVertexArrayBufferFunction function) 
+{
+	static GLfloat vertices[] = {
+			-1.0f,  1.0f, 0.0f,		0.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f,		1.0f, 0.0f,
+			-1.0f, -1.0f, 0.0f,		0.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f,		1.0f, 1.0f
+	};
+
+	static GLuint indices[] = {
+		0, 1, 2,
+		1, 2, 3
+	};
+
+	function(shaderProgramID, vertexArrayObject, vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
+}
+
+void Geometry::setVertexArrayObject(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize)
+{
+	// |*  VSAPI = Vertex Shader Attribute Pointer Index  *|
+#define VSAPI_Sprite_Position 0
+#define VSAPI_Sprite_TexCoord 1
+
+	GLuint vertexBufferObject, elementBufferObject;
+
+	glUseProgram(shaderProgramID);
+
+	glGenVertexArrays(1, &vertexArrayObject);
+	glGenBuffers(1, &vertexBufferObject);
+	glGenBuffers(1, &elementBufferObject);
+
+	glBindVertexArray(vertexArrayObject);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+	glBufferData(GL_ARRAY_BUFFER, verticesSize * sizeof(GLfloat), (void*)vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize * sizeof(GLuint), (void*)indices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(VSAPI_Sprite_Position);
+	glEnableVertexAttribArray(VSAPI_Sprite_TexCoord);
+
+	glVertexAttribPointer(VSAPI_Sprite_Position, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(VSAPI_Sprite_TexCoord, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+
+void Geometry::drawVertexArrayObject(GLuint& vertexArrayObject, const GLuint& indicesSize)
+{
+	glBindVertexArray(vertexArrayObject);
+	glDrawElements(GL_TRIANGLES, indicesSize, GL_UNSIGNED_INT, 0);
+	// glBindVertexArray(0);
+
+}

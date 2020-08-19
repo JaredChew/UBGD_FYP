@@ -77,6 +77,54 @@ void OpenGL::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &r
 
 }
 
+void OpenGL::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height)
+{
+	int channels = 0;
+
+	glGenTextures(1, &textureID);
+	unsigned char* image = SOIL_load_image(dir, &width, &height, &channels, SOIL_LOAD_AUTO);
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	if (0 == image)
+	{
+		std::string errorResult = SOIL_last_result();
+		Logger::getInstance()->errorLog("SOIL loading error: " + errorResult);
+
+	}
+	else
+	{
+		GLenum format = 0;
+
+		switch (channels)
+		{
+		case SOIL_LOAD_L:
+			format = GL_RED;
+			break;
+
+		case SOIL_LOAD_RGB:
+			format = GL_RGB;
+			break;
+
+		case SOIL_LOAD_RGBA:
+			format = GL_RGBA;
+			break;
+		}
+		//glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
+
+	}
+
+	SOIL_free_image_data(image);
+
+}
+
 void OpenGL::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
 
 	glGenTextures(1, &textureID);
@@ -216,7 +264,9 @@ GLuint OpenGL::loadShaderFromFile(GLenum shaderType, std::string path) {
 
 }
 
-void OpenGL::loadTexture(const char *path, GLuint &textureID) {
+/*
+void OpenGL::loadTexture(const char *path, GLuint &textureID) 
+{
 
 	int resolutionWidth, resolutionHeight;
 
@@ -262,6 +312,7 @@ void OpenGL::loadTexture(const void* image, GLuint& textureID, const GLuint& res
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
+*/
 
 void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint &textureID) {
 

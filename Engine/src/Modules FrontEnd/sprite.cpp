@@ -10,6 +10,8 @@
 #include "../Manipulators/shader.h"
 
 #include "../Compound/transform.h"
+#include "../Compound/texture.h"
+#include "../Compound/animation2D.h"
 
 #include "../Modules BackEnd/window.h"
 #include "../Modules BackEnd/camera.h"
@@ -17,7 +19,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, GLuint* const targetRender, const int& spriteWidth, const int& spriteHeight, const int& sheetRow, const int& sheetCol, const int& animationFrameRate) : wnd(wnd), camera(camera), targetRender(targetRender) {
+Sprite::Sprite(Window* const wnd, Camera* const camera, GLuint* const targetRender, Texture* const texture, const int& spriteWidth, const int& spriteHeight, const int& sheetRow, const int& sheetCol, const int& animationFrameRate) : wnd(wnd), camera(camera), targetRender(targetRender), texture(texture) {
 
 	glGenFramebuffers(1, &frameBuffer);
 
@@ -26,33 +28,22 @@ Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, G
 	//textureWidth = bitmap.GetWidth();
 	//textureHeight = bitmap.GetHeight();
 
-	OpenGL::initTexture(texture, 1, textureWidth, textureHeight);
-	OpenGL::initTexture(textureProcessed, 1, textureWidth, textureHeight);
+	//OpenGL::initTexture(texture, 1, textureWidth, textureHeight);
+	OpenGL::initTexture(textureProcessed, 1, this->texture->getWidth(), this->texture->getHeight());
 	OpenGL::initTexture(textureToRender, 1, wnd->getWidth(), wnd->getHeight());
 
-	this->spriteWidth = spriteWidth;
-	this->spriteHeight = spriteHeight;
+	//this->spriteWidth = spriteWidth;
+	//this->spriteHeight = spriteHeight;
 
-	this->sheetRow = sheetRow;
-	this->sheetCol = sheetCol;
-
-	totalAnimationFrames = 0;
-	this->animationFrameRate = animationFrameRate;
+	//this->sheetRow = sheetRow;
+	//this->sheetCol = sheetCol;
 
 	isAnimatedSprite = false;
 
-	if (animationFrameRate) {
-		totalAnimationFrames = sheetRow + sheetCol;
-		isAnimatedSprite = true;
-	}
 
 	blendType = BlendType::BLEND_ADDITIVE;
 
-	animationRow = 0;
-	animationCol = 0;
-
-	animationFrame = 0;
-	totalFramesPassed = 0;
+	
 
 	isAnimationOneShot = false;
 	isBillboard = false;
@@ -62,7 +53,7 @@ Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, G
 
 	timer = new Timer();
 
-	OpenGL::loadTexture(directory, texture);
+	//OpenGL::loadTexture(directory, texture);
 
 	GLuint vertexShader = OpenGL::loadShaderFromFile(GL_VERTEX_SHADER, "../Shaders/default.vert");
 	GLuint fragmentShader = OpenGL::loadShaderFromFile(GL_FRAGMENT_SHADER, "../Shaders/default.frag");
@@ -71,11 +62,11 @@ Sprite::Sprite(Window* const wnd, Camera* const camera, const char* directory, G
 		Logger::getInstance()->warningLog("Failed to init animation shader program");
 	}
 
+	Geometry::setSquare(animationShaderProgram, vertexArrayObjectID, Geometry::setVertexArrayObject);
+
 }
 
 Sprite::~Sprite() {
-
-	glDeleteTextures(1, &texture);
 
 	glDeleteProgram(animationShaderProgram);
 
@@ -83,6 +74,30 @@ Sprite::~Sprite() {
 
 void Sprite::blendColourAndTexture() {
 
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	glEnable(GL_ALPHA);
+	glEnable(GL_BLEND);
+
+	switch (blendType)
+	{
+	case BlendType::BLEND_ADDITIVE:
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+		glBlendEquation(GL_FUNC_ADD);
+		break;
+
+	case BlendType::BLEND_MULTIPLY:
+		glBlendFunc(GL_DST_COLOR, GL_ZERO);
+		glBlendEquation(GL_FUNC_ADD);
+		break;
+
+	case BlendType::BLEND_ALPHA:
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquation(GL_FUNC_ADD);
+		break;
+	}
+	/*
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureProcessed, 0);
 
 	if (OpenGL::checkIsFramebufferReady()) {
@@ -93,10 +108,10 @@ void Sprite::blendColourAndTexture() {
 
 		Shader::blendColour(glm::mat4(1.0f), (int)blendType, colourBlend.x, colourBlend.y, colourBlend.z, alphaColour);
 
-		Geometry::drawSquare(texture);
+		Geometry::drawSquare(texture->getGtextureID());
 
 	}
-
+	*/
 }
 
 glm::mat4 Sprite::transform(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension) {
@@ -138,19 +153,15 @@ glm::mat4 Sprite::produceModelViewMatrix(const glm::mat4& modelMatrix) {
 
 }
 
-void Sprite::setIsAnimationOneShot(const bool& isAnimationOneShot) {
 
-	this->isAnimationOneShot = isAnimationOneShot;
-
-	animationRow = 0;
-	animationCol = 0;
-
-	animationFrame = 0;
-
-}
 
 void Sprite::setIsBillboard(const bool& isBillboard) {
 	this->isBillboard = isBillboard;
+}
+
+void Sprite::setTexture(Texture* texture)
+{
+	this->texture = texture;
 }
 
 void Sprite::setBlendColour(const glm::vec4& colourBlend) {
@@ -161,6 +172,48 @@ void Sprite::setBlendType(const BlendType& blendType, const bool& isAlphaBlend) 
 
 	this->blendType = blendType;
 	this->isAlphaBlend = isAlphaBlend;
+
+}
+
+void Sprite::render(Transform& transform)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, *targetRender, 0);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendEquation(GL_FUNC_ADD);
+
+	if (OpenGL::checkIsFramebufferReady()) {
+
+		glViewport(0, 0, wnd->getWidth(), wnd->getHeight());
+
+		glBindTexture(GL_TEXTURE_2D, textureProcessed);
+
+		Shader::defaultDraw(transform.getModelMatrix());
+		Geometry::drawSquare(textureProcessed);
+
+	}
+
+}
+
+void Sprite::renderAnimation(Animation2D& animation, Transform& transform)
+{
+	glViewport(0, 0, wnd->getWidth(), wnd->getHeight());
+
+	blendColourAndTexture();
+
+	glBindTexture(GL_TEXTURE_2D, texture->getGtextureID());
+
+	Shader::animation2DDraw( transform.getModelMatrix(),
+		animation.getAnimation2DInfo().rawAnimationRow, animation.getAnimation2DInfo().rawAnimationCol,
+		animation.getAnimation2DInfo().eachNorRowSize, animation.getAnimation2DInfo().eachNorColSize,
+		animation.getCurrentKeyFrame() );
+
+	Geometry::drawVertexArrayObject(vertexArrayObjectID, Geometry::getSquareIndicesSize());
 
 }
 
@@ -244,12 +297,12 @@ void Sprite::renderAnimation(const glm::mat4& mvpMatrix) {
 
 	if (!isAnimatedSprite) { return; }
 
-	if (isAnimationOneShot && animationFrame >= totalAnimationFrames) { return; }
+	//if (isAnimationOneShot && animationFrame >= totalAnimationFrames) { return; }
 
 	timer->recordTock();
 
 	deltaTime += timer->getDeltaTime();
-
+	/*
 	if (totalFramesPassed >= animationFrameRate && deltaTime < 1000000000) {
 
 		renderSprite(mvpMatrix, animationRow, animationCol);
@@ -265,7 +318,7 @@ void Sprite::renderAnimation(const glm::mat4& mvpMatrix) {
 		deltaTime = 0;
 
 	}
-
+	
 	if (deltaTime >= 1000000000) { deltaTime = 0; }
 
 	timer->recordTick();
@@ -273,7 +326,7 @@ void Sprite::renderAnimation(const glm::mat4& mvpMatrix) {
 	if (!isAnimationOneShot && animationFrame >= totalAnimationFrames) { animationFrame = 0; }
 
 	++totalFramesPassed;
-
+	*/
 }
 
 void Sprite::renderAnimation(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension) {
@@ -290,19 +343,7 @@ void Sprite::renderAnimation(Transform& transform) {
 
 }
 
-void Sprite::setAnimationFrameRate(const int& animationFrameRate) {
-	this->animationFrameRate = animationFrameRate;
-}
 
-int Sprite::getAnimationFrameRate() { return animationFrameRate; }
-
-int Sprite::getAnimationFrame() { return animationFrame; }
-
-bool Sprite::getIsAnimatedSprite() { return isAnimatedSprite; }
-
-bool Sprite::getIsAnimationOneShot() {
-	return isAnimationOneShot;
-}
 
 bool Sprite::getIsBillboard() {
 	return isBillboard;
@@ -312,6 +353,7 @@ bool Sprite::getIsAlphaBlend() {
 	return isAlphaBlend;
 }
 
-GLuint Sprite::getTexture() {
-	return textureProcessed;
+Texture* Sprite::getTexture()
+{
+	return texture;
 }

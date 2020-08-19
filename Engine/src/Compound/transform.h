@@ -54,7 +54,7 @@ public:
 	glm::vec3 getDimensionLocal();
 	glm::vec3 getPivotPoint();
 
-	glm::mat4 getModelMatrix();
+	const glm::mat4& const getModelMatrix();
 
 	float *getModelMatrixData();
 

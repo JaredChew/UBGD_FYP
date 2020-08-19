@@ -35,6 +35,43 @@ void Shader::defaultDraw(const glm::mat4 &mvpMatrix) {
 
 }
 
+void Shader::animation2DDraw(const glm::mat4& mvpMatrix, const float& row, const float& column, const float& eachRowNor, const float& eachColNor, const float& index) {
+
+	static GLuint shaderProgram_Animation2DDraw = -1;
+
+	if (shaderProgram_Animation2DDraw == -1) {
+
+		GLuint vertexShader = OpenGL::loadShaderFromFile(GL_VERTEX_SHADER, "../Shaders/animation2D.vert");
+		GLuint fragmentShader = OpenGL::loadShaderFromFile(GL_FRAGMENT_SHADER, "../Shaders/animation2D.frag");
+
+		if (!OpenGL::initProgramObject_Shader(shaderProgram_Animation2DDraw, fragmentShader, vertexShader)) {
+			Logger::getInstance()->warningLog("Failed to init \"Default\" shader program");
+		}
+
+	}
+
+	glUseProgram(shaderProgram_Animation2DDraw);
+
+	GLuint sampler2d_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "sampler2d");
+
+	if (sampler2d_Loc != -1) { glUniform1i(sampler2d_Loc, 0); }
+	else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"sampler2d\" not found"); }
+
+	GLuint uMvpMatrix_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "uMvpMatrix");
+
+	if (uMvpMatrix_Loc != -1) { glUniformMatrix4fv(uMvpMatrix_Loc, 1, GL_FALSE, glm::value_ptr(mvpMatrix)); }
+	else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"uMvpMatrix\" not found"); }
+
+	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "row"), row);
+	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "col"), column);
+
+	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "eachRowNor"), eachRowNor);
+	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "eachColNor"), eachColNor);
+
+	glUniform1i(glGetUniformLocation(shaderProgram_Animation2DDraw, "index"), index);
+	
+}
+
 void Shader::editTexel(const glm::mat4 &mvpMatrix, const float colourRGB[3], const float position2D[2], const float dimensionXY[2]) {
 
 	static GLuint shaderProgram_EditTexel = -1;

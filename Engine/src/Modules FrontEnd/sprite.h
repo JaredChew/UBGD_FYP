@@ -7,9 +7,12 @@
 #include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 
-class Transform;
+
 class Window;
 class Camera;
+class Texture;
+class Transform;
+class Animation2D;
 class Timer;
 
 class Sprite {
@@ -21,15 +24,17 @@ private:
 
 	GLuint* const targetRender;
 
+	Texture* texture;
+
 public:
 
-	enum class BlendType { BLEND_ADDITIVE, BLEND_MULTIPLY };
+	enum class BlendType { BLEND_ADDITIVE, BLEND_MULTIPLY, BLEND_ALPHA };
 
 private:
-
-	GLuint texture;
+	
 	GLuint textureProcessed;
 	GLuint textureToRender;
+	GLuint vertexArrayObjectID;
 
 	GLuint frameBuffer;
 
@@ -47,15 +52,6 @@ private:
 
 	int sheetRow;
 	int sheetCol;
-
-	int totalAnimationFrames;
-	int animationFrameRate;
-
-	int animationRow;
-	int animationCol;
-
-	int animationFrame;
-	int totalFramesPassed;
 
 	bool isAnimatedSprite;
 	bool isAnimationOneShot;
@@ -75,14 +71,17 @@ private:
 
 public:
 
-	Sprite(Window* const wnd, Camera* const camera, const char* directory, GLuint* const targetRender, const int& spriteWidth = 0, const int& spriteHeight = 0, const int& sheetRow = 0, const int& sheetCol = 0, const int& animationFrameRate = 0);
+	Sprite(Window* const wnd, Camera* const camera, GLuint* const targetRender, Texture* const texture, const int& spriteWidth = 0, const int& spriteHeight = 0, const int& sheetRow = 0, const int& sheetCol = 0, const int& animationFrameRate = 0);
 	~Sprite();
 
-	void setIsAnimationOneShot(const bool& isAnimationOneShot);
 	void setIsBillboard(const bool& isBillboard);
 
+	void setTexture(Texture* texture);
 	void setBlendColour(const glm::vec4& colourBlend);
 	void setBlendType(const BlendType& blendType, const bool& isAlphaBlend);
+
+	void render(Transform& transform);
+	void renderAnimation(Animation2D& animation, Transform& transform);
 
 	//singular
 	void renderSprite(const glm::mat4& mvpMatrix = glm::mat4(1.0f));
@@ -99,16 +98,9 @@ public:
 	void renderAnimation(const glm::vec3& position, const glm::vec3& rotation, const glm::vec2& dimension);
 	void renderAnimation(Transform& transform);
 
-	void setAnimationFrameRate(const int& animationFrameRate);
-
-	int getAnimationFrameRate();
-	int getAnimationFrame();
-
-	bool getIsAnimatedSprite();
-	bool getIsAnimationOneShot();
 	bool getIsBillboard();
 	bool getIsAlphaBlend();
 
-	GLuint getTexture();
+	Texture* getTexture();
 
 };

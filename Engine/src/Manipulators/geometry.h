@@ -3,7 +3,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+
+
 namespace Geometry {
+
+	typedef void(*SetVertexArrayBufferFunction)(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
 
 	void drawTriangle(const GLuint &texture);
 	void drawSquare(const GLuint &texture);
@@ -18,4 +22,19 @@ namespace Geometry {
 
 	void drawSkyBox(const GLuint &texture);
 
+	
+
+	void setSquare(const GLuint& shaderProgramID, GLuint& vertexArrayObject, SetVertexArrayBufferFunction function);
+
+	static void setVertexArrayObject(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
+	
+	void drawVertexArrayObject(GLuint& vertexArrayObject, const GLuint& indicesSize);
+
+	static const GLuint& getSquareIndicesSize()
+	{
+		static GLuint indicesSize = 6;
+		return indicesSize;
+	}
+
 }
+

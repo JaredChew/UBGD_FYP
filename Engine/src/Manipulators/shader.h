@@ -8,6 +8,7 @@
 namespace Shader {
 
 	void defaultDraw(const glm::mat4 &mvpMatrix);
+	void animation2DDraw(const glm::mat4& mvpMatrix, const float& row, const float& column, const float& eachRowNor, const float& eachColNor, const float& index);
 
 	void initTextureColour(const glm::mat4 &mvpMatrix, const float &r, const float &g, const float &b);
 	void editTexel(const glm::mat4 &mvpMatrix, const float colourRGB[3], const float position2D[2], const float dimensionXY[2]);

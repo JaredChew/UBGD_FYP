@@ -13,6 +13,7 @@ namespace OpenGL {
 	bool initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShade);
 
 	void initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight);
+	void initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height);
 
 	void initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight);
 
@@ -20,9 +21,11 @@ namespace OpenGL {
 
 	GLuint loadShader(GLenum type, const char *shaderSrc);
 	GLuint loadShaderFromFile(GLenum shaderType, std::string path);
-
+	
+	/*
 	void loadTexture(const char *path, GLuint &textureID);
 	void loadTexture(const void* image, GLuint& textureID, const GLuint& resolutionWidth, const GLuint& resolutionHeight);
+	*/
 
 	void loadCubemapTexture(std::vector<std::string> facesPath, const GLuint &textureID);
 
