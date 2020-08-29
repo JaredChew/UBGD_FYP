@@ -14,6 +14,7 @@ class Texture;
 class Transform;
 class Animation2D;
 class Timer;
+class ShaderProgram;
 
 class Sprite {
 
@@ -25,6 +26,7 @@ private:
 	GLuint* const targetRender;
 
 	Texture* texture;
+	ShaderProgram* shader;
 
 public:
 
@@ -81,7 +83,7 @@ public:
 	void setBlendType(const BlendType& blendType, const bool& isAlphaBlend);
 
 	void render(Transform& transform);
-	void renderAnimation(Animation2D& animation, Transform& transform);
+	void renderAnimation(Animation2D& animation2D, Transform& transform, const glm::vec4& color);
 
 	//singular
 	void renderSprite(const glm::mat4& mvpMatrix = glm::mat4(1.0f));

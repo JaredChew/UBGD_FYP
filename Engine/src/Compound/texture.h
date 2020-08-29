@@ -14,6 +14,13 @@ public:
 	~Texture();
 
 
+	// |*   Functions   *|
+	void init(void);
+	void init(const char* dir);
+	void bind(void);
+	bool isTexture(void);
+
+
 	// |*   Getters   *|
 	const int& const getWidth(void);
 	const int& const getHeight(void);

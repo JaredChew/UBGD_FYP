@@ -195,6 +195,18 @@
     <ClCompile Include="src\vector.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Compound\animation2D.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\animator2D.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\texture.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\shaderProgram.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Math\straightLineEquation.h">
@@ -310,6 +322,18 @@
     </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\text.h">
       <Filter>Header Files\Modules\Front End</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\animation2D.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\animator2D.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\texture.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\shaderProgram.h">
+      <Filter>Header Files\Compound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

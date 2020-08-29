@@ -1,9 +1,9 @@
-#version 460 core
+#version 330 core
 
 precision mediump float;
 
-varying vec2 fTexCoord;
-varying vec4 fPosition;
+in vec4 fColor;
+in vec2 fTexCoord;
 
 uniform sampler2D sampler2d;
 
@@ -15,34 +15,22 @@ uniform float eachColNor;
 
 uniform int index;
 
+uniform vec4 uColor;
+
 void main() 
 {
-	/*
-	float eachRow = 1.0f / row;
-	float eachCol = 1.0f / col;
-	
-	float norRow = fTexCoord.x / row;
-	float norCol = fTexCoord.y / col;
-	
-	int x = index % row;
-	int y = index / row;
-	
-	float currentRow = x * eachRow;
-	float currentCol = y * eachCol;
-	
-	float currentX = currentRow + norRow;
-	float currentY = currentCol + norCol;
-	*/
-	
-	// short form
-	int x = index % row;
-	int y = index / row;
-	
+	int x = index % int(row);
+	int y = index / int(row); 
+
 	float currentX = (float(x) * eachRowNor) + (fTexCoord.x / row);
 	float currentY = (float(y) * eachColNor) + (fTexCoord.y / col);
 
 	vec2 uv = vec2(currentX, currentY);
 	
-	gl_FragColor = texture2D(sampler2d, uv);
+	vec4 colorTexture = texture2D(sampler2d, uv);
+	
+	vec4 colorCombine = colorTexture * uColor * fColor;
+	
+	gl_FragColor = colorCombine;
 
 }

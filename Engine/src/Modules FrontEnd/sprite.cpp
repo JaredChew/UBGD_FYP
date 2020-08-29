@@ -12,6 +12,7 @@
 #include "../Compound/transform.h"
 #include "../Compound/texture.h"
 #include "../Compound/animation2D.h"
+#include "../Compound/shaderProgram.h"
 
 #include "../Modules BackEnd/window.h"
 #include "../Modules BackEnd/camera.h"
@@ -200,18 +201,33 @@ void Sprite::render(Transform& transform)
 
 }
 
-void Sprite::renderAnimation(Animation2D& animation, Transform& transform)
+void Sprite::renderAnimation(Animation2D& animation2D, Transform& transform, const glm::vec4& color)
 {
+	//shader->use();
 	glViewport(0, 0, wnd->getWidth(), wnd->getHeight());
 
 	blendColourAndTexture();
 
-	glBindTexture(GL_TEXTURE_2D, texture->getGtextureID());
+	animation2D.getAnimation2DSpriteSheet().texture->bind();
 
-	Shader::animation2DDraw( transform.getModelMatrix(),
-		animation.getAnimation2DInfo().rawAnimationRow, animation.getAnimation2DInfo().rawAnimationCol,
-		animation.getAnimation2DInfo().eachNorRowSize, animation.getAnimation2DInfo().eachNorColSize,
-		animation.getCurrentKeyFrame() );
+	Shader::animation2DDraw((camera->projectionMatrix * camera->getViewMatrix() * transform.getModelMatrix()),
+		animation2D.getAnimation2DSpriteSheet().rawAnimationRow, animation2D.getAnimation2DSpriteSheet().rawAnimationCol,
+		animation2D.getAnimation2DSpriteSheet().eachNorRowSize, animation2D.getAnimation2DSpriteSheet().eachNorColSize,
+		animation2D.getCurrentKeyFrame());
+
+	/*
+	shader->uniform_defaultImage();
+	shader->uniform_1float("row", animation2D.getAnimation2DSpriteSheet().rawAnimationRow);
+	shader->uniform_1float("col", animation2D.getAnimation2DSpriteSheet().rawAnimationCol);
+
+	shader->uniform_1float("eachRowNor", animation2D.getAnimation2DSpriteSheet().eachNorRowSize);
+	shader->uniform_1float("eachColNor", animation2D.getAnimation2DSpriteSheet().eachNorColSize);
+
+	shader->uniform_1int("index", animation2D.getCurrentKeyFrame());
+
+	shader->uniform_4float("uColor", color.r, color.g, color.b, color.a);
+	shader->uniform_Matrix4fv("uMvpMatrix", (camera->projectionMatrix * camera->getViewMatrix() * transform.getModelMatrix()));
+	*/
 
 	Geometry::drawVertexArrayObject(vertexArrayObjectID, Geometry::getSquareIndicesSize());
 

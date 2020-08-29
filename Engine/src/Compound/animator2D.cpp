@@ -1,61 +1,128 @@
 #include "animator2D.h"
 
+#include "../Utilities/timer.h"
+
 #include "../Modules FrontEnd/sprite.h"
+
 #include "../Compound/transform.h"
 
 Animator2D::Animator2D()
 {
-	this->animation2Ds.clear();
-	currentAnimationIndex = 0;
+	timer = new Timer();
+
+	m_animation2DInfos.clear();
+
+	m_currentAnimationIndex = 0;
+	m_nextAnimationIndex = 0;
+
+	m_totalAnimationSize = 0;
+
 }
 
-Animator2D::Animator2D(Animation2D* animation2Ds, GLuint size)
+Animator2D::Animator2D(Timer* timer) :
+	timer(timer)
 {
-	setAnimations(animation2Ds, size);
-	currentAnimationIndex = 0;
+	m_animation2DInfos.clear();
+
+	m_currentAnimationIndex = 0;
+	m_nextAnimationIndex = 0;
+
+	m_totalAnimationSize = 0;
+
 }
 
 Animator2D::~Animator2D()
 {
-	this->animation2Ds.clear();
 }
 
-void Animator2D::addAnimation(Animation2D& animation)
+bool Animator2D::addAnimation2DInfo(const Animation2DInfo& animation2DInfo)
 {
-	this->animation2Ds.push_back(animation);
-
-	this->animation2Ds.shrink_to_fit();
-
-}
-void Animator2D::addAnimations(Animation2D* animation2Ds, GLuint size)
-{
-	if (animation2Ds == nullptr) return;
-
-	for (size_t i = 0; i < size; i++)
+	if (animation2DInfo.m_animation2D == nullptr)
 	{
-		this->animation2Ds.push_back(animation2Ds[i]);
+		printf("Set animation to animator pointer are nullptr!");
+		return false;
 	}
 
-	this->animation2Ds.shrink_to_fit();
+	m_animation2DInfos.push_back(animation2DInfo);
+	m_animation2DInfos.shrink_to_fit();
 
+	m_totalAnimationSize++;
+
+	return true;
 }
 
-void Animator2D::setAnimations(Animation2D* animation2Ds, GLuint size)
+bool Animator2D::setAnimation2DInfos(const GLuint& size, Animation2DInfo* animation2DInfos)
 {
-	if (animation2Ds == nullptr) return;
-
-	if (this->animation2Ds.size() != size) this->animation2Ds.resize(size);
-
-	for (size_t i = 0; i < size; i++)
+	if (animation2DInfos == nullptr)
 	{
-		this->animation2Ds[i] = animation2Ds[i];
+		printf("Set animation to animator pointer are nullptr!");
+		return false;
 	}
 
-	this->animation2Ds.shrink_to_fit();
+	m_totalAnimationSize = size;
+	m_animation2DInfos.resize(m_totalAnimationSize);
+	m_animation2DInfos.shrink_to_fit();
 
+	for (size_t i = 0; i < m_totalAnimationSize; i++)
+	{
+		m_animation2DInfos[i] = animation2DInfos[i];
+	}
+
+	return true;
+}
+
+bool Animator2D::setNextAnimationIndex(const GLuint& index)
+{
+	if (m_nextAnimationIndex == index) return true;
+
+	if (index >= m_totalAnimationSize)
+	{
+		printf("Set next animation index are false, because the index are over or equals the size!");
+		return false;
+	}
+
+	m_animation2D_TotalElapseTimer = m_animation2DInfos[m_currentAnimationIndex].m_elapseTime;
+	m_animation2D_CurrentElapseTimer = 0;
+
+	m_nextAnimationIndex = index;
+	printf("currentAnimationIndex = %u, nextAnimationIndex = %u\n", m_currentAnimationIndex, m_nextAnimationIndex);
+
+	return true;
 }
 
 void Animator2D::update()
 {
-	animation2Ds[currentAnimationIndex].update();
+	//printf("currentAnimationIndex = %u, nextAnimationIndex = %u\n", m_currentAnimationIndex, m_nextAnimationIndex);
+	timer->recordTock();
+
+	if (m_currentAnimationIndex != m_nextAnimationIndex)
+	{
+		m_animation2D_CurrentElapseTimer += timer->getDeltaTime();
+
+		if (m_animation2D_CurrentElapseTimer >= m_animation2D_TotalElapseTimer)
+		{
+			m_animation2D_CurrentElapseTimer = 0;
+			m_animation2DInfos[m_currentAnimationIndex].m_animation2D->restartAnimation();
+
+			m_currentAnimationIndex = m_nextAnimationIndex;
+		}
+	}
+
+	m_animation2DInfos[m_currentAnimationIndex].m_animation2D->update();
+	timer->recordTick();
+}
+
+Animation2D& Animator2D::getCurrentAnimation2D()
+{
+	return *m_animation2DInfos[m_currentAnimationIndex].m_animation2D.get();
+}
+
+GLuint& Animator2D::getCurrentAnimationIndex()
+{
+	return m_currentAnimationIndex;
+}
+
+GLuint& Animator2D::getNextAnimationIndex()
+{
+	return m_nextAnimationIndex;
 }
