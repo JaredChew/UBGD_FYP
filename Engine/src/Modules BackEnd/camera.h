@@ -70,22 +70,22 @@ public:
 
 	void update();
 
-	float getSpeed();
+	float& const getSpeed();
 
-	int getRenderWidth();
-	int getRenderHeight();
-	int getRenderQuality();
+	int& const getRenderWidth();
+	int& const getRenderHeight();
+	int& const getRenderRatio();
 
-	float getRenderRatio();
+	float& const getRenderQuality();
 
-	glm::vec3 getPosition();
-	glm::vec3 getRotation();
-	glm::vec2 getDimension();
+	glm::vec3& const getPosition();
+	glm::vec3& const getRotation();
+	glm::vec2& const getDimension();
 
-	glm::mat4 getOrientation();
+	glm::mat4& const getOrientation();
 
-	glm::mat4 getViewMatrix();
-	glm::mat4 getViewMatrixWithoutTranslate();
+	glm::mat4& const getViewMatrix();
+	glm::mat4& const getViewMatrixWithoutTranslate();
 
 };
 

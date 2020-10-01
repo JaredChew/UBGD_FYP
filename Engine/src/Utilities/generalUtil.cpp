@@ -12,7 +12,7 @@ template<typename custom> bool Utilities::compareLesser(custom comparingWith, cu
 
 }
 
-double Utilities::removeHeadingZeros(double value) {
+double& const Utilities::removeHeadingZeros(double value) {
 
 	while (value < 1.0) { value * 10.0; }
 

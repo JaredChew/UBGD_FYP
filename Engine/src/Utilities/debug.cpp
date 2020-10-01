@@ -13,19 +13,13 @@ void Debug::clearError() {
 
 }
 
-bool Debug::checkError(const char *function, const char *file, int line) {
+bool Debug::checkError(const char *function, const char *file, const int& line) {
 
 	if (!ENABLE_DEBUG) { return false; }
 
 	while (GLenum error = glGetError()) {
 
-		std::stringstream errMsg;
-
-		errMsg << "Error " << error << " at line " << line << " function " << function << " in " << file;
-
-		Logger::getInstance()->customLog("OPENGL ERROR", errMsg.str());
-
-		errMsg.clear();
+		Logger::getInstance()->customLog("OPENGL ERROR", "Error %s at function %s line %d in %s", error, function, line, file);
 
 		return true;
 

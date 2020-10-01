@@ -44,7 +44,7 @@ bool Keyboard::isKeyValid(const char &key) {
 
 }
 
-int Keyboard::getKeyPressStatus(const char &key) {
+int& const Keyboard::getKeyPressStatus(const char &key) {
 
 	if (key < SET_1_KEYS_END) { return keyPressStatus_set1[key]; }
 	else { return keyPressStatus_set2[SET_2_KEYS_END - key]; }

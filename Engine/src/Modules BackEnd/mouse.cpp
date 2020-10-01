@@ -124,14 +124,14 @@ void Mouse::preUpdate() {
 
 }
 
-glm::vec2 Mouse::getPosition() { return position; }
+glm::vec2& const Mouse::getPosition() { return position; }
 
-glm::vec2 Mouse::getPositionOffset() { return positionOffset; }
+glm::vec2& const Mouse::getPositionOffset() { return positionOffset; }
 
-glm::vec2 Mouse::getPositionDirection() { return positionDirection; }
+glm::vec2& const Mouse::getPositionDirection() { return positionDirection; }
 
-double Mouse::getScrollValue() { return scrollValue; }
+double& const Mouse::getScrollValue() { return scrollValue; }
 
-double Mouse::getOffsetScrol() { return scrollOffset; }
+double& const Mouse::getOffsetScrol() { return scrollOffset; }
 
-int Mouse::getScrollDirection() { return scrollDirection; }
+int& const Mouse::getScrollDirection() { return scrollDirection; }

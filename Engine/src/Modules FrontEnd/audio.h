@@ -1,50 +1,47 @@
 #pragma once
 
-#include <SDL_mixer.h>
+#include <fmod.hpp>
+#include <fmod_errors.h>
+
+class Logger;
 
 class Audio {
 
 public:
 
-	static enum AudioType { SOUND, MUSIC };
+	enum class AudioLoop { FOREVER = -1, ONCE = 0 };
 
 private:
 
-	enum class AudioController { PLAY, PAUSE, STOP, RESUME };
+	FMOD::System *fmodSystem;
+	FMOD::Sound *music;
+	FMOD::Channel *musicChannel;
+
+	int spectrumSize; //should be value in power of 2
+
+	float *spectrumLeft;
+	float *spectrumRight;
 
 private:
 
-	AudioType audioType;
-
-	Mix_Chunk *sound;
-	Mix_Music* music;
-
-	int soundChannel;
-
-	bool isLoop;
-
-private:
-
-	Mix_Chunk* loadSound(const char* directory);
-	Mix_Music* loadMusic(const char* directory);
-
-	void controller(const AudioController &action);
+	bool errorCheck(FMOD_RESULT result);
 
 public:
 
-	Audio(const AudioType& audioType, const char* directory, const bool& isLoop, const int &soundChannel);
+	Audio(const char *audioDirectory, const int &spectrumSize);
 	~Audio();
 
-	void play();
-	void stop();
+	void switchAudio(const char *audioDirectory);
+	void changeSpectrumSize(const int &spectrumSize);
 
-	void pause();
-	void resume();
+	void playAudio(const AudioLoop &loopType);
+	//void pauseAudio();
+	//void stopAudio();
+	//void restartAudio();
 
-	int getChannel();
-	void setChannel(const int &channel);
+	void update();
 
-	bool getIsLoop();
-	void setIsLoop(const bool &isLoop);
+	float& const getSpectrumRight(const int &index);
+	float& const getSpectrumLeft(const int &index);
 
 };

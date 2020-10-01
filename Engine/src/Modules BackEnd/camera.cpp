@@ -152,43 +152,43 @@ void Camera::update() {
 
 }
 
-glm::vec3 Camera::getPosition() {
+glm::vec3& const Camera::getPosition() {
 	return position;
 }
 
-glm::vec3 Camera::getRotation() {
+glm::vec3& const Camera::getRotation() {
 	return rotation;
 }
 
-glm::vec2 Camera::getDimension() {
+glm::vec2& const Camera::getDimension() {
 	return dimension;
 }
 
-glm::mat4 Camera::getOrientation() {
+glm::mat4& const Camera::getOrientation() {
 	return orientation;
 }
 
-float Camera::getSpeed() {
+float& const Camera::getSpeed() {
 	return cameraSpeed;
 }
 
-int Camera::getRenderWidth() {
+int& const Camera::getRenderWidth() {
 	return renderWidth;
 }
 
-int Camera::getRenderHeight() {
+int& const Camera::getRenderHeight() {
 	return renderHeight;
 }
 
-int Camera::getRenderQuality() {
-	return renderQuality;
-}
-
-float Camera::getRenderRatio() {
+int& const Camera::getRenderRatio() {
 	return renderRatio;
 }
 
-glm::mat4 Camera::getViewMatrix() {
+float& const Camera::getRenderQuality() {
+	return renderQuality;
+}
+
+glm::mat4& const Camera::getViewMatrix() {
 
 	if (updateViewMatrix) { viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-position.x, position.y, -position.z)) * orientation * glm::scale(glm::mat4(1.0f), glm::vec3(dimension.x, dimension.y, 0.0f)); }
 	//if (updateViewMatrix) { viewMatrix = orientation * glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, -position.z)) * glm::scale(glm::mat4(1.0f), dimension); }
@@ -199,7 +199,7 @@ glm::mat4 Camera::getViewMatrix() {
 
 }
 
-glm::mat4 Camera::getViewMatrixWithoutTranslate() {
+glm::mat4& const Camera::getViewMatrixWithoutTranslate() {
 
 	return glm::mat4(
 

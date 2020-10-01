@@ -47,13 +47,13 @@ public:
 	void render();
 
 	//ParticleObject getParticle(const int &index);
-	ParticleEntity getEmittedParticle(const int &index);
+	ParticleEntity& const getEmittedParticle(const int &index);
 
-	int numberOfParticlesAlive();
+	int& const numberOfParticlesAlive();
 
-	int getMaxParticlesEmittable();
-	float getEmittionDelay();
-	bool getIsEmittionEnable();
+	int& const getMaxParticlesEmittable();
+	float& const getEmittionDelay();
+	bool& const getIsEmittionEnable();
 
 };
 

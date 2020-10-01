@@ -145,15 +145,15 @@ void Window::setDisplayFps(const bool &displayFps) {
 	this->displayFps = displayFps;
 }
 
-int Window::getWidth() {
+int& const Window::getWidth() {
 	return width;
 }
 
-int Window::getHeight() {
+int& const Window::getHeight() {
 	return height;
 }
 
-float Window::getWindowRatio() {
+float& const Window::getWindowRatio() {
 	return windowRatio;
 }
 

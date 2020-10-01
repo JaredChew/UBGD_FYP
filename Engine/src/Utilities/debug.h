@@ -25,6 +25,6 @@ namespace Debug {
 
 	void clearError();
 
-	bool checkError(const char *function, const char *file, int line);
+	bool checkError(const char *function, const char *file, const int& line);
 
 }

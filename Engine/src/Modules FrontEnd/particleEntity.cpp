@@ -55,11 +55,11 @@ void ParticleEntity::render() {
 
 }
 
-float ParticleEntity::getLifespan() {
+float& const ParticleEntity::getLifespan() {
 	return lifespan;
 }
 
-float ParticleEntity::getAge() {
+float& const ParticleEntity::getAge() {
 	return age;
 }
 

@@ -56,7 +56,7 @@ void Session::renderToScreen(const GLuint &texture, const int &resolutionWidth, 
 
 }
 
-Session *Session::getNextSession() {
+Session *const Session::getNextSession() {
 
 	Session *nextSession = this->nextSession;
 

@@ -1,19 +1,26 @@
 #pragma once
 
+#include <list>
+#include <string>
+
 class Transform;
-class Physics;
-class Boundary;
 
 class Entity {
 
 public:
+	Entity* parent;
+	std::list<Entity*> child;
+
 	Transform *transform;
 
-	Boundary *boundary; //Collision* collision;
-	Physics *physics;
+	unsigned int id;
+	int group;
+	std::string name;
 
 public:
-	Entity(const bool &collision = false, const bool &physical = false);
+	Entity();
 	virtual ~Entity();
+
+	//void kill();
 
 };

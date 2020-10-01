@@ -1,6 +1,5 @@
 #pragma once
 #include <glad/glad.h>
-#include <SOIL2/SOIL2.h>
 
 class Texture {
 private:

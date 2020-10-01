@@ -37,7 +37,7 @@ bool OpenGL::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentS
 
 			glGetProgramInfoLog(programObject, infoLen, NULL, infoLog);
 
-			Logger::getInstance()->warningLog(std::string("Failed to link shader program " + static_cast<std::string>(infoLog)));
+			Logger::getInstance()->warningLog("Failed to link shader program %s", static_cast<std::string>(infoLog));
 
 		}
 
@@ -89,7 +89,7 @@ void OpenGL::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 	if (0 == image)
 	{
 		std::string errorResult = SOIL_last_result();
-		Logger::getInstance()->errorLog("SOIL loading error: " + errorResult);
+		Logger::getInstance()->errorLog("SOIL loading error: $s", errorResult);
 
 	}
 	else
@@ -224,7 +224,7 @@ GLuint OpenGL::loadShader(GLenum type, const char *shaderSrc) {
 
 			glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
 
-			Logger::getInstance()->warningLog(std::string("Failed to compile shader " + static_cast<std::string>(infoLog)));
+			Logger::getInstance()->warningLog("Failed to compile shader %s", static_cast<std::string>(infoLog));
 
 		}
 
@@ -256,7 +256,7 @@ GLuint OpenGL::loadShaderFromFile(GLenum shaderType, std::string path) {
 	}
 	else {
 
-		Logger::getInstance()->warningLog(std::string("Unable to open file " + path));
+		Logger::getInstance()->warningLog("Unable to open file %s", path);
 
 	}
 

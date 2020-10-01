@@ -36,7 +36,7 @@ public:
 	long double getTimeElapsedSeconds();
 	unsigned long long int getTimeElapsed();
 
-	std::chrono::steady_clock::time_point getTick();
-	std::chrono::steady_clock::time_point getTock();
+	std::chrono::steady_clock::time_point& const getTick();
+	std::chrono::steady_clock::time_point& const getTock();
 
 };

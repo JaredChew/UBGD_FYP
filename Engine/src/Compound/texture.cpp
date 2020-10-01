@@ -1,6 +1,7 @@
 #include "Texture.h"
 #include "../Utilities/logger.h"
 #include "../Manipulators/openGL.h"
+#include <SOIL2/SOIL2.h>
 
 // |*   Constructors   *|
 Texture::Texture(const GLchar* dir)

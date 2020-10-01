@@ -48,19 +48,19 @@ void Shader::animation2DDraw(const glm::mat4& mvpMatrix, const float& row, const
 			Logger::getInstance()->warningLog("Failed to init \"Default\" shader program");
 		}
 
+		GLuint sampler2d_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "sampler2d");
+
+		if (sampler2d_Loc != -1) { glUniform1i(sampler2d_Loc, 0); }
+		else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"sampler2d\" not found"); }
+
+		GLuint uMvpMatrix_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "uMvpMatrix");
+
+		if (uMvpMatrix_Loc != -1) { glUniformMatrix4fv(uMvpMatrix_Loc, 1, GL_FALSE, glm::value_ptr(mvpMatrix)); }
+		else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"uMvpMatrix\" not found"); }
+
 	}
 
 	glUseProgram(shaderProgram_Animation2DDraw);
-
-	GLuint sampler2d_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "sampler2d");
-
-	if (sampler2d_Loc != -1) { glUniform1i(sampler2d_Loc, 0); }
-	else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"sampler2d\" not found"); }
-
-	GLuint uMvpMatrix_Loc = glGetUniformLocation(shaderProgram_Animation2DDraw, "uMvpMatrix");
-
-	if (uMvpMatrix_Loc != -1) { glUniformMatrix4fv(uMvpMatrix_Loc, 1, GL_FALSE, glm::value_ptr(mvpMatrix)); }
-	else { Logger::getInstance()->warningLog("SHADER_PROGRAM_DEFAULT uniform \"uMvpMatrix\" not found"); }
 
 	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "row"), row);
 	glUniform1f(glGetUniformLocation(shaderProgram_Animation2DDraw, "col"), column);

@@ -5,7 +5,11 @@
 
 #include "../Compound/transform.h"
 
-BoidEntity::BoidEntity() : Entity(false, true) {
+#include <glm/common.hpp>
+
+BoidEntity::BoidEntity() : Entity() {
+
+	physics = new Physics(transform, nullptr);
 
 	Utilities::Random::seedRandom();
 
@@ -34,11 +38,11 @@ BoidEntity::BoidEntity() : Entity(false, true) {
 
 BoidEntity::~BoidEntity() { }
 
-glm::vec3 BoidEntity::calculateResultant(const glm::vec3 &initial, const glm::vec3 &acceleration) {
+glm::vec3 BoidEntity::calculateResultant(const glm::vec3& initial, const glm::vec3& acceleration) {
 	return glm::length(initial + acceleration) < accelLimit ? initial + acceleration : glm::normalize(initial + acceleration) * accelLimit;
 }
 
-bool BoidEntity::withinDistance(const glm::vec3 object, const float &distance) {
+bool BoidEntity::withinDistance(const glm::vec3 object, const float& distance) {
 
 	if (distance == 0.0f) { return true; }
 
@@ -46,7 +50,7 @@ bool BoidEntity::withinDistance(const glm::vec3 object, const float &distance) {
 
 }
 
-void BoidEntity::applyRepellent(const glm::vec3 &repeller) {
+void BoidEntity::applyRepellent(const glm::vec3& repeller) {
 
 	if (!withinDistance(repeller, repellerDistance)) { return; }
 
@@ -57,13 +61,13 @@ void BoidEntity::applyRepellent(const glm::vec3 &repeller) {
 
 }
 
-void BoidEntity::applyAttraction(const glm::vec3 &attractor) {
+void BoidEntity::applyAttraction(const glm::vec3& attractor) {
 
 	if (!withinDistance(attractor, attractorDistance)) { return; }
 
 	initial = glm::vec3(physics->getVelocity().x - transform->getPosition().x, physics->getVelocity().y - transform->getPosition().y, physics->getVelocity().z - transform->getPosition().z);
 	acceleration = glm::vec3(attractor.x - physics->getVelocity().x, attractor.y - physics->getVelocity().y, attractor.z - physics->getVelocity().z);
-	
+
 	resultant += calculateResultant(initial, acceleration) * attractorWeight;
 
 }
@@ -88,7 +92,7 @@ void BoidEntity::update() {
 
 }
 
-void BoidEntity::postUpdate(const float &deltaTime_Seconds) {
+void BoidEntity::postUpdate(const float& deltaTimeSeconds) {
 
 	if (glm::length(resultant) > velLimit) { resultant = glm::normalize(resultant) * velLimit; }
 
@@ -96,20 +100,20 @@ void BoidEntity::postUpdate(const float &deltaTime_Seconds) {
 
 	transform->setRotationLocal(glm::vec3(0.0f, 0.0f, -rotate));
 
-	physics->setVelocity(resultant * deltaTime_Seconds);
-	physics->update();
+	physics->setVelocity(resultant * (float)deltaTimeSeconds);
+	physics->update(deltaTimeSeconds);
 
 }
 
-void BoidEntity::addAttractor(Transform *const attractor) {
+void BoidEntity::addAttractor(Transform* const attractor) {
 	this->attractor.push_back(attractor);
 }
 
-void BoidEntity::addRepeller(Transform *const repeller) {
+void BoidEntity::addRepeller(Transform* const repeller) {
 	this->repeller.push_back(repeller);
 }
 
-void BoidEntity::removeAttractor(Transform *const attractor) {
+void BoidEntity::removeAttractor(Transform* const attractor) {
 
 	for (int i = 0; i < this->attractor.size(); ++i) {
 
@@ -123,7 +127,7 @@ void BoidEntity::removeAttractor(Transform *const attractor) {
 
 }
 
-void BoidEntity::removeRepeller(Transform *const repeller) {
+void BoidEntity::removeRepeller(Transform* const repeller) {
 
 	for (int i = 0; i < this->repeller.size(); ++i) {
 
@@ -137,39 +141,39 @@ void BoidEntity::removeRepeller(Transform *const repeller) {
 
 }
 
-void BoidEntity::setVelocityLimit(const float &velLimit) {
+void BoidEntity::setVelocityLimit(const float& velLimit) {
 	this->velLimit = velLimit;
 }
 
-void BoidEntity::setAccelerationLimit(const float &accelLimit) {
+void BoidEntity::setAccelerationLimit(const float& accelLimit) {
 	this->accelLimit = accelLimit;
 }
 
-void BoidEntity::setAttractorDistance(const float &attractorDistance) {
+void BoidEntity::setAttractorDistance(const float& attractorDistance) {
 	this->attractorDistance = attractorDistance;
 }
 
-void BoidEntity::setRepellerDistance(const float &repellerDistance) {
+void BoidEntity::setRepellerDistance(const float& repellerDistance) {
 	this->repellerDistance = repellerDistance;
 }
 
-void BoidEntity::setBoundaryRadius(const float &boundaryRadius) {
+void BoidEntity::setBoundaryRadius(const float& boundaryRadius) {
 	this->boundaryRadius = boundaryRadius;
 }
 
-void BoidEntity::setAttractorWeight(const float &attractorWeight) {
+void BoidEntity::setAttractorWeight(const float& attractorWeight) {
 	this->attractorWeight = attractorWeight;
 }
 
-void BoidEntity::setRepellerWeight(const float &repellerWeight) {
+void BoidEntity::setRepellerWeight(const float& repellerWeight) {
 	this->repellerWeight = repellerWeight;
 }
 
-void BoidEntity::setCenterPosition(const glm::vec3 &centerPosition) {
+void BoidEntity::setCenterPosition(const glm::vec3& centerPosition) {
 	this->centerPosition = centerPosition;
 }
 
-void BoidEntity::effectVelocity(const glm::vec3 &acceleration) {
+void BoidEntity::effectVelocity(const glm::vec3& acceleration) {
 	resultant += glm::length(acceleration) < accelLimit ? acceleration : glm::normalize(acceleration) * accelLimit;
 }
 

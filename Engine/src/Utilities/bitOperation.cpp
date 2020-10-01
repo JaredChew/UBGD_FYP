@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-int Utilities::BitOp::binaryToDenary(long long binary) {
+int& const Utilities::BitOp::binaryToDenary(long long binary) {
 
 	/* https://www.programiz.com/cpp-programming/examples/binary-decimal-convert */
 
@@ -21,5 +21,11 @@ int Utilities::BitOp::binaryToDenary(long long binary) {
 	}
 
 	return decimalNumber;
+
+}
+
+int Utilities::BitOp::countUsedBits(const unsigned int& value) {
+
+	return value == 0 ? 1 : log(value) / log(2) + 1;
 
 }

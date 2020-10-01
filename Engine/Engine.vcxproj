@@ -11,12 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.cpp" />
+    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.cpp" />
     <ClCompile Include="src\Compound\animation2D.cpp" />
     <ClCompile Include="src\Compound\animator2D.cpp" />
     <ClCompile Include="src\Compound\shaderProgram.cpp" />
     <ClCompile Include="src\Compound\texture.cpp" />
     <ClCompile Include="src\Compound\transform.cpp" />
     <ClCompile Include="src\Data Structure\bitData.cpp" />
+    <ClCompile Include="src\distance-field.c" />
+    <ClCompile Include="src\edtaa3func.c" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\json11.cpp" />
     <ClCompile Include="src\Manipulators\geometry.cpp" />
@@ -24,16 +28,16 @@
     <ClCompile Include="src\Manipulators\shader.cpp" />
     <ClCompile Include="src\Math\generalMath.cpp" />
     <ClCompile Include="src\Math\straightLineEquation.cpp" />
-    <ClCompile Include="src\Modules BackEnd\boundary.cpp" />
+    <ClCompile Include="src\Modules BackEnd\collision.cpp" />
     <ClCompile Include="src\Modules BackEnd\camera.cpp" />
     <ClCompile Include="src\Modules BackEnd\keyboard.cpp" />
+    <ClCompile Include="src\Modules BackEnd\library.cpp" />
     <ClCompile Include="src\Modules BackEnd\mouse.cpp" />
     <ClCompile Include="src\Modules BackEnd\physics.cpp" />
     <ClCompile Include="src\Modules BackEnd\window.cpp" />
     <ClCompile Include="src\Modules FrontEnd\audio.cpp" />
     <ClCompile Include="src\Modules FrontEnd\boidEntity.cpp" />
     <ClCompile Include="src\Modules FrontEnd\flockingBehaviour.cpp" />
-    <ClCompile Include="src\Modules FrontEnd\text.cpp" />
     <ClCompile Include="src\Modules FrontEnd\particleEntity.cpp" />
     <ClCompile Include="src\Modules FrontEnd\particleSystem.cpp" />
     <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp" />
@@ -43,6 +47,7 @@
     <ClCompile Include="src\Specification\session.cpp" />
     <ClCompile Include="src\texture-atlas.c" />
     <ClCompile Include="src\texture-font.c" />
+    <ClCompile Include="src\utf8-utils.c" />
     <ClCompile Include="src\Utilities\bitOperation.cpp" />
     <ClCompile Include="src\Utilities\crypto.cpp" />
     <ClCompile Include="src\Utilities\debug.cpp" />
@@ -53,6 +58,8 @@
     <ClCompile Include="src\vector.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.h" />
+    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.h" />
     <ClInclude Include="src\Compound\animation2D.h" />
     <ClInclude Include="src\Compound\animator2D.h" />
     <ClInclude Include="src\Compound\shaderProgram.h" />
@@ -70,16 +77,16 @@
     <ClInclude Include="src\Manipulators\shader.h" />
     <ClInclude Include="src\Math\generalMath.h" />
     <ClInclude Include="src\Math\straightLineEquation.h" />
-    <ClInclude Include="src\Modules BackEnd\boundary.h" />
+    <ClInclude Include="src\Modules BackEnd\collision.h" />
     <ClInclude Include="src\Modules BackEnd\camera.h" />
     <ClInclude Include="src\Modules BackEnd\keyboard.h" />
+    <ClInclude Include="src\Modules BackEnd\library.h" />
     <ClInclude Include="src\Modules BackEnd\mouse.h" />
     <ClInclude Include="src\Modules BackEnd\physics.h" />
     <ClInclude Include="src\Modules BackEnd\window.h" />
     <ClInclude Include="src\Modules FrontEnd\audio.h" />
     <ClInclude Include="src\Modules FrontEnd\boidEntity.h" />
     <ClInclude Include="src\Modules FrontEnd\flockingBehaviour.h" />
-    <ClInclude Include="src\Modules FrontEnd\text.h" />
     <ClInclude Include="src\Modules FrontEnd\particleAffector.h" />
     <ClInclude Include="src\Modules FrontEnd\particleEntity.h" />
     <ClInclude Include="src\Modules FrontEnd\particleSystem.h" />
@@ -87,6 +94,7 @@
     <ClInclude Include="src\Modules FrontEnd\pathNode.h" />
     <ClInclude Include="src\Modules FrontEnd\sprite.h" />
     <ClInclude Include="src\Specification\entity.h" />
+    <ClInclude Include="src\Specification\resource.h" />
     <ClInclude Include="src\Specification\session.h" />
     <ClInclude Include="src\Utilities\bitOperation.h" />
     <ClInclude Include="src\Utilities\crypto.h" />

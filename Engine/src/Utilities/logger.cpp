@@ -5,6 +5,7 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <stdarg.h>
 
 Logger *Logger::instance;
 
@@ -14,7 +15,7 @@ void Logger::init(const std::string &title, const std::string &version, const bo
 
 }
 
-Logger *Logger::getInstance() {
+Logger * const Logger::getInstance() {
 
 	return instance;
 
@@ -61,6 +62,8 @@ Logger::~Logger() {
 
 	}
 
+	delete[] formattedMsg;
+
 }
 
 void Logger::initFile() {
@@ -97,7 +100,7 @@ std::string Logger::getDateTime() {
 
 }
 
-void Logger::writeToFile(const std::string &header, const std::string &msg, const bool &differentLog) {
+void Logger::writeToFile(const char* header, const char* msg, const bool &differentLog) {
 
 	logFileWrite.open(directory.c_str(), std::ios::app);
 
@@ -111,7 +114,7 @@ void Logger::writeToFile(const std::string &header, const std::string &msg, cons
 
 }
 
-void Logger::writeLog(const std::string &logMsg) {
+void Logger::writeLog(const char* logMsg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -119,15 +122,19 @@ void Logger::writeLog(const std::string &logMsg) {
 
 	previousError = Logger::LogType::LOG;
 
-	if (exportToFile) { writeToFile("LOG", logMsg, differentLog); }
+	va_start(args, logMsg);
+	vsprintf(formattedMsg, logMsg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile("LOG", formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cout << "[LOG] " << logMsg << std::endl;
+	std::cout << "[LOG] " << formattedMsg << std::endl;
 
 }
 
-void Logger::infoLog(const std::string &infoMsg) {
+void Logger::infoLog(const char* infoMsg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -135,15 +142,19 @@ void Logger::infoLog(const std::string &infoMsg) {
 
 	previousError = Logger::LogType::INFO;
 
-	if (exportToFile) { writeToFile("INFO", infoMsg, differentLog); }
+	va_start(args, infoMsg);
+	vsprintf(formattedMsg, infoMsg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile("INFO", formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cout << "[INFO] " << infoMsg << std::endl;
+	std::cout << "[INFO] " << formattedMsg << std::endl;
 
 }
 
-void Logger::debugLog(const std::string &dbugMsg) {
+void Logger::debugLog(const char* dbugMsg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -151,15 +162,19 @@ void Logger::debugLog(const std::string &dbugMsg) {
 
 	previousError = Logger::LogType::DEBUG;
 
-	if (exportToFile) { writeToFile("DEBUG", dbugMsg, differentLog); }
+	va_start(args, dbugMsg);
+	vsprintf(formattedMsg, dbugMsg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile("DEBUG", formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cout << "[DEBUG] " << dbugMsg << std::endl;
+	std::cout << "[DEBUG] " << formattedMsg << std::endl;
 
 }
 
-void Logger::warningLog(const std::string &wrngMsg) {
+void Logger::warningLog(const char* wrngMsg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -167,15 +182,19 @@ void Logger::warningLog(const std::string &wrngMsg) {
 
 	previousError = Logger::LogType::WARNING;
 
-	if (exportToFile) { writeToFile("WARNING", wrngMsg, differentLog); }
+	va_start(args, wrngMsg);
+	vsprintf(formattedMsg, wrngMsg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile("WARNING", formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cerr << "[WARNING] " << wrngMsg << std::endl;
+	std::cerr << "[WARNING] " << formattedMsg << std::endl;
 
 }
 
-void Logger::errorLog(const std::string &errMsg) {
+void Logger::errorLog(const char* errMsg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -183,15 +202,19 @@ void Logger::errorLog(const std::string &errMsg) {
 
 	previousError = Logger::LogType::ERROR;
 
-	if (exportToFile) { writeToFile("ERROR", errMsg, differentLog); }
+	va_start(args, errMsg);
+	vsprintf(formattedMsg, errMsg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile("ERROR", formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cerr << "[ERROR] " << errMsg << std::endl;
+	std::cerr << "[ERROR] " << formattedMsg << std::endl;
 
 }
 
-void Logger::customLog(const std::string &header, const std::string &msg) {
+void Logger::customLog(const char* header, const char* msg, ...) {
 
 	if (!ENABLE_LOG || instance == nullptr) { return; }
 
@@ -199,10 +222,14 @@ void Logger::customLog(const std::string &header, const std::string &msg) {
 
 	previousError = Logger::LogType::CUSTOM;
 
-	if (exportToFile) { writeToFile(header, msg, differentLog); }
+	va_start(args, msg);
+	vsprintf(formattedMsg, msg, args);
+	va_end(args);
+
+	if (exportToFile) { writeToFile(header, formattedMsg, differentLog); }
 
 	if (differentLog) { std::cout << "\n"; }
 
-	std::cerr << "[" << header << "] " << msg << std::endl;
+	std::cerr << "[" << header << "] " << formattedMsg << std::endl;
 
 }

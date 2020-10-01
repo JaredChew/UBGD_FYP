@@ -63,10 +63,10 @@ public:
 	void setDisplayFps(const bool &displayFps);
 	//void setDynamicTitle(const bool& dynamicTitle);
 
-	int getWidth();
-	int getHeight();
+	int& const getWidth();
+	int& const getHeight();
 
-	float getWindowRatio();
+	float& const getWindowRatio();
 
 	long double getDeltaTime();
 	long double getDeltaTime_Seconds();

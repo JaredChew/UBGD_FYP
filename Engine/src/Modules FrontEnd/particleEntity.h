@@ -31,8 +31,8 @@ public:
 	void update(const float& deltaTime_Seconds);
 	void render();
 
-	float getLifespan();
-	float getAge();
+	float& const getLifespan();
+	float& const getAge();
 
 	bool isDead();
 

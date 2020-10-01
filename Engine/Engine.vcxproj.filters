@@ -132,9 +132,6 @@
     <ClCompile Include="src\Modules FrontEnd\sprite.cpp">
       <Filter>Source Files\Modules\Front End</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\boundary.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modules BackEnd\camera.cpp">
       <Filter>Source Files\Modules\Back End</Filter>
     </ClCompile>
@@ -177,12 +174,6 @@
     <ClCompile Include="src\glad.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\text.cpp">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClCompile>
     <ClCompile Include="src\json11.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -195,16 +186,40 @@
     <ClCompile Include="src\vector.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\collision.cpp">
+      <Filter>Source Files\Modules\Back End</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
+      <Filter>Source Files\Modules\Front End</Filter>
+    </ClCompile>
+    <ClCompile Include="src\distance-field.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utf8-utils.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\edtaa3func.c">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.cpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.cpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\library.cpp">
+      <Filter>Source Files\Modules\Back End</Filter>
+    </ClCompile>
     <ClCompile Include="src\Compound\animation2D.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
     <ClCompile Include="src\Compound\animator2D.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\texture.cpp">
+    <ClCompile Include="src\Compound\shaderProgram.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\shaderProgram.cpp">
+    <ClCompile Include="src\Compound\texture.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
   </ItemGroup>
@@ -275,9 +290,6 @@
     <ClInclude Include="src\Modules FrontEnd\sprite.h">
       <Filter>Header Files\Modules\Front End</Filter>
     </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\boundary.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
     <ClInclude Include="src\Modules BackEnd\camera.h">
       <Filter>Header Files\Modules\Back End</Filter>
     </ClInclude>
@@ -317,22 +329,34 @@
     <ClInclude Include="src\Data Structure\bitData.h">
       <Filter>Header Files\Data Structures</Filter>
     </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\collision.h">
+      <Filter>Header Files\Modules\Back End</Filter>
+    </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\audio.h">
       <Filter>Header Files\Modules\Front End</Filter>
     </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\text.h">
-      <Filter>Header Files\Modules\Front End</Filter>
+    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.h">
+      <Filter>Header Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\animation2D.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.h">
+      <Filter>Header Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\animator2D.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Modules BackEnd\library.h">
+      <Filter>Header Files\Modules\Back End</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Specification\resource.h">
+      <Filter>Header Files\Specification</Filter>
     </ClInclude>
     <ClInclude Include="src\Compound\texture.h">
       <Filter>Header Files\Compound</Filter>
     </ClInclude>
     <ClInclude Include="src\Compound\shaderProgram.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\animator2D.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\animation2D.h">
       <Filter>Header Files\Compound</Filter>
     </ClInclude>
   </ItemGroup>

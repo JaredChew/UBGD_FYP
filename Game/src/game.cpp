@@ -1,5 +1,10 @@
 #include "game.h"
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "defaultSettings.h"
 
 #include "Specification/session.h"
@@ -9,9 +14,7 @@
 #include "Modules BackEnd/keyboard.h"
 #include "Modules BackEnd/mouse.h"
 
-#include <GLFW/glfw3.h>
-
-#include <glm/gtc/matrix_transform.hpp>
+#include "Session/steeringBehaviour.h"
 
 Game::Game(Window *const wnd) : wnd(wnd) {
 
@@ -36,7 +39,7 @@ Game::Game(Window *const wnd) : wnd(wnd) {
 	camera->projectionMatrix = glm::perspective<float>(glm::radians(FOV), wnd->getWindowRatio(), 0.3f, 1000.0f);
 	//camera->projectionMatrix = glm::ortho<float>(-1.0f, 1.0f, -1.0f, 1.0f, 0.5f, 30.0f);
 
-	//session = new SteeringBehaviour_Demo(wnd, kbd, mse, camera);
+	session = new SteeringBehaviour_Demo(wnd, kbd, mse, camera);
 
 }
 

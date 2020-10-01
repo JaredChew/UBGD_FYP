@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm/vec3.hpp>
+#include <glm/gtx/norm.hpp>
 
 class BoidEntity;
 
@@ -8,7 +8,7 @@ class FlockingBehaviour {
 
 private:
 
-	BoidEntity **boid;
+	BoidEntity** boid;
 
 	int maxmimumBoids;
 	int currentTotalBoids;
@@ -28,33 +28,33 @@ private:
 
 private:
 
-	float calculateDistance(const glm::vec3 &current, const glm::vec3 &against);
+	float calculateDistance(const glm::vec3& current, const glm::vec3& against);
 
 	void calculateSeperation();
 	void calculateAlignment();
-	void calculateCohesion(const glm::vec3 &current);
+	void calculateCohesion(const glm::vec3& current);
 
-	void processSeperation(BoidEntity *const current);
-	void processAlignment(BoidEntity *const current);
-	void processCohesion(BoidEntity *const current);
+	void processSeperation(BoidEntity* const current);
+	void processAlignment(BoidEntity* const current);
+	void processCohesion(BoidEntity* const current);
 
 public:
 
-	FlockingBehaviour(const int &maxmimumBoids);
+	FlockingBehaviour(const int& maxmimumBoids);
 	~FlockingBehaviour();
 
-	void update(const float& deltaTime_Seconds);
+	void update(const float& deltaTimeSeconds);
 
-	bool addBoid(BoidEntity *const boid);
-	bool removeBoid(const int &amount);
+	bool addBoid(BoidEntity* const boid);
+	bool removeBoid(const int& amount);
 
-	void setSeperationDistance(const float &seperationDistance);
-	void setAlignmentDistance(const float &alignmentDistance);
-	void setCohesionDistance(const float &cohesionDistance);
+	void setSeperationDistance(const float& seperationDistance);
+	void setAlignmentDistance(const float& alignmentDistance);
+	void setCohesionDistance(const float& cohesionDistance);
 
-	void setSeperationWeight(const float &seperationWeight);
-	void setAlignmentWeight(const float &alignmentWeight);
-	void setCohesionWeight(const float &cohesionWeight);
+	void setSeperationWeight(const float& seperationWeight);
+	void setAlignmentWeight(const float& alignmentWeight);
+	void setCohesionWeight(const float& cohesionWeight);
 
 	float getSeperationDistance();
 	float getAlignmentDistance();

@@ -3,7 +3,7 @@
  * Distributed under the OSI-approved BSD 2-Clause License.  See accompanying
  * file `LICENSE` for more details.
  */
-#include <ft2build.h>
+#include "ft2build.h"
 #include FT_FREETYPE_H
 #include FT_STROKER_H
 // #include FT_ADVANCES_H

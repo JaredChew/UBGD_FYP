@@ -36,7 +36,7 @@ private:
 
 	bool isKeyValid(const char &key);
 
-	int getKeyPressStatus(const char &key);
+	int& const getKeyPressStatus(const char &key);
 
 public:
 	Keyboard(Window *const wnd);

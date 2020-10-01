@@ -16,6 +16,18 @@
     <Filter Include="Header Files\Specifications">
       <UniqueIdentifier>{a359a93f-5e31-4d9d-9420-a6a616dedf30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Sessions">
+      <UniqueIdentifier>{5f125ef2-7345-41d2-b75e-4735f2a7495f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sessions">
+      <UniqueIdentifier>{36270700-9dad-4936-b9b8-e52870d14a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Entities">
+      <UniqueIdentifier>{06bad823-6871-4980-aa79-3edeff44e5f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Entities">
+      <UniqueIdentifier>{6027f170-3fd6-499a-aa6e-35c959cbafdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp">
@@ -27,6 +39,21 @@
     <ClCompile Include="src\Tracy\TracyClient.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Session\steeringBehaviour.cpp">
+      <Filter>Source Files\Sessions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\bait.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\fish.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\rock.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\shark.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h">
@@ -37,6 +64,21 @@
     </ClInclude>
     <ClInclude Include="src\global.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Session\steeringBehaviour.h">
+      <Filter>Header Files\Sessions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\fish.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\shark.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\rock.h">
+      <Filter>Header Files\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\bait.h">
+      <Filter>Header Files\Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,58 +1,59 @@
 #include "physics.h"
 
+#include "collision.h"
+
 #include "../Compound/transform.h"
 
-Physics::Physics(Transform *const transform) : transform(transform) {
+Physics::Physics(Transform* const transform, Collision* const collision) : transform(transform), collision(collision){
 
 	velocity = glm::vec3(0.0f);
-	momentum = glm::vec3(0.0f);
 	acceleration = glm::vec3(0.0f);
-	resultantForce = glm::vec3(0.0f);
 
 	mass = 1.0f;
-	freefall = 9.81f;
+	freeFall = 9.81f;
 	airResistance = 1.0f;
 	surfaceResistance = 1.0f;
 
-	weight = mass * freefall;
-
 	gravity = false;
 	friction = false;
-
-	previousPosition = transform->getPosition();
 
 }
 
 Physics::~Physics() { }
 
-void Physics::applyGravity(const float& deltaTime) {
-	if (gravity) { acceleration += (glm::vec3(0.0f, freefall - airResistance, 0.0f) * weight) * deltaTime; }
-}
-
 void Physics::applyFriction(const float& deltaTime) {
-	if (friction) { acceleration -= (surfaceResistance * weight) * deltaTime; }
-}
 
-void Physics::calculateVelocity(const float& deltaTime) {
-	velocity = (transform->getPosition() - previousPosition) / deltaTime;
-}
+	if (getSpeed() <= 0.0f) { return; }
 
-void Physics::calculateResultantForce(const float& deltaTime) {
+	velocity -= glm::normalize(-velocity) * (surfaceResistance / mass) * deltaTime;
+	velocity -= glm::normalize(-velocity) * (airResistance / mass) * deltaTime;
 
-	glm::vec3 oldMomentum = momentum;
-
-	momentum = mass * velocity;
-
-	resultantForce = (momentum - oldMomentum) / deltaTime;
+	if (glm::length(velocity) < 0.0f) { velocity = glm::vec3(0.0f); }
 
 }
 
-void Physics::pushPull(const float &force, const glm::vec3 &acceleration) {
-	this->acceleration += ((force) * acceleration);
+void Physics::applyGravity(const float& deltaTime) {
+	velocity += glm::vec3(0.0f, freeFall, 0.0f) * deltaTime;
 }
 
-void Physics::accelerate(const glm::vec3 &acceleration) {
-	this->acceleration += mass * acceleration;
+void Physics::pushPull(const glm::vec3& acceleration) {
+	this->velocity += mass * acceleration;
+}
+
+void Physics::setAcceleration(const glm::vec3& acceleration) {
+	this->acceleration = acceleration;
+}
+
+glm::vec3& const Physics::getAcceleration() {
+	return acceleration;
+}
+
+void Physics::setVelocity(const glm::vec3& velocity) {
+	this->velocity = velocity;
+}
+
+glm::vec3& const Physics::getVelocity() {
+	return velocity;
 }
 
 void Physics::enableGravity(const bool& gravity) {
@@ -62,25 +63,20 @@ void Physics::enableGravity(const bool& gravity) {
 void Physics::enableFriction(const bool& friction) {
 	this->friction = friction;
 }
-
-bool Physics::isGravityEnabled() {
+bool& const Physics::isGravityEnabled() {
 	return gravity;
 }
 
-bool Physics::isFrictionEnabled() {
+bool& const Physics::isFrictionEnabled() {
 	return friction;
 }
 
 void Physics::setMass(const float& mass) {
-
 	this->mass = mass;
-
-	weight = mass * freefall;
-
 }
 
-void Physics::setFreefall(const float& freefall) {
-	this->freefall = freefall;
+void Physics::setFreeFall(const float& freeFall) {
+	this->freeFall = freeFall;
 }
 
 void Physics::setAirResistance(const float& airResistance) {
@@ -91,32 +87,42 @@ void Physics::setSurfaceResistance(const float& surfaceResistance) {
 	this->surfaceResistance = surfaceResistance;
 }
 
-glm::vec3 Physics::getVelocity() {
-	return velocity;
+float& const Physics::getMass() {
+	return mass;
 }
 
-glm::vec3 Physics::getMomentum() {
-	return momentum;
+float& const Physics::getFreeFall() {
+	return freeFall;
 }
 
-glm::vec3 Physics::getAcceleration() {
-	return acceleration;
+float& const Physics::getAirResistance() {
+	return airResistance;
 }
 
-glm::vec3 Physics::getResultantForce() {
-	return resultantForce;
+float& const Physics::getSurfaceResistance() {
+	return surfaceResistance;
+}
+
+float Physics::getSpeed() {
+	return glm::length(velocity);
+}
+
+float Physics::getMomentum() {
+	return mass * getSpeed();
+}
+
+float Physics::getWeight() {
+	return mass * freeFall;
 }
 
 void Physics::update(const float& deltaTime) {
 
-	calculateVelocity(deltaTime);
-	calculateResultantForce(deltaTime);
+	velocity += acceleration * deltaTime;
 
-	applyGravity(deltaTime);
-	applyFriction(deltaTime);
+	if (gravity) { applyGravity(deltaTime); }
 
-	transform->translate(acceleration);
+	if (friction) { applyFriction(deltaTime); }
 
-	previousPosition = transform->getPosition();
+	transform->translate(velocity);
 
 }

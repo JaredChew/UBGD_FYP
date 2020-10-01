@@ -11,7 +11,7 @@
 #include "game.h"
 #include "defaultSettings.h"
 #include "global.h"
-
+/*
 #if  _DEBUG
 #include <Windows.h>
 void runDebugTools() {
@@ -24,7 +24,7 @@ void runDebugTools() {
 #else
 void runDebugTools() {  }
 #endif
-
+*/
 static void error_callback(int error, const char *description) {
 	Logger::getInstance()->customLog("GLFW ERROR", description);
 
@@ -34,9 +34,7 @@ int main(void) {
 
 	Logger::init(WINDOW_TITLE, VERSION, true);
 
-	runDebugTools();
-
-	Game* game;
+	//runDebugTools();
 
 	glfwSetErrorCallback(error_callback);
 
@@ -97,7 +95,7 @@ int main(void) {
 
 	}
 
-	game = new Game(Global::wnd);
+	Game* game = new Game(Global::wnd);
 
 	//Window loop
 	while (!glfwWindowShouldClose(Global::wnd->getWindow())) {

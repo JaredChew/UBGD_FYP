@@ -25,15 +25,15 @@ public:
 
 	virtual void update() = 0;
 
-	virtual glm::vec4 getColourAffector() = 0;
+	virtual glm::vec4& const getColourAffector() = 0;
 
-	virtual glm::vec3 getRotateAffector() = 0;
-	virtual glm::vec2 getSizeAffector() = 0;
+	virtual glm::vec3& const getRotateAffector() = 0;
+	virtual glm::vec2& const getSizeAffector() = 0;
 
-	virtual glm::vec3 getSpeedAffector() = 0;
-	virtual glm::vec3 getDirectionAffector() = 0;
-	virtual glm::vec3 getAccelerationAffector() = 0;
+	virtual glm::vec3& const getSpeedAffector() = 0;
+	virtual glm::vec3& const getDirectionAffector() = 0;
+	virtual glm::vec3& const getAccelerationAffector() = 0;
 
-	virtual glm::vec3 getSpawnAffector() = 0;
+	virtual glm::vec3& const getSpawnAffector() = 0;
 
 };

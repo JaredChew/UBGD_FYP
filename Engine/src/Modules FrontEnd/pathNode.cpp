@@ -63,15 +63,15 @@ void PathNode::setY(const int &y) {
 	this->y = y;
 }
 
-bool PathNode::isNodeOpen() {
+bool& const PathNode::isNodeOpen() {
 	return openNode;
 }
 
-bool PathNode::isVisited() {
+bool& const PathNode::isVisited() {
 	return visited;
 }
 
-PathNode *PathNode::getParent() {
+PathNode * const PathNode::getParent() {
 	return parent;
 }
 
@@ -79,15 +79,15 @@ bool PathNode::isOrphan() {
 	return parent == nullptr;
 }
 
-int PathNode::getWeight() {
+int& const PathNode::getWeight() {
 	return weight;
 }
 
-int PathNode::get_gCost() {
+int& const PathNode::get_gCost() {
 	return gCost;
 }
 
-int PathNode::get_hCost() {
+int& const PathNode::get_hCost() {
 	return hCost;
 }
 
@@ -95,10 +95,10 @@ int PathNode::get_fCost() {
 	return hCost + gCost;
 }
 
-int PathNode::getX() {
+int& const PathNode::getX() {
 	return x;
 }
 
-int PathNode::getY() {
+int& const PathNode::getY() {
 	return y;
 }

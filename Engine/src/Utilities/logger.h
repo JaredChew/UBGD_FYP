@@ -13,6 +13,16 @@
 
 #endif //_DEBUG
 
+#define MESSAGE_BUFFER 4096
+
+/*
+
+		Alternative
+
+	1 log function with enum to switch between logging type
+
+*/
+
 class Logger {
 
 private:
@@ -25,6 +35,10 @@ private:
 
 	std::ifstream logFileRead;
 	std::ofstream logFileWrite;
+
+	va_list args;
+
+	char formattedMsg[MESSAGE_BUFFER];
 
 	bool exportToFile;
 
@@ -39,18 +53,18 @@ private:
 
 	std::string getDateTime();
 
-	void writeToFile(const std::string &header, const std::string &msg, const bool &differentLog);
+	void writeToFile(const char* header, const char* msg, const bool &differentLog);
 
 public:
 
 	static void init(const std::string &title, const std::string &version, const bool &exportToFile, const std::string &directory = "log_export.txt");
-	static Logger *getInstance();
+	static Logger* const getInstance();
 
-	void writeLog(const std::string &logMsg);
-	void infoLog(const std::string &infoMsg);
-	void debugLog(const std::string &dbugMsg);
-	void warningLog(const std::string &wrngMsg);
-	void errorLog(const std::string &errMsg);
-	void customLog(const std::string &header, const std::string &msg);
+	void writeLog(const char* logMsg, ...);
+	void infoLog(const char* infoMsg, ...);
+	void debugLog(const char* dbugMsg, ...);
+	void warningLog(const char* wrngMsg, ...);
+	void errorLog(const char* errMsg, ...);
+	void customLog(const char* header, const char* msg, ...);
 
 };

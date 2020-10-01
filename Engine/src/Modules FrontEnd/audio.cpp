@@ -1,131 +1,98 @@
 #include "audio.h"
 
-Audio::Audio(const AudioType& audioType, const char* directory, const bool& isLoop, const int& soundChannel) {
+#include <string>
 
-	this->audioType = audioType;
+#include "../Utilities/logger.h"
 
-	this->isLoop = isLoop;
-	this->soundChannel = soundChannel;
+Audio::Audio(const char *audioDirectory, const int &spectrumSize) {
 
-	switch (audioType) {
+	FMOD_RESULT result;
 
-	case AudioType::SOUND:
-		sound = loadSound(directory);
-		break;
+	unsigned int version;
 
-	case AudioType::MUSIC:
-		music = loadMusic(directory);
-		break;
+	result = FMOD::System_Create(&fmodSystem);
+	errorCheck(result);
 
+	result = fmodSystem->getVersion(&version);
+	errorCheck(result);
+
+	if (version < FMOD_VERSION) {
+		Logger::getInstance()->customLog("FMOD ERROR", "You are using an older version of FMOD. ", version, " ", FMOD_VERSION);
 	}
+
+	//init fmod system
+	result = fmodSystem->init(32, FMOD_INIT_NORMAL, 0);
+	errorCheck(result);
+
+	this->spectrumSize = spectrumSize;
+
+	spectrumLeft = new float[spectrumSize];
+	spectrumRight = new float[spectrumSize];
+
+	switchAudio(audioDirectory);
 
 }
 
 Audio::~Audio() {
 
-	Mix_FreeChunk(sound);
-	Mix_FreeMusic(music);
+	if (errorCheck(musicChannel->stop())) { musicChannel = nullptr; }
+	if (errorCheck(music->release())) { music = nullptr; }
+	if (errorCheck(fmodSystem->release())) { fmodSystem = nullptr; }
 
-	delete music;
-	music = nullptr;
-
-	delete sound;
-	sound = nullptr;
+	delete[] spectrumLeft;
+	delete[] spectrumRight;
 
 }
 
-Mix_Chunk* Audio::loadSound(const char* directory) {
+bool Audio::errorCheck(FMOD_RESULT result) {
 
-	Mix_Chunk* soundToPass = Mix_LoadWAV(directory);
-
-	if (soundToPass == nullptr) {
-
-		//std::cerr << "\nSDL failed to load sound at: " << soundFileDir << std::endl;
-
+	if (result != FMOD_OK) {
+		Logger::getInstance()->customLog("FMOD ERROR", "(%d) %s", result, FMOD_ErrorString(result));
+		return false;
 	}
 
-	return soundToPass;
+	return true;
 
 }
 
-Mix_Music* Audio::loadMusic(const char* directory) {
+void Audio::switchAudio(const char *audioDirectory) {
+	errorCheck(fmodSystem->createStream(audioDirectory, FMOD_SOFTWARE, 0, &music));
+}
 
-	Mix_Music* musicToPass = Mix_LoadMUS(directory);
+void Audio::changeSpectrumSize(const int &spectrumSize) {
 
-	if (musicToPass == nullptr) {
+	this->spectrumSize = spectrumSize;
 
-		//std::cerr << "\nSDL failed to load music at: " << MusicFileDir << std::endl;
+	delete[] spectrumLeft;
+	delete[] spectrumRight;
 
-	}
-
-	return musicToPass;
+	spectrumLeft = new float[spectrumSize];
+	spectrumRight = new float[spectrumSize];
 
 }
 
-void Audio::controller(const AudioController& action) {
+void Audio::playAudio(const AudioLoop &loopType) {
 
-	switch (action) {
-
-		case AudioController::PLAY:
-
-			if (audioType) { Mix_PlayChannel(soundChannel, sound, isLoop); }
-			else { Mix_PlayMusic(music, isLoop); }
-
-			break;
-
-		case AudioController::PAUSE:
-
-			if (audioType) { Mix_Pause(soundChannel); }
-			else { Mix_PauseMusic(); }
-
-			break;
-
-		case AudioController::STOP:
-
-			if (audioType) { Mix_HaltChannel(soundChannel); }
-			else { Mix_HaltMusic(); }
-
-			break;
-
-		case AudioController::RESUME:
-
-			if (audioType) { Mix_Resume(soundChannel); }
-			else { Mix_ResumeMusic(); }
-
-			break;
-
+	if (errorCheck(fmodSystem->playSound(FMOD_CHANNEL_FREE, music, false, &musicChannel))) {
+		musicChannel->setLoopCount((int)loopType);
 	}
 
 }
 
-void Audio::play() {
-	controller(AudioController::PLAY);
+void Audio::update() {
+
+	fmodSystem->update();
+
+	//Get spectrum for left and right stereo channes
+	musicChannel->getSpectrum(spectrumLeft, spectrumSize, 0, FMOD_DSP_FFT_WINDOW_RECT);
+	musicChannel->getSpectrum(spectrumRight, spectrumSize, 1, FMOD_DSP_FFT_WINDOW_RECT);
+
 }
 
-void Audio::stop() {
-	controller(AudioController::STOP);
+float& const Audio::getSpectrumRight(const int &index) {
+	return spectrumRight[index];
 }
 
-void Audio::pause() {
-	controller(AudioController::PAUSE);
-}
-
-void Audio::resume() {
-	controller(AudioController::RESUME);
-}
-
-int Audio::getChannel() {
-	return soundChannel;
-}
-
-void Audio::setChannel(const int& channel) {
-	this->soundChannel = soundChannel;
-}
-
-bool Audio::getIsLoop() {
-	return isLoop;
-}
-
-void Audio::setIsLoop(const bool& isLoop) {
-	this->isLoop = isLoop;
+float& const Audio::getSpectrumLeft(const int &index) {
+	return spectrumLeft[index];
 }

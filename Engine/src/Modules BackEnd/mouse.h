@@ -51,13 +51,13 @@ public:
 	void postUpdate();
 	void preUpdate();
 
-	glm::vec2 getPosition();
-	glm::vec2 getPositionOffset();
-	glm::vec2 getPositionDirection();
+	glm::vec2& const getPosition();
+	glm::vec2& const getPositionOffset();
+	glm::vec2& const getPositionDirection();
 
-	double getScrollValue();
-	double getOffsetScrol();
+	double& const getScrollValue();
+	double& const getOffsetScrol();
 
-	int getScrollDirection();
+	int& const getScrollDirection();
 
 };

@@ -114,7 +114,7 @@ bool PathFinder::isAtDestination() {
 
 }
 
-int PathFinder::calculateNodeTraversal(int x, int y) {
+int& const PathFinder::calculateNodeTraversal(int x, int y) {
 
 	int parentCounter = 0;
 
@@ -270,14 +270,14 @@ void PathFinder::searchStepByStep() {
 
 }
 
-bool PathFinder::getIsPathFound() {
+bool& const PathFinder::getIsPathFound() {
 	return isPathFound;
 }
 
-std::vector<std::pair<int, int>> PathFinder::getPath() {
+std::vector<std::pair<int, int>>& const PathFinder::getPath() {
 	return path;
 }
 
-std::queue<std::pair<int, int>> &PathFinder::getPreviouslySearched() {
+std::queue<std::pair<int, int>>& const PathFinder::getPreviouslySearched() {
 	return previouslySearched;
 }

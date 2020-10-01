@@ -21,7 +21,7 @@ public:
 
 	Session();
 
-	Session *getNextSession();
+	Session* const getNextSession();
 
 	virtual ~Session();
 

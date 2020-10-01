@@ -35,18 +35,18 @@ public:
 	void setX(const int &x);
 	void setY(const int &y);
 
-	PathNode *getParent();
+	PathNode *const getParent();
 
-	bool isNodeOpen();
-	bool isVisited();
+	bool& const isNodeOpen();
+	bool& const isVisited();
 	bool isOrphan();
 
-	int getWeight();
-	int get_hCost();
-	int get_gCost();
+	int& const getWeight();
+	int& const get_hCost();
+	int& const get_gCost();
 	int get_fCost();
 
-	int getX();
-	int getY();
+	int& const getX();
+	int& const getY();
 
 };

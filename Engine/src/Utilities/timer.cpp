@@ -69,10 +69,10 @@ unsigned long long int Timer::getTimeElapsed() {
 	return timeElapsed.count();
 }
 
-std::chrono::steady_clock::time_point Timer::getTick() {
+std::chrono::steady_clock::time_point& const Timer::getTick() {
 	return tick;
 }
 
-std::chrono::steady_clock::time_point Timer::getTock() {
+std::chrono::steady_clock::time_point& const Timer::getTock() {
 	return tock;
 }

@@ -11,14 +11,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Entities\bait.cpp" />
+    <ClCompile Include="src\Entities\fish.cpp" />
+    <ClCompile Include="src\Entities\rock.cpp" />
+    <ClCompile Include="src\Entities\shark.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Session\steeringBehaviour.cpp" />
     <ClCompile Include="src\Tracy\TracyClient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h" />
+    <ClInclude Include="src\Entities\bait.h" />
+    <ClInclude Include="src\Entities\fish.h" />
+    <ClInclude Include="src\Entities\rock.h" />
+    <ClInclude Include="src\Entities\shark.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\Session\steeringBehaviour.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

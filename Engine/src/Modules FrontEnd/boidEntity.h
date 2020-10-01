@@ -8,9 +8,14 @@
 
 #include "../Utilities/random.h"
 
+class Transform;
+class Physics;
+
 class BoidEntity : protected Entity {
 
 private:
+
+	Physics* physics;
 
 	std::vector<Transform*> attractor;
 	std::vector<Transform*> repeller;
@@ -35,14 +40,14 @@ private:
 
 private:
 
-	bool withinDistance(const glm::vec3 object, const float &distance);
+	bool withinDistance(const glm::vec3 object, const float& distance);
 
-	void applyAttraction(const glm::vec3 &attractor);
-	void applyRepellent(const glm::vec3 &repeller);
+	void applyAttraction(const glm::vec3& attractor);
+	void applyRepellent(const glm::vec3& repeller);
 
 	void stayWithinBoundary();
 
-	glm::vec3 calculateResultant(const glm::vec3 &initial, const glm::vec3 &acceleration);
+	glm::vec3 calculateResultant(const glm::vec3& initial, const glm::vec3& acceleration);
 
 public:
 
@@ -50,27 +55,27 @@ public:
 	~BoidEntity();
 
 	void update();
-	void postUpdate(const float& deltaTime_Seconds);
+	void postUpdate(const float& deltaTimeSeconds);
 
-	void addAttractor(Transform *const attractor);
-	void addRepeller(Transform *const repeller);
+	void addAttractor(Transform* const attractor);
+	void addRepeller(Transform* const repeller);
 
-	void removeAttractor(Transform *const attractor);
-	void removeRepeller(Transform *const repeller);
+	void removeAttractor(Transform* const attractor);
+	void removeRepeller(Transform* const repeller);
 
-	void setVelocityLimit(const float &velLimit);
-	void setAccelerationLimit(const float &accelLimit);
+	void setVelocityLimit(const float& velLimit);
+	void setAccelerationLimit(const float& accelLimit);
 
-	void setAttractorDistance(const float &attractorDistance);
-	void setRepellerDistance(const float &repellerDistance);
-	void setBoundaryRadius(const float &boundaryRadius);
+	void setAttractorDistance(const float& attractorDistance);
+	void setRepellerDistance(const float& repellerDistance);
+	void setBoundaryRadius(const float& boundaryRadius);
 
-	void setAttractorWeight(const float &attractorWeight);
-	void setRepellerWeight(const float &repellerWeight);
+	void setAttractorWeight(const float& attractorWeight);
+	void setRepellerWeight(const float& repellerWeight);
 
-	void setCenterPosition(const glm::vec3 &centerPosition);
+	void setCenterPosition(const glm::vec3& centerPosition);
 
-	void effectVelocity(const glm::vec3 &velocity);
+	void effectVelocity(const glm::vec3& velocity);
 
 	float getVelLimit();
 	float getAccelLimit();

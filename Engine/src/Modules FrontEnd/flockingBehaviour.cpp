@@ -2,9 +2,7 @@
 
 #include "boidEntity.h"
 
-#include <glm/gtx/norm.hpp>
-
-FlockingBehaviour::FlockingBehaviour(const int &maxmimumBoids) {
+FlockingBehaviour::FlockingBehaviour(const int& maxmimumBoids) {
 
 	currentTotalBoids = 0;
 	neighbourCount = 0;
@@ -31,12 +29,12 @@ FlockingBehaviour::~FlockingBehaviour() {
 
 	for (int i = 0; i < maxmimumBoids; ++i) { boid[i] = nullptr; }
 
-	delete [] boid;
+	delete[] boid;
 	boid = nullptr;
 
 }
 
-void FlockingBehaviour::calculateCohesion(const glm::vec3 &current) {
+void FlockingBehaviour::calculateCohesion(const glm::vec3& current) {
 
 	cohesionResultant /= neighbourCount;
 
@@ -64,11 +62,11 @@ void FlockingBehaviour::calculateSeperation() {
 
 }
 
-float FlockingBehaviour::calculateDistance(const glm::vec3 &current, const glm::vec3 &against) {
+float FlockingBehaviour::calculateDistance(const glm::vec3& current, const glm::vec3& against) {
 	return abs(glm::length2(current - against));
 }
 
-void FlockingBehaviour::processCohesion(BoidEntity *const current) {
+void FlockingBehaviour::processCohesion(BoidEntity* const current) {
 
 	neighbourCount = 0;
 
@@ -94,7 +92,7 @@ void FlockingBehaviour::processCohesion(BoidEntity *const current) {
 
 }
 
-void FlockingBehaviour::processAlignment(BoidEntity *const current) {
+void FlockingBehaviour::processAlignment(BoidEntity* const current) {
 
 	neighbourCount = 0;
 
@@ -120,7 +118,7 @@ void FlockingBehaviour::processAlignment(BoidEntity *const current) {
 
 }
 
-void FlockingBehaviour::processSeperation(BoidEntity *const current) {
+void FlockingBehaviour::processSeperation(BoidEntity* const current) {
 
 	neighbourCount = 0;
 
@@ -146,7 +144,7 @@ void FlockingBehaviour::processSeperation(BoidEntity *const current) {
 
 }
 
-void FlockingBehaviour::update(const float& deltaTime_Seconds) {
+void FlockingBehaviour::update(const float& deltaTimeSeconds) {
 
 	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->update(); }
 
@@ -160,11 +158,11 @@ void FlockingBehaviour::update(const float& deltaTime_Seconds) {
 
 	}
 
-	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->postUpdate(deltaTime_Seconds); }
+	for (int i = 0; i < currentTotalBoids; ++i) { boid[i]->postUpdate(deltaTimeSeconds); }
 
 }
 
-bool FlockingBehaviour::addBoid(BoidEntity *const boid) {
+bool FlockingBehaviour::addBoid(BoidEntity* const boid) {
 
 	if (currentTotalBoids >= maxmimumBoids) { return false; }
 
@@ -176,7 +174,7 @@ bool FlockingBehaviour::addBoid(BoidEntity *const boid) {
 
 }
 
-bool FlockingBehaviour::removeBoid(const int &amount) {
+bool FlockingBehaviour::removeBoid(const int& amount) {
 
 	if (currentTotalBoids <= 0) { return false; }
 
@@ -192,27 +190,27 @@ bool FlockingBehaviour::removeBoid(const int &amount) {
 
 }
 
-void FlockingBehaviour::setSeperationDistance(const float &seperationDistance) {
+void FlockingBehaviour::setSeperationDistance(const float& seperationDistance) {
 	this->seperationDistance = seperationDistance;
 }
 
-void FlockingBehaviour::setAlignmentDistance(const float &alignmentDistance) {
+void FlockingBehaviour::setAlignmentDistance(const float& alignmentDistance) {
 	this->alignmentDistance = alignmentDistance;
 }
 
-void FlockingBehaviour::setCohesionDistance(const float &cohesionDistance) {
+void FlockingBehaviour::setCohesionDistance(const float& cohesionDistance) {
 	this->cohesionDistance = cohesionDistance;
 }
 
-void FlockingBehaviour::setSeperationWeight(const float &seperationWeight) {
+void FlockingBehaviour::setSeperationWeight(const float& seperationWeight) {
 	this->seperationWeight = seperationWeight;
 }
 
-void FlockingBehaviour::setAlignmentWeight(const float &alignmentWeight) {
+void FlockingBehaviour::setAlignmentWeight(const float& alignmentWeight) {
 	this->alignmentWeight = alignmentWeight;
 }
 
-void FlockingBehaviour::setCohesionWeight(const float &cohesionWeight) {
+void FlockingBehaviour::setCohesionWeight(const float& cohesionWeight) {
 	this->cohesionWeight = cohesionWeight;
 }
 

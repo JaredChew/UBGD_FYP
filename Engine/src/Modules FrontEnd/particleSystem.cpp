@@ -115,11 +115,11 @@ void ParticleSystem::render() {
 
 }
 
-ParticleEntity ParticleSystem::getEmittedParticle(const int &index) {
+ParticleEntity& const ParticleSystem::getEmittedParticle(const int &index) {
 	return *particlesEmitted[index];
 }
 
-int ParticleSystem::numberOfParticlesAlive() {
+int& const ParticleSystem::numberOfParticlesAlive() {
 
 	int counter = 0;
 
@@ -133,14 +133,14 @@ int ParticleSystem::numberOfParticlesAlive() {
 
 }
 
-int ParticleSystem::getMaxParticlesEmittable() {
+int& const ParticleSystem::getMaxParticlesEmittable() {
 	return maxParticlesEmittable;
 }
 
-float ParticleSystem::getEmittionDelay() {
+float& const ParticleSystem::getEmittionDelay() {
 	return emittionDelay;
 }
 
-bool ParticleSystem::getIsEmittionEnable() {
+bool& const ParticleSystem::getIsEmittionEnable() {
 	return isEmittionEnable;
 }

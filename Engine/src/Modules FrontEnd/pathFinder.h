@@ -50,7 +50,7 @@ private:
 
 private:
 
-	int calculateNodeTraversal(int x, int y);
+	int& const calculateNodeTraversal(int x, int y);
 
 	bool isAtDestination();
 	bool possiblePassthrough(const int &x, const int &y);
@@ -78,9 +78,9 @@ public:
 	void searchCotinuous();
 	void searchStepByStep();
 
-	bool getIsPathFound();
+	bool& const getIsPathFound();
 
-	std::vector<std::pair<int, int>> getPath();
-	std::queue<std::pair<int, int>> &getPreviouslySearched();
+	std::vector<std::pair<int, int>>& const getPath();
+	std::queue<std::pair<int, int>>& const getPreviouslySearched();
 
 };
