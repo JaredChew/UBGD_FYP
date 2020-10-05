@@ -50,8 +50,8 @@ void ParticleEntity::render() {
 
 	if (isDead()) { return; }
 
-	if (sprite->getIsAnimatedSprite()) { sprite->renderAnimation(*transform); }
-	else { sprite->renderSprite(*transform); }
+	//if (sprite->getIsAnimatedSprite()) { sprite->renderAnimation(*transform); }
+	//else { sprite->renderSprite(*transform); }
 
 }
 
