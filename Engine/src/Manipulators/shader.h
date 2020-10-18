@@ -9,16 +9,14 @@ namespace Shader {
 
 	void defaultDraw(const glm::mat4 &mvpMatrix);
 	void animation2DDraw(const glm::mat4& mvpMatrix, const float& row, const float& column, const float& eachRowNor, const float& eachColNor, const float& index);
+	void drawSkyBox(const glm::mat4& mvpMatrix);
 
-	void initTextureColour(const glm::mat4 &mvpMatrix, const float &r, const float &g, const float &b);
+	void colourTexture(const glm::mat4 &mvpMatrix, const float &r, const float &g, const float &b);
 	void editTexel(const glm::mat4 &mvpMatrix, const float colourRGB[3], const float position2D[2], const float dimensionXY[2]);
 	void cutFrameCell(const glm::mat4 &mvpMatrix, const int &textureWidth, const int &textureHeight, const int &frameRow, const int &frameCol);
-
 	void filterLightPass(const glm::mat4 &mvpMatrix);
 	void blendTexture(const glm::mat4 &mvpMatrix, const int &blendType, const GLuint &toBlend);
 	void blur(const glm::mat4 &mvpMatrix, const int &direction, const float &blurRadius, const float &totalWeight, const int &textureWidth, const int &textureHeight);
 	void blendColour(const glm::mat4 &mvpMatrix, const int &blendType, const float &r, const float &g, const float &b, const float &a); //, const bool &alphaBlend
-
-	void drawSkyBox(const glm::mat4 &mvpMatrix);
 
 }

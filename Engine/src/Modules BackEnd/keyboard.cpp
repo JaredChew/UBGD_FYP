@@ -5,7 +5,7 @@
 int Keyboard::keyPressStatus_set1[SET_1_KEYS];
 int Keyboard::keyPressStatus_set2[SET_2_KEYS];
 
-Keyboard::Keyboard(Window *const wnd) : wnd(wnd) {
+Keyboard::Keyboard(Window* window) : window(window) {
 
 	returnStatus = false;
 
@@ -13,7 +13,7 @@ Keyboard::Keyboard(Window *const wnd) : wnd(wnd) {
 
 	for (int i = 0; i < SET_2_KEYS; ++i) { keyPressStatus_set2[i] = (int)KeyState::CLEAR; }
 
-	glfwSetKeyCallback(wnd->getWindow(), key_callback);
+	glfwSetKeyCallback(window->getWindow(), key_callback);
 
 }
 
@@ -53,7 +53,7 @@ int& const Keyboard::getKeyPressStatus(const char &key) {
 
 bool Keyboard::isPressed(const char &key) {
 
-	return glfwGetKey(wnd->getWindow(), key);
+	return glfwGetKey(window->getWindow(), key);
 
 }
 
@@ -94,5 +94,13 @@ void Keyboard::postUpdate() {
 		if (keyPressStatus_set2[i] == (int)KeyState::PRESS || keyPressStatus_set2[i] == (int)KeyState::RELEASE) { keyPressStatus_set2[i] = (int)KeyState::CLEAR; }
 
 	}
+
+}
+
+void Keyboard::switchWindowCapture(Window* window) {
+
+	this->window = window;
+
+	glfwSetKeyCallback(window->getWindow(), key_callback);
 
 }

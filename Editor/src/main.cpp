@@ -98,7 +98,7 @@ int main(void) {
 	//Window loop
 	while (!glfwWindowShouldClose(Global::wnd->getWindow())) {
 
-		Global::wnd->update();
+		//Global::wnd->update();
 
 		// feed inputs to dear imgui, start new frame
 		ImGui_ImplOpenGL3_NewFrame();

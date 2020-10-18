@@ -3,8 +3,6 @@
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-class Window;
-
 #define SET_1_KEYS_START 32
 #define SET_2_KEYS_START 161
 
@@ -14,11 +12,13 @@ class Window;
 #define SET_1_KEYS SET_1_KEYS_END - SET_1_KEYS_START
 #define SET_2_KEYS SET_2_KEYS_END - SET_2_KEYS_START
 
+class Window;
+
 class Keyboard {
 
 private:
 
-	Window *const wnd;
+	Window* window;
 
 private:
 
@@ -39,7 +39,7 @@ private:
 	int& const getKeyPressStatus(const char &key);
 
 public:
-	Keyboard(Window *const wnd);
+	Keyboard(Window* window);
 	~Keyboard();
 
 	bool isPressed(const char &key);
@@ -48,5 +48,7 @@ public:
 	bool isHold(const char &key);
 
 	void postUpdate();
+
+	void switchWindowCapture(Window* window);
 
 };

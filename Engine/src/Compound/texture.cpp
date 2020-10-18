@@ -1,45 +1,29 @@
 #include "Texture.h"
-#include "../Utilities/logger.h"
-#include "../Manipulators/openGL.h"
+
 #include <SOIL2/SOIL2.h>
 
+#include "../Utilities/logger.h"
+#include "../Manipulators/system.h"
+
 // |*   Constructors   *|
-Texture::Texture(const GLchar* dir)
-{
-	if (dir != nullptr)
-		init(dir);
-	else
-		init();
+Texture::Texture(const GLchar* dir) {
+
+	System::initTexture(dir, textureID, width, height);
+
+}
+
+Texture::Texture( const int& width, const int& height) {
+
+	this->width = width;
+	this->height = height;
+
+	System::initTexture(textureID, 1, this->width, this->height);
 
 }
 
 Texture::~Texture()
 {
-	glDeleteTextures(1, &GtextureID);
-}
-
-
-// |*   Functions   *|
-void Texture::init(void)
-{
-	OpenGL::initTexture(GtextureID, 1, width, height);
-
-}
-void Texture::init(const char* dir)
-{
-	OpenGL::initTexture(dir, GtextureID, width, height);
-
-}
-void Texture::bind(void)
-{
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, GtextureID);
-
-}
-bool Texture::isTexture(void)
-{
-	return glIsTexture(GtextureID);
-
+	glDeleteTextures(1, &textureID);
 }
 
 
@@ -56,8 +40,8 @@ const int& const Texture::getHeight(void)
 
 }
 
-GLuint& const Texture::getGtextureID(void)
+GLuint& const Texture::getTextureID(void)
 {
-	return GtextureID;
+	return textureID;
 
 }

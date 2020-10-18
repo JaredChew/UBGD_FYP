@@ -9,13 +9,9 @@ private:
 
 	Session *nextSession;
 
-	GLuint frameBuffer;
-
 protected:
 
 	void setNextSession(Session *nextSession);
-
-	void renderToScreen(const GLuint &texture, const int &resolutionWidth, const int &resolutionHeight);
 
 public:
 

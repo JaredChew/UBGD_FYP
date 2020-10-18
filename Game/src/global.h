@@ -1,9 +1,13 @@
 #pragma once
 
-class Window;
+#include "Modules BackEnd/window.h"
+#include "Utilities/timer.h"
 
 namespace Global {
 
-	Window* wnd;
+	extern Timer* deltaTime;
+	extern Window* window;
 
-}
+	extern bool applicationRunning;
+
+};

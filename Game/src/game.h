@@ -1,6 +1,5 @@
 #pragma once
 
-class Window;
 class Keyboard;
 class Mouse;
 class Camera;
@@ -10,19 +9,16 @@ class Game {
 
 private:
 
-	Window *const wnd;
-
-private:
-
-	Keyboard *kbd;
-	Mouse *mse;
-
+	Keyboard *keyboard;
+	Mouse *mouse;
 	Camera *camera;
-
 	Session *session;
 
+private:
+	void freeCameraControl();
+
 public:
-	Game(Window *const wnd);
+	Game();
 	~Game();
 
 	void initSessionState();

@@ -39,20 +39,8 @@
     <ClCompile Include="src\Tracy\TracyClient.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Session\steeringBehaviour.cpp">
+    <ClCompile Include="src\Session\demo.cpp">
       <Filter>Source Files\Sessions</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\bait.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\fish.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\rock.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Entities\shark.cpp">
-      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,23 +50,11 @@
     <ClInclude Include="src\game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Session\steeringBehaviour.h">
+    <ClInclude Include="src\Session\demo.h">
       <Filter>Header Files\Sessions</Filter>
     </ClInclude>
-    <ClInclude Include="src\Entities\fish.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\shark.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\rock.h">
-      <Filter>Header Files\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Entities\bait.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="src\global.h">
+      <Filter>Header Files\Specifications</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
