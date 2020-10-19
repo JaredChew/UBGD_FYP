@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+<<<<<<< HEAD
 namespace Geometry {
 
 	typedef void(*SetVertexArrayBufferFunction)(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
@@ -19,26 +20,22 @@ namespace Geometry {
 	void drawSquare(const GLuint &texture);
 	void drawCircle(const GLuint &texture, const float &smoothness);
 	//void drawStadium(const GLuint& texture, const float& smoothness);
+=======
+#include <vector>
+>>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
-	void drawPyramid(const GLuint &texture);
-	void drawCube(const GLuint &texture);
-	void drawSphere(const GLuint &texture, const float &smoothness);
-	void drawCone(const GLuint &texture, const float &smoothness);
-	void drawCylinder(const GLuint &texture, const float &smoothness);
+namespace Geometry {
 
-	void drawSkyBox(const GLuint &texture);
+	void generateTriangleMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateSquareMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateCircleMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	//void generateStadiumMesh(const float& smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
 
-	void setSquare(const GLuint& shaderProgramID, GLuint& vertexArrayObject, SetVertexArrayBufferFunction function);
-
-	void setVertexArrayObject(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
-	
-	void drawVertexArrayObject(GLuint& vertexArrayObject, const GLuint& indicesSize);
-
-	static const GLuint& getSquareIndicesSize()
-	{
-		static GLuint indicesSize = 6;
-		return indicesSize;
-	};
+	void generatePyramidMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateCubeMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateSphereMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateConeMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateCylinderMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
 
 }
 

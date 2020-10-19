@@ -13,7 +13,7 @@ int Mouse::scrollDirection;
 
 int Mouse::buttonPressStatus[3];
 
-Mouse::Mouse(Window *wnd) : wnd(wnd) {
+Mouse::Mouse(Window* window) {
 
 	position = glm::vec2(-1.0f);
 	positionOffset = glm::vec2(0.0f);
@@ -26,17 +26,27 @@ Mouse::Mouse(Window *wnd) : wnd(wnd) {
 
 	for (int i = 0; i < 3; ++i) { buttonPressStatus[i] = (int)ButtonState::CLEAR; }
 
-	glfwSetCursorPosCallback(wnd->getWindow(), onMouseMove);
-	glfwSetScrollCallback(wnd->getWindow(), onMouseWheelScroll);
-	glfwSetMouseButtonCallback(wnd->getWindow(), mouse_button_callback);
+	glfwSetCursorPosCallback(window->getWindow(), onMouseMove);
+	glfwSetScrollCallback(window->getWindow(), onMouseWheelScroll);
+	glfwSetMouseButtonCallback(window->getWindow(), mouse_button_callback);
 
-	glfwSetInputMode(wnd->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 }
 
 Mouse::~Mouse() { }
 
-void Mouse::onMouseMove(GLFWwindow *wnd, double x, double y) {
+void Mouse::switchWindowCapture(Window* window) {
+
+	glfwSetCursorPosCallback(window->getWindow(), onMouseMove);
+	glfwSetScrollCallback(window->getWindow(), onMouseWheelScroll);
+	glfwSetMouseButtonCallback(window->getWindow(), mouse_button_callback);
+
+	glfwSetInputMode(window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+}
+
+void Mouse::onMouseMove(GLFWwindow *window, double x, double y) {
 
 	if (position.x == -1.0 && position.y == -1.0) {
 
@@ -63,7 +73,7 @@ void Mouse::onMouseMove(GLFWwindow *wnd, double x, double y) {
 
 }
 
-void Mouse::onMouseWheelScroll(GLFWwindow *wnd, double x, double y) {
+void Mouse::onMouseWheelScroll(GLFWwindow *window, double x, double y) {
 
 	if (y > 0.0) { scrollDirection = 1; }
 	else { scrollDirection = -1; }
@@ -83,7 +93,8 @@ void Mouse::mouse_button_callback(GLFWwindow *window, int button, int action, in
 
 bool Mouse::isPressed(const int &button) {
 
-	return glfwGetMouseButton(wnd->getWindow(), button);
+	//return glfwGetMouseButton(window->getWindow(), button);
+	return false;
 
 }
 

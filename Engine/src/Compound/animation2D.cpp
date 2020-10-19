@@ -2,12 +2,12 @@
 
 #include "../Utilities/timer.h"
 
-#include "../Modules FrontEnd/sprite.h"
 #include "../Compound/texture.h"
 
 // ---------------------------------------------------------
 // |                  **  Constructors ** 				   |
 // ---------------------------------------------------------
+
 Animation2D::Animation2D()
 	: animation2DSpriteSheet()
 {
@@ -26,6 +26,7 @@ Animation2D::Animation2D()
 	this->currentFrameRate = 0;
 
 }
+
 Animation2D::Animation2D(Timer* timer, Texture* texture, const GLuint& row, const GLuint& column, const Animation2DMode& mode)
 	: animation2DSpriteSheet(row, column, texture), animation2DMode(mode), timer(timer)
 {
@@ -41,6 +42,7 @@ Animation2D::Animation2D(Timer* timer, Texture* texture, const GLuint& row, cons
 	this->currentFrameRate = 0;
 
 }
+
 Animation2D::Animation2D(Timer* time, const Animation2DSpriteSheet& info, const Animation2DMode& mode)
 	: animation2DSpriteSheet(info), animation2DMode(mode), timer(timer)
 {
@@ -56,6 +58,7 @@ Animation2D::Animation2D(Timer* time, const Animation2DSpriteSheet& info, const 
 	this->currentFrameRate = 0;
 
 }
+
 Animation2D::~Animation2D()
 {
 	this->keyFrames.clear();
@@ -66,6 +69,7 @@ Animation2D::~Animation2D()
 // ---------------------------------------------------------
 // |                  **   Functions   ** 				   |
 // ---------------------------------------------------------
+
 void Animation2D::restartAnimation(void)
 {
 	this->currentFrameRate = 0.0f;
@@ -74,11 +78,13 @@ void Animation2D::restartAnimation(void)
 	this->targetAnimationFrameRate = static_cast<double>(this->keyFrameIndex + 1) * this->eachAnimationFrameRate;
 
 }
+
 void Animation2D::clearKeyFrame()
 {
 	this->keyFrames.clear();
 	this->totalKeyFrames = 0;
 }
+
 const bool& Animation2D::addKeyFrame(const GLuint& whichRow, const GLuint& whichColumn)
 {
 	if (whichRow >= this->animation2DSpriteSheet.rawAnimationRow || whichColumn >= this->animation2DSpriteSheet.rawAnimationCol)
@@ -96,6 +102,7 @@ const bool& Animation2D::addKeyFrame(const GLuint& whichRow, const GLuint& which
 	return true;
 
 }
+
 const bool& Animation2D::addKeyFrame(const GLuint& index)
 {
 	if (index >= this->animation2DSpriteSheet.rawTotalAnimationFrame)
@@ -113,6 +120,7 @@ const bool& Animation2D::addKeyFrame(const GLuint& index)
 	return true;
 
 }
+
 const bool& Animation2D::setKeyFrame(const GLuint& size, GLuint* indexs)
 {
 	if (indexs == nullptr)
@@ -147,6 +155,7 @@ const bool& Animation2D::setKeyFrame(const GLuint& size, GLuint* indexs)
 	return true;
 
 }
+
 const bool& Animation2D::setKeyFrameOrderDependSize(void)
 {
 	if (animation2DSpriteSheet.rawTotalAnimationFrame <= 0)
@@ -176,39 +185,42 @@ const bool& Animation2D::setKeyFrameOrderDependSize(void)
 // ---------------------------------------------------------
 // |                  **    Setters    ** 				   |
 // ---------------------------------------------------------
+
 void Animation2D::setMode(const Animation2DMode& mode)
 {
 	this->animation2DMode = mode;
 
 }
+
 void Animation2D::setAnimationFrameRate(const GLuint& frameRateInSecond)
 {
 	if (frameRateInSecond == 0) // If this frame rate equals to zero than don't let it process divide
 	{
-		this->eachAnimationFrameRate = 0.01f * OneSecondToNanosecond;
-		this->totalAnimationFrameRate = static_cast<Nanosecond>(this->totalKeyFrames) * this->eachAnimationFrameRate;
+		this->eachAnimationFrameRate = 0.01f * SECOND_TO_NANOSECOND;
+		this->totalAnimationFrameRate = static_cast<unsigned long long int>(this->totalKeyFrames) * this->eachAnimationFrameRate;
 		return;
 
 	}
 
-	this->eachAnimationFrameRate = OneSecondToNanosecond / static_cast<Nanosecond>(frameRateInSecond);
-	this->totalAnimationFrameRate = static_cast<Nanosecond>(this->totalKeyFrames) * this->eachAnimationFrameRate;
+	this->eachAnimationFrameRate = SECOND_TO_NANOSECOND / static_cast<unsigned long long int>(frameRateInSecond);
+	this->totalAnimationFrameRate = static_cast<unsigned long long int>(this->totalKeyFrames) * this->eachAnimationFrameRate;
 
 }
+
 void Animation2D::setAnimationFrameRate(const double& timeOfScenod)
 {
 	if (timeOfScenod <= 0.0) // If this frame rate equals to zero than don't let it process divide
 	{
-		this->eachAnimationFrameRate = 0.01f * OneSecondToNanosecond;
-		this->totalAnimationFrameRate = static_cast<Nanosecond>(this->totalKeyFrames) * this->eachAnimationFrameRate;
+		this->eachAnimationFrameRate = 0.01f * SECOND_TO_NANOSECOND;
+		this->totalAnimationFrameRate = static_cast<unsigned long long int>(this->totalKeyFrames) * this->eachAnimationFrameRate;
 		return;
 
 	}
 
-	this->eachAnimationFrameRate = timeOfScenod * OneSecondToNanosecond;
-	this->totalAnimationFrameRate = static_cast<Nanosecond>(this->totalKeyFrames) * this->eachAnimationFrameRate;
+	this->eachAnimationFrameRate = timeOfScenod * SECOND_TO_NANOSECOND;
+	this->totalAnimationFrameRate = static_cast<unsigned long long int>(this->totalKeyFrames) * this->eachAnimationFrameRate;
 
-	this->targetAnimationFrameRate = static_cast<Nanosecond>(keyFrameIndex + 1) * this->eachAnimationFrameRate;
+	this->targetAnimationFrameRate = static_cast<unsigned long long int>(keyFrameIndex + 1) * this->eachAnimationFrameRate;
 
 }
 
@@ -216,13 +228,29 @@ void Animation2D::setAnimationFrameRate(const double& timeOfScenod)
 // ---------------------------------------------------------
 // |                  **    Getters    ** 				   |
 // ---------------------------------------------------------
-const Nanosecond& const Animation2D::getAnimationFrameRateInSecond(void) const { return this->eachAnimationFrameRate; }
+const unsigned long long int& const Animation2D::getAnimationFrameRateInSecond(void) const { return this->eachAnimationFrameRate; }
+
 const GLuint& const Animation2D::getCurrentKeyFrame(void) const { return this->keyFrames[this->keyFrameIndex]; }
+
 const GLuint& const Animation2D::getCurrentKeyFrameIndex() const { return this->keyFrameIndex; }
+
 const Animation2DSpriteSheet& const Animation2D::getAnimation2DSpriteSheet(void) const { return this->animation2DSpriteSheet; }
+
 const Animation2DMode& const Animation2D::getAnimation2DMode(void) const { return this->animation2DMode; }
 
 
+
+void Animation2D::draw()
+{
+	/*
+	Shader::animation2DDraw(
+		(camera->projectionMatrix * camera->getViewMatrix() * transform.getModelMatrix()), //mvpMatrix
+		animation2D.getAnimation2DSpriteSheet().rawAnimationRow, animation2D.getAnimation2DSpriteSheet().rawAnimationCol,
+		animation2D.getAnimation2DSpriteSheet().eachNorRowSize, animation2D.getAnimation2DSpriteSheet().eachNorColSize,
+		animation2D.getCurrentKeyFrame()
+	);
+	*/
+}
 
 void Animation2D::update()
 {
@@ -242,7 +270,7 @@ void Animation2D::update()
 
 		}
 
-		this->targetAnimationFrameRate = static_cast<Nanosecond>(this->keyFrameIndex + 1) * this->eachAnimationFrameRate;
+		this->targetAnimationFrameRate = static_cast<unsigned long long int>(this->keyFrameIndex + 1) * this->eachAnimationFrameRate;
 
 	}
 

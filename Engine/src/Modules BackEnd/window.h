@@ -2,13 +2,12 @@
 
 #include <GLFW/glfw3.h>
 
+#include <chrono>
 #include <string>
 
 #define MINIMUM_SLEEP_TIME 10000000.0
 
 #define DYNAMIC_WINDOW_TITLE_SIZE 80
-
-class Timer;
 
 class Window {
 
@@ -33,16 +32,16 @@ private:
 
 	double fpsLimit;
 
-	long double currentTime;
 	long double totalFrames;
 	long double targetDeltaTime;
 
-	Timer* timer;
+	std::chrono::steady_clock::time_point tick;
+	std::chrono::steady_clock::time_point tock;
 
 private:
 
-	void limitFps();
-	void fpsCounter();
+	void limitFps(long double& deltaTime);
+	void fpsCounter(const long double& deltaTime);
 
 	static void onWindowResized(GLFWwindow *window, int width, int height);
 
@@ -53,26 +52,19 @@ public:
 
 	bool successfulCreation();
 
-	void update();
-
-	//void recordTick();
-	//void recordTock();
+	void update(const long double& deltaTime);
 
 	void setVsync(const bool &onOff);
 	void setFpsLimit(const double &fpsLimit);
 	void setDisplayFps(const bool &displayFps);
 	//void setDynamicTitle(const bool& dynamicTitle);
 
+	bool isDestroyed();
+
 	int& const getWidth();
 	int& const getHeight();
 
 	float& const getWindowRatio();
-
-	long double getDeltaTime();
-	long double getDeltaTime_Seconds();
-
-	long double getTimeElapsed();
-	long double getTimeElapsed_Seconds();
 
 	GLFWwindow *getWindow() const;
 

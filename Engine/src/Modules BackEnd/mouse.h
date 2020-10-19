@@ -5,17 +5,15 @@
 
 #include <glm/vec2.hpp>
 
-class Window;
-
 #define MOUSE_BUTTON_LEFT GLFW_MOUSE_BUTTON_1
 #define MOUSE_BUTTON_RIGHT GLFW_MOUSE_BUTTON_2
 #define MOUSE_BUTTON_MIDDLE GLFW_MOUSE_BUTTON_3
 
+class Window;
+
 class Mouse {
 
 private:
-
-	Window *const wnd;
 
 private:
 
@@ -40,8 +38,10 @@ private:
 
 public:
 
-	Mouse(Window *wnd);
+	Mouse(Window* window);
 	~Mouse();
+
+	void switchWindowCapture(Window* window);
 
 	bool isPressed(const int &button);
 	bool isPressedOnce(const int &button);

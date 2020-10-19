@@ -21,6 +21,4 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	//void kill();
-
 };

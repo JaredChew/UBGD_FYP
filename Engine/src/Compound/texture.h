@@ -3,26 +3,20 @@
 
 class Texture {
 private:
-	GLuint GtextureID;
+	GLuint textureID;
 	int width;
 	int height;
 
 public:
 	// |*   Constructors   *|
-	Texture(const GLchar* dir = nullptr);
+	Texture(const int& width, const int& height);
+	Texture(const GLchar* dir);
 	~Texture();
-
-
-	// |*   Functions   *|
-	void init(void);
-	void init(const char* dir);
-	void bind(void);
-	bool isTexture(void);
 
 
 	// |*   Getters   *|
 	const int& const getWidth(void);
 	const int& const getHeight(void);
-	GLuint& const getGtextureID(void);
+	GLuint& const getTextureID(void);
 
 };

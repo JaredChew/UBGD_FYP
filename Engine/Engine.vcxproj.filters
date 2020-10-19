@@ -67,23 +67,11 @@
     <Filter Include="Source Files\Modules\Back End">
       <UniqueIdentifier>{ff7eb30f-ce2a-40fe-947e-e7d9982badad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Modules\Front End\Steering">
-      <UniqueIdentifier>{342a2510-5bfd-4196-bf83-91532979e702}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules\Front End\Steering">
-      <UniqueIdentifier>{da541675-4932-4b5e-af15-6abb91a2a675}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Modules\Front End\Pathfinding">
       <UniqueIdentifier>{2e4ca00f-471a-4791-ae7f-56ef9140a452}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Modules\Front End\Pathfinding">
       <UniqueIdentifier>{82eb01e5-e23a-41c4-9efd-0c7f458d4c91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules\Front End\Particles">
-      <UniqueIdentifier>{bd40a93f-ff13-41bd-979c-81341ae56f17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\Front End\Particles">
-      <UniqueIdentifier>{be890b1f-cf56-4ea2-804f-a8f72ed16d11}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +82,6 @@
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
     <ClCompile Include="src\Manipulators\geometry.cpp">
-      <Filter>Source Files\Manipulators</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Manipulators\openGL.cpp">
       <Filter>Source Files\Manipulators</Filter>
     </ClCompile>
     <ClCompile Include="src\Manipulators\shader.cpp">
@@ -129,9 +114,6 @@
     <ClCompile Include="src\Utilities\timer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\sprite.cpp">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modules BackEnd\camera.cpp">
       <Filter>Source Files\Modules\Back End</Filter>
     </ClCompile>
@@ -147,23 +129,11 @@
     <ClCompile Include="src\Modules BackEnd\window.cpp">
       <Filter>Source Files\Modules\Back End</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\particleEntity.cpp">
-      <Filter>Source Files\Modules\Front End\Particles</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\particleSystem.cpp">
-      <Filter>Source Files\Modules\Front End\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modules FrontEnd\pathNode.cpp">
       <Filter>Source Files\Modules\Front End\Pathfinding</Filter>
     </ClCompile>
     <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp">
       <Filter>Source Files\Modules\Front End\Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\flockingBehaviour.cpp">
-      <Filter>Source Files\Modules\Front End\Steering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\boidEntity.cpp">
-      <Filter>Source Files\Modules\Front End\Steering</Filter>
     </ClCompile>
     <ClCompile Include="src\Data Structure\bitData.cpp">
       <Filter>Source Files\Data Structures</Filter>
@@ -222,6 +192,18 @@
     <ClCompile Include="src\Compound\texture.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
+    <ClCompile Include="src\Compound\mesh.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\Model.cpp">
+      <Filter>Header Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manipulators\renderer.cpp">
+      <Filter>Source Files\Manipulators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manipulators\system.cpp">
+      <Filter>Source Files\Manipulators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Math\straightLineEquation.h">
@@ -254,9 +236,6 @@
     <ClInclude Include="src\Manipulators\geometry.h">
       <Filter>Header Files\Manipulators</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manipulators\openGL.h">
-      <Filter>Header Files\Manipulators</Filter>
-    </ClInclude>
     <ClInclude Include="src\Manipulators\shader.h">
       <Filter>Header Files\Manipulators</Filter>
     </ClInclude>
@@ -287,9 +266,6 @@
     <ClInclude Include="src\Utilities\timer.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\sprite.h">
-      <Filter>Header Files\Modules\Front End</Filter>
-    </ClInclude>
     <ClInclude Include="src\Modules BackEnd\camera.h">
       <Filter>Header Files\Modules\Back End</Filter>
     </ClInclude>
@@ -304,21 +280,6 @@
     </ClInclude>
     <ClInclude Include="src\Modules BackEnd\window.h">
       <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\particleAffector.h">
-      <Filter>Header Files\Modules\Front End\Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\particleEntity.h">
-      <Filter>Header Files\Modules\Front End\Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\particleSystem.h">
-      <Filter>Header Files\Modules\Front End\Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\flockingBehaviour.h">
-      <Filter>Header Files\Modules\Front End\Steering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\boidEntity.h">
-      <Filter>Header Files\Modules\Front End\Steering</Filter>
     </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\pathFinder.h">
       <Filter>Header Files\Modules\Front End\Pathfinding</Filter>
@@ -358,6 +319,18 @@
     </ClInclude>
     <ClInclude Include="src\Compound\animation2D.h">
       <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\mesh.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\Model.h">
+      <Filter>Header Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manipulators\renderer.h">
+      <Filter>Header Files\Manipulators</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manipulators\system.h">
+      <Filter>Header Files\Manipulators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

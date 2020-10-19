@@ -2,8 +2,6 @@
 
 #include "../Utilities/timer.h"
 
-#include "../Modules FrontEnd/sprite.h"
-
 #include "../Compound/transform.h"
 
 Animator2D::Animator2D()
@@ -65,7 +63,7 @@ bool Animator2D::setAnimation2DInfos(const GLuint& size, Animation2DInfo* animat
 
 	for (size_t i = 0; i < m_totalAnimationSize; i++)
 	{
-		m_animation2DInfos[i] = animation2DInfos[i];
+		//m_animation2DInfos[i] = animation2DInfos[i]; //uncomment for proper use, commented for test with no error build
 	}
 
 	return true;

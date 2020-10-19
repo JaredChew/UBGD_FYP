@@ -1,11 +1,67 @@
-#include "openGL.h"
+#include "system.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#include <SOIL2/SOIL2.h>
+<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
+#include <SOIL2/stb_image.h>
+=======
+#include <glm/gtc/type_ptr.hpp>
 
 #include "../Utilities/logger.h"
 
-#include <SOIL2/SOIL2.h>
-#include <SOIL2/stb_image.h>
+static void System::error_callback(int error, const char* description) {
 
-bool OpenGL::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShader) {
+	Logger::getInstance()->customLog("GLFW ERROR", description);
+
+}
+
+bool System::initOpenGL() {
+
+	glfwSetErrorCallback(System::error_callback);
+
+	//Initialize GLFW library
+	if (!glfwInit()) {
+
+		Logger::getInstance()->errorLog("Failed to initialise GLFW");
+
+		return false;
+
+	}
+
+	//Set window hints
+	glfwDefaultWindowHints();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); //3
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6); //3
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		Logger::getInstance()->errorLog("Failed to initialize OpenGL context");
+		return false;
+	}
+
+	Logger::getInstance()->infoLog((char*)glGetString(GL_VERSION));
+	Logger::getInstance()->infoLog(glfwGetVersionString());
+
+	if (!GLAD_GL_VERSION_3_3) {
+
+		Logger::getInstance()->errorLog("Your device must support OpenGL 3.2+");
+
+		glfwTerminate();
+
+		return false;
+
+	}
+
+	return true;
+
+}
+>>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
+
+bool System::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShader) {
 
 	GLuint programObject = glCreateProgram();
 
@@ -60,7 +116,7 @@ bool OpenGL::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentS
 
 }
 
-void OpenGL::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
+bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
 
 	glGenTextures(size, &textureID);
 
@@ -82,62 +138,79 @@ void OpenGL::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &r
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	return true ? textureID != 0 : false;
+
 }
 
-void OpenGL::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height)
+bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height)
 {
 	int channels = 0;
 
 	glGenTextures(1, &textureID);
+<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
 	stbi_set_flip_vertically_on_load(true);
+=======
+
+>>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 	unsigned char* image = SOIL_load_image(dir, &width, &height, &channels, SOIL_LOAD_AUTO);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	if (0 == image)
-	{
-		std::string errorResult = SOIL_last_result();
-		Logger::getInstance()->errorLog("SOIL loading error: $s", errorResult);
+	if (image == 0) {
+
+		Logger::getInstance()->errorLog("SOIL loading error: $s", SOIL_last_result());
+
+		return false;
 
 	}
-	else
-	{
-		GLenum format = 0;
 
-		switch (channels)
-		{
-		case SOIL_LOAD_L:
-			format = GL_RED;
-			break;
+	GLenum format = 0;
 
-		case SOIL_LOAD_RGB:
-			format = GL_RGB;
-			break;
-
-		case SOIL_LOAD_RGBA:
-			format = GL_RGBA;
-			break;
-		}
-		//glGenerateMipmap(GL_TEXTURE_2D);
-
+<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
 		//GL_NEAREST_MIPMAP_NEAREST
+=======
+	switch (channels)
+	{
+	case SOIL_LOAD_L:
+		format = GL_RED;
+		break;
+>>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 
-		glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
+	case SOIL_LOAD_RGB:
+		format = GL_RGB;
+		break;
 
+<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
 		glGenerateMipmap(GL_TEXTURE_2D);
 
+=======
+	case SOIL_LOAD_RGBA:
+		format = GL_RGBA;
+		break;
+>>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 	}
+
+	//glGenerateMipmap(GL_TEXTURE_2D);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
 
 	SOIL_free_image_data(image);
 
+	return true;
+
 }
 
-void OpenGL::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
+bool System::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
 
 	glGenTextures(1, &textureID);
 
@@ -153,9 +226,11 @@ void OpenGL::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionW
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	return true ? textureID != 0 : false;
+
 }
 
-bool OpenGL::checkIsFramebufferReady() {
+bool System::checkIsFramebufferReady() {
 
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
@@ -205,128 +280,98 @@ bool OpenGL::checkIsFramebufferReady() {
 
 }
 
-GLuint OpenGL::loadShader(GLenum type, const char *shaderSrc) {
+void System::loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const GLfloat* vertices, const GLuint& verticesSize, const GLuint* indices, const GLuint& indicesSize) {
 
-	GLuint shader;
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, verticesSize * sizeof(GLfloat), (void*)vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize * sizeof(GLuint), (void*)indices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0); //Position
+	glEnableVertexAttribArray(1); //TexCoord
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+}
+
+bool System::loadShaderRaw(GLuint& shaderID, const GLenum& type, const char *shaderSrc) {
+
 	GLint compiled;
 
 	// Create the shader object
-	shader = glCreateShader(type);
+	shaderID = glCreateShader(type);
 
-	if (shader == 0) { return 0; }
+	if (shaderID == 0) { return false; }
 
 	// Load the shader source
-	glShaderSource(shader, 1, &shaderSrc, NULL);
+	glShaderSource(shaderID, 1, &shaderSrc, NULL);
 
 	// Compile the shader
-	glCompileShader(shader);
+	glCompileShader(shaderID);
 
 	// Check the compile status
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
 
 	if (!compiled) {
 
 		GLint infoLen = 0;
 
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
+		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLen);
 
-		if (infoLen > 1) {
+		if (infoLen == 0) {
 
 			char infoLog[4096];
 
-			glGetShaderInfoLog(shader, infoLen, NULL, infoLog);
+			glGetShaderInfoLog(shaderID, infoLen, NULL, infoLog);
 
 			Logger::getInstance()->warningLog("Failed to compile shader %s", static_cast<std::string>(infoLog));
 
 		}
 
-		glDeleteShader(shader);
+		glDeleteShader(shaderID);
 
-		return 0;
+		return false;
 
 	}
 
-	return shader;
+	return true;
 
 }
 
-GLuint OpenGL::loadShaderFromFile(GLenum shaderType, std::string path) {
-
-	GLuint shaderID = 0;
+bool System::loadShaderFromFile(GLuint& shaderID, const GLenum& type, const std::string& path) {
 
 	std::string shaderString;
 	std::ifstream sourceFile(path.c_str());
 
-	if (sourceFile) {
-
-		shaderString.assign((std::istreambuf_iterator< char >(sourceFile)), std::istreambuf_iterator< char >());
-
-		const GLchar *shaderSource = shaderString.c_str();
-
-		return OpenGL::loadShader(shaderType, shaderSource);
-
-	}
-	else {
+	if (!sourceFile) {
 
 		Logger::getInstance()->warningLog("Unable to open file %s", path);
 
+		return false;
+
 	}
 
-	return shaderID;
+	shaderString.assign((std::istreambuf_iterator< char >(sourceFile)), std::istreambuf_iterator< char >());
+
+	const GLchar* shaderSource = shaderString.c_str();
+
+	return System::loadShaderRaw(shaderID, type, shaderSource);
 
 }
 
-/*
-void OpenGL::loadTexture(const char *path, GLuint &textureID) 
-{
-
-	int resolutionWidth, resolutionHeight;
-
-	unsigned char* image = SOIL_load_image(path, &resolutionWidth, &resolutionHeight, NULL, SOIL_LOAD_AUTO);
-
-	//if(image) { printf("SOIL loading error: '%s'\n", SOIL_last_result()); }
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// bilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	SOIL_free_image_data(image);
-
-	delete image;
-	image = nullptr;
-
-}
-
-void OpenGL::loadTexture(const void* image, GLuint& textureID, const GLuint& resolutionWidth, const GLuint& resolutionHeight) {
-
-	glGenTextures(1, &textureID);
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	// bilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-}
-*/
-
-void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint &textureID) {
+bool System::loadCubemapTexture(GLuint& textureID, const std::vector<std::string>& facesPath) {
 
 	unsigned char* image;
 
@@ -335,6 +380,8 @@ void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint
 	glActiveTexture(GL_TEXTURE0);
 
 	glEnable(GL_TEXTURE_CUBE_MAP);
+
+	glGenTextures(1, &textureID);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
@@ -361,12 +408,11 @@ void OpenGL::loadCubemapTexture(std::vector<std::string> facesPath, const GLuint
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	delete image;
-	image = nullptr;
+	return true ? textureID != 0 : false;
 
 }
 
-void OpenGL::editTexel(const GLuint &textureID, const int &xOffset, const int &yOffset, const uint8_t &r, const uint8_t &g, const uint8_t &b) {
+void System::editTexel(const GLuint &textureID, const int &xOffset, const int &yOffset, const uint8_t &r, const uint8_t &g, const uint8_t &b) {
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -375,5 +421,24 @@ void OpenGL::editTexel(const GLuint &textureID, const int &xOffset, const int &y
 	glTexSubImage2D(GL_TEXTURE_2D, 0, xOffset, yOffset, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+void System::applyBillboard(glm::mat4& modelViewMatrix) {
+
+	// 1st colunm
+	glm::value_ptr(modelViewMatrix)[0] = 1.0;
+	glm::value_ptr(modelViewMatrix)[1] = 0.0;
+	glm::value_ptr(modelViewMatrix)[2] = 0.0;
+
+	// 2nd colunm
+	glm::value_ptr(modelViewMatrix)[4] = 0.0;
+	glm::value_ptr(modelViewMatrix)[5] = 1.0;
+	glm::value_ptr(modelViewMatrix)[6] = 0.0;
+
+	// 3rd colunm
+	glm::value_ptr(modelViewMatrix)[8] = 0.0;
+	glm::value_ptr(modelViewMatrix)[9] = 0.0;
+	glm::value_ptr(modelViewMatrix)[10] = 1.0;
 
 }

@@ -1,212 +1,54 @@
 #include "camera.h"
 
-#include "window.h"
-#include "mouse.h"
-#include "keyboard.h"
+#include "../Compound/transform.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(Window *const wnd, Keyboard *const kbd, Mouse *const mse, const float &cameraSpeed, const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) : wnd(wnd), kbd(kbd), mse(mse) {
+Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
 
-	this->position = position;
-	this->rotation = rotation;
-	this->dimension = dimension;
-
-	this->cameraSpeed = cameraSpeed;
+	transform = new Transform();
 
 	projectionMatrix = glm::mat4(1.0f);
-
-	viewMatrix = glm::mat4(1.0f);
 	orientation = glm::mat4(1.0f);
-
-	updateViewMatrix = true;
-
-	renderWidth = wnd->getWidth();
-	renderHeight = wnd->getWidth();
-	renderRatio = renderWidth / renderHeight;
-
-	renderQuality = 100.0f;
 
 }
 
 Camera::~Camera() { }
 
-void Camera::translate(const glm::vec3 &translate) {
-	position += glm::vec3(-translate.x, translate.y, translate.z);
-	updateViewMatrix = true;
-}
+void Camera::setProjectionPerspective(const float& fov, const float& windowRatio, const float& near, const float& far) {
 
-void Camera::rotate(const glm::vec3 &rotate) {
-
-	orientation = (glm::rotate(glm::mat4(1.0f), glm::radians(-rotate.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotate.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotate.z), glm::vec3(1.0f, 0.0f, 1.0f))) *
-
-		orientation;
-
-	rotation += rotate;
-
-	updateViewMatrix = true;
+	projectionMatrix = glm::perspective<float>(glm::radians(fov), windowRatio, near, far);
 
 }
 
-void Camera::scale(const glm::vec2 &scale) {
-	dimension += scale;
-	updateViewMatrix = true;
-}
+void Camera::setProjectionOrthographic(const float& left, const float& right, const float& bottom, const float& top, const float& near, const float& far) {
 
-void Camera::translateLocal(const glm::vec3 &translate) {
+	projectionMatrix = glm::ortho<float>(left, right, bottom, top, near, far);
 
-	this->position += glm::vec3(orientation * glm::vec4(-translate.x, translate.y, translate.z, 1.0f));
-
-	updateViewMatrix = true;
-
-}
-
-void Camera::rotateLocal(const glm::vec3 &rotate) {
-
-	orientation = orientation *
-		(glm::rotate(glm::mat4(1.0f), glm::radians(-rotate.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		 glm::rotate(glm::mat4(1.0f), glm::radians(rotate.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-		 glm::rotate(glm::mat4(1.0f), glm::radians(rotate.z), glm::vec3(1.0f, 0.0f, 1.0f)));
-
-	rotation += rotate;
-
-	updateViewMatrix = true;
-
-}
-
-void Camera::setPosition(const glm::vec3 &position) {
-	this->position = position;
-	updateViewMatrix = true;
-}
-
-void Camera::setRotation(const glm::vec3 &rotation) {
-	this->rotation = rotation;
-	updateViewMatrix = true;
-}
-
-void Camera::setDimension(const glm::vec2 &dimension) {
-	this->dimension = dimension;
-	updateViewMatrix = true;
-}
-
-void Camera::setPlot(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
-
-	this->position = position;
-	this->rotation = rotation;
-	this->dimension = dimension;
-
-	updateViewMatrix = true;
-
-}
-
-void Camera::setSpeed(const float &cameraSpeed) {
-	this->cameraSpeed = cameraSpeed;
-	updateViewMatrix = true;
-}
-
-void Camera::setRenderQuality(const int &renderQuality) {
-
-	this->renderQuality = renderQuality;
-
-	if (this->renderQuality <= 0) { this->renderQuality = 1; }
-
-	renderWidth = renderWidth * (renderQuality / 100);
-	renderHeight = renderHeight * (renderQuality / 100);
-
-	renderRatio = renderWidth / renderHeight;
-
-}
-
-void Camera::unlockedControls() {
-
-	if (!kbd->isPressed('Z')) { return; }
-
-	//move
-	if (mse->isPressed(MOUSE_BUTTON_MIDDLE)) {
-
-		translate(glm::vec3(mse->getPositionOffset().x * 0.01f, -mse->getPositionOffset().y * 0.01f, 0.0f));
-		//translateLocal(glm::vec3(mse->getPositionOffset().x * 0.01f, -mse->getPositionOffset().y * 0.01f, 0.0f));
-
-	}
-
-	//zoom
-	if (mse->getScrollDirection() != 0.0) { position.z -= mse->getScrollDirection() * 2.5f; }
-
-	//rotate
-	if (mse->isPressed(MOUSE_BUTTON_RIGHT)) {
-
-		rotate(glm::vec3(0.0f, mse->getPositionOffset().x * 0.1f, 0.0f));
-		rotateLocal(glm::vec3(mse->getPositionOffset().y * -0.1f, 0.0f, 0.0f));
-
-	}
-
-	updateViewMatrix = true;
-
-}
-
-void Camera::update() {
-
-	if (ENABLE_FREE_MOVEMENT) { unlockedControls(); }
-
-}
-
-glm::vec3& const Camera::getPosition() {
-	return position;
-}
-
-glm::vec3& const Camera::getRotation() {
-	return rotation;
-}
-
-glm::vec2& const Camera::getDimension() {
-	return dimension;
 }
 
 glm::mat4& const Camera::getOrientation() {
 	return orientation;
 }
 
-float& const Camera::getSpeed() {
-	return cameraSpeed;
-}
+const glm::mat4& const Camera::getViewMatrix() {
 
-int& const Camera::getRenderWidth() {
-	return renderWidth;
-}
-
-int& const Camera::getRenderHeight() {
-	return renderHeight;
-}
-
-int& const Camera::getRenderRatio() {
-	return renderRatio;
-}
-
-float& const Camera::getRenderQuality() {
-	return renderQuality;
-}
-
-glm::mat4& const Camera::getViewMatrix() {
-
-	if (updateViewMatrix) { viewMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-position.x, position.y, -position.z)) * orientation * glm::scale(glm::mat4(1.0f), glm::vec3(dimension.x, dimension.y, 0.0f)); }
-	//if (updateViewMatrix) { viewMatrix = orientation * glm::translate(glm::mat4(1.0f), glm::vec3(position.x, position.y, -position.z)) * glm::scale(glm::mat4(1.0f), dimension); }
-
-	updateViewMatrix = false;
-
-	return  viewMatrix; //glm::inverse(viewMatrix)
+	return  transform->getModelMatrix(); //glm::inverse(viewMatrix)
 
 }
 
-glm::mat4& const Camera::getViewMatrixWithoutTranslate() {
+const glm::mat4& const Camera::getViewMatrixWithoutTranslate() {
 
 	return glm::mat4(
 
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f))
+		glm::rotate(glm::mat4(1.0f), glm::radians(transform->getRotationLocal().x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(transform->getRotationLocal().y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(transform->getRotationLocal().z), glm::vec3(0.0f, 0.0f, 1.0f))
 
 	);
 
+}
+
+glm::mat4& const Camera::getProjectionMatrix() {
+	return projectionMatrix;
 }
