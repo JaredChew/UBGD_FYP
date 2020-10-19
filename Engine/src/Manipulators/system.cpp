@@ -4,9 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include <SOIL2/SOIL2.h>
-<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
 #include <SOIL2/stb_image.h>
-=======
+
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../Utilities/logger.h"
@@ -59,7 +58,6 @@ bool System::initOpenGL() {
 	return true;
 
 }
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 
 bool System::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentShader, const GLuint &vertexShader) {
 
@@ -147,11 +145,8 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 	int channels = 0;
 
 	glGenTextures(1, &textureID);
-<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
 	stbi_set_flip_vertically_on_load(true);
-=======
 
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 	unsigned char* image = SOIL_load_image(dir, &width, &height, &channels, SOIL_LOAD_AUTO);
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -166,41 +161,29 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 
 	GLenum format = 0;
 
-<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	switch (channels) {
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
-		//GL_NEAREST_MIPMAP_NEAREST
-=======
-	switch (channels)
-	{
 	case SOIL_LOAD_L:
 		format = GL_RED;
 		break;
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
 
 	case SOIL_LOAD_RGB:
 		format = GL_RGB;
 		break;
 
-<<<<<<< HEAD:Engine/src/Manipulators/openGL.cpp
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-=======
 	case SOIL_LOAD_RGBA:
 		format = GL_RGBA;
 		break;
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487:Engine/src/Manipulators/system.cpp
-	}
 
-	//glGenerateMipmap(GL_TEXTURE_2D);
+	}
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
+
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
 

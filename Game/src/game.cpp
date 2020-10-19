@@ -14,56 +14,31 @@
 #include "Modules BackEnd/keyboard.h"
 #include "Modules BackEnd/mouse.h"
 
-<<<<<<< HEAD
-#include "Session/steeringBehaviour.h"
 #include "Session/Testing_Scene.h"
-=======
+
 #include "Manipulators/renderer.h"
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
 #include "Compound/transform.h"
 
-<<<<<<< HEAD
-	//Init Opengl state
-	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	//glClearDepth(1.0f); // Depth Buffer Setup
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);	// The Type Of Depth Testing To Do
-=======
 #include "Session/demo.h"
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
 Game::Game() {
 
 	keyboard = new Keyboard(Global::window);
 	mouse = new Mouse(Global::window);
 
-<<<<<<< HEAD
-	//wireframe mode
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glLineWidth(2.5f);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-	glPointSize(10.0f);
-
-=======
 	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
-
-	camera->setProjectionPerspective(glm::radians(FOV), Global::window->getWindowRatio(), 0.3f, 1000.0f);
-	//camera->setProjectionOrthographic(-1.0f, 1.0f, -1.0f, 1.0f, 0.5f, 30.0f);
-
-<<<<<<< HEAD
-	camera = new Camera(wnd, kbd, mse, 3.0f, glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 	float w = 0.0f, h = 0.0f;
-	if (wnd->getHeight() < wnd->getWidth())
+	float winH = static_cast<float>(Global::window->getHeight()), winW = static_cast<float>(Global::window->getWidth());
+	if (winH < winW)
 	{
 		w = 0.1f * FOV;
-		h = 0.1f * static_cast<float>(wnd->getHeight()) / static_cast<float>(wnd->getWidth()) * FOV;
+		h = 0.1f * winH / winW * FOV;
 	}
-	else if (wnd->getHeight() > wnd->getWidth())
+	else if (winH > winW)
 	{
-		w = 0.1f * static_cast<float>(wnd->getWidth()) / static_cast<float>(wnd->getHeight()) * FOV;
+		w = 0.1f * winW / winH * FOV;
 		h = 0.1f * FOV;
 	}
 	else
@@ -72,20 +47,23 @@ Game::Game() {
 		h = 0.1f * FOV;
 	}
 
+	//wireframe mode
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glLineWidth(2.5f);
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	//glPointSize(10.0f);
+
+	//camera->setProjectionPerspective(glm::radians(FOV), Global::window->getWindowRatio(), 0.3f, 1000.0f);
+	camera->setProjectionOrthographic(-w, w, -h, h, 0.5f, 300.0f);
 
 
-	//camera->projectionMatrix = glm::perspective<float>(glm::radians(FOV), wnd->getWindowRatio(), 0.5f, 1000.0f);
-	camera->projectionMatrix = glm::ortho<float>(-w, w, -h, h, 0.5f, 300.0f);
-
-	session = new Testing_Scene(wnd, kbd, mse, camera);
-	//session = new SteeringBehaviour_Demo(wnd, kbd, mse, camera);
-=======
 	Renderer::start(WINDOW_WIDTH, WINDOW_HEIGHT);
 	Renderer::getInstance()->useWindow(Global::window->getWindow());
 	Renderer::getInstance()->useCamera(camera);
 
+	//session = new Testing_Scene();
 	session = new Demo();
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
 }
 

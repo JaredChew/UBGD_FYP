@@ -4,65 +4,6 @@
 
 #include <glm/gtc/constants.hpp>
 
-<<<<<<< HEAD
-/*
-typedef void(*GeometryCreateShadeP1Func)(const GLuint& texture);
-typedef void(*GeometryCreateShadeP2Func)(const GLuint& texture, const float& smoothness);
-
-void nullGeometryShadeP1Func(const GLuint& texture);
-void nullGeometryShadeP2Func(const GLuint& texture, const float& smoothness);
-
-GeometryCreateShadeP1Func Triangle_Func = triangle;
-GeometryCreateShadeP1Func Square_Func = Geometry::drawSquare;
-GeometryCreateShadeP2Func Circle_Func = Geometry::drawCircle;
-
-GeometryCreateShadeP1Func Pyramid_Func = Geometry::drawPyramid;
-GeometryCreateShadeP1Func Cube_Func = Geometry::drawCube;
-GeometryCreateShadeP2Func Sphere_Func = Geometry::drawSphere;
-GeometryCreateShadeP2Func Cone_Func = Geometry::drawCone;
-GeometryCreateShadeP2Func Cylinder_Func = Geometry::drawCylinder;
-GeometryCreateShadeP1Func SkyBox_Func = Geometry::drawSkyBox;
-
-void nullGeometryCreateShadeP1Func(const GLuint& texture)
-{
-	return;
-}
-
-void nullGeometryCreateShadeP2Func(const GLuint& texture, const float& smoothness)
-{
-	return;
-}
-
-void triangle(const GLuint& texture) {
-
-	static GLfloat vVertices[] = {
-
-		-1.0f,  0.0f, 0.0f,
-		-1.0f,  1.0f, 0.0f,
-		 1.0f,  0.0f, 0.0f
-
-	};
-
-	static GLfloat vColors[] = {
-
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-
-	};
-
-	static GLfloat vTexCoords[] = {
-
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 0.0f,
-
-	};
-
-	Triangle_Func = nullGeometryCreateShadeP1Func;
-}
-*/
-
 void Geometry::squareLighting(GLuint& texture)
 {
 	static GLfloat vVertices[] = {
@@ -502,10 +443,7 @@ void Geometry::circle(GLuint& texture)
 
 }
 
-void Geometry::drawTriangle(const GLuint &texture) {
-=======
 void Geometry::generateTriangleMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
 	static GLfloat _vertices[] = {
 
@@ -535,28 +473,10 @@ void Geometry::generateSquareMesh(std::vector<GLfloat>& vertices, std::vector<GL
 		1, 2, 3
 
 	};
-<<<<<<< HEAD
-	
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	static GLuint vao_Square;
-	if (vao_Square == 0) { glGenVertexArrays(1, &vao_Square); }
-	glBindVertexArray(vao_Square);
-
-	static unsigned int verticesBuffer_Square;
-	if (verticesBuffer_Square == 0) { glGenBuffers(1, &verticesBuffer_Square); }
-		
-	glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer_Square);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vVertices) + sizeof(vColors) + sizeof(vTexCoords), vVertices, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vVertices), vVertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vVertices), sizeof(vColors), vColors);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(vVertices) + sizeof(vColors), sizeof(vTexCoords), vTexCoords);
-=======
 
 	for (int i = 0; i < sizeof(_vertices) / sizeof(GLfloat); ++i) {
 
 		vertices.push_back(_vertices[i]);
->>>>>>> 4127e5edbe708cd7ead2500ddedf2d0860d10487
 
 	}
 
