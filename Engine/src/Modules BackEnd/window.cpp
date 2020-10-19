@@ -16,7 +16,7 @@ Window::Window(const int &width, const int &height, const std::string &title, GL
 	this->width = width;
 	this->height = height;
 
-	this->windowRatio = width / height;
+	this->windowRatio = static_cast<float>(width) / static_cast<float>(height);
 
 	this->title = title;
 
@@ -91,7 +91,7 @@ void Window::onWindowResized(GLFWwindow *window, int widthResize, int heightResi
 	width = widthResize;
 	height = heightResize;
 
-	windowRatio = width / height;
+	windowRatio = static_cast<float>(width) / static_cast<float>(height);
 
 	glViewport(0, 0, width, height);					// Reset The Current Viewport
 

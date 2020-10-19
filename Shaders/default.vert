@@ -1,6 +1,6 @@
 #version 460 core
 
-attribute vec4 vPosition;
+attribute vec3 vPosition;
 attribute vec4 vColor;
 attribute vec2 vTexCoord;
 
@@ -14,8 +14,8 @@ void main() {
 	
 	fColor = vColor;
 	fTexCoord = vTexCoord;
-	fPosition = vPosition;
+	fPosition = vec4(vPosition, 1.0f);
 
-	gl_Position = uMvpMatrix * vPosition;
+	gl_Position = uMvpMatrix * vec4(vPosition, 1.0f);
 
 }

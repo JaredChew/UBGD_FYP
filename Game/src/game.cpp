@@ -15,12 +15,13 @@
 #include "Modules BackEnd/mouse.h"
 
 #include "Session/steeringBehaviour.h"
+#include "Session/Testing_Scene.h"
 
 Game::Game(Window *const wnd) : wnd(wnd) {
 
 	//Init Opengl state
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
-	glClearDepth(1.0f); // Depth Buffer Setup
+	//glClearDepth(1.0f); // Depth Buffer Setup
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);	// The Type Of Depth Testing To Do
 
@@ -30,16 +31,40 @@ Game::Game(Window *const wnd) : wnd(wnd) {
 
 	//wireframe mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glLineWidth(2.5f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	glPointSize(10.0f);
+
 
 	kbd = new Keyboard(wnd);
 	mse = new Mouse(wnd);
 
-	camera = new Camera(wnd, kbd, mse, 3.0f, glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera = new Camera(wnd, kbd, mse, 3.0f, glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
-	camera->projectionMatrix = glm::perspective<float>(glm::radians(FOV), wnd->getWindowRatio(), 0.3f, 1000.0f);
-	//camera->projectionMatrix = glm::ortho<float>(-1.0f, 1.0f, -1.0f, 1.0f, 0.5f, 30.0f);
+	float w = 0.0f, h = 0.0f;
+	if (wnd->getHeight() < wnd->getWidth())
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * static_cast<float>(wnd->getHeight()) / static_cast<float>(wnd->getWidth()) * FOV;
+	}
+	else if (wnd->getHeight() > wnd->getWidth())
+	{
+		w = 0.1f * static_cast<float>(wnd->getWidth()) / static_cast<float>(wnd->getHeight()) * FOV;
+		h = 0.1f * FOV;
+	}
+	else
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * FOV;
+	}
 
-	session = new SteeringBehaviour_Demo(wnd, kbd, mse, camera);
+
+
+	//camera->projectionMatrix = glm::perspective<float>(glm::radians(FOV), wnd->getWindowRatio(), 0.5f, 1000.0f);
+	camera->projectionMatrix = glm::ortho<float>(-w, w, -h, h, 0.5f, 300.0f);
+
+	session = new Testing_Scene(wnd, kbd, mse, camera);
+	//session = new SteeringBehaviour_Demo(wnd, kbd, mse, camera);
 
 }
 

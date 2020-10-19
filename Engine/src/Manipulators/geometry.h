@@ -7,6 +7,14 @@ namespace Geometry {
 
 	typedef void(*SetVertexArrayBufferFunction)(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
 
+	void squareLighting(GLuint& texture);
+
+	void cudeLighting(GLuint& texture);
+
+	void triangle(GLuint& texture);
+	void square(GLuint& texture);
+	void circle(GLuint& texture);
+
 	void drawTriangle(const GLuint &texture);
 	void drawSquare(const GLuint &texture);
 	void drawCircle(const GLuint &texture, const float &smoothness);
