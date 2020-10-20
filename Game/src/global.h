@@ -5,9 +5,9 @@
 
 namespace Global {
 
-	extern Timer* deltaTime;
-	extern Window* window;
+	Timer* deltaTime;
+	Window* window;
 
-	extern bool applicationRunning;
+	bool applicationRunning;
 
 };

@@ -14,7 +14,7 @@
 #include "Modules BackEnd/keyboard.h"
 #include "Modules BackEnd/mouse.h"
 
-#include "Session/Testing_Scene.h"
+//#include "Session/Testing_Scene.h"
 
 #include "Manipulators/renderer.h"
 

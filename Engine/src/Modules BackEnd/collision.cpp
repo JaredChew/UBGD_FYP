@@ -10,6 +10,8 @@ Collision::Collision(Transform* const transform, const glm::vec4& dimension, con
 
 	centerOffset = glm::vec3(0.0f);
 
+	entityCollidedID = 0;
+
 	this->type = type;
 
 }
@@ -66,7 +68,7 @@ bool Collision::withinBoundingSphere(Collision& collider) {
 	return !count;
 
 }
-
+/*
 bool Collision::withinBoundingStadium(Collision& collider) {
 
 	int count = 0;
@@ -86,7 +88,7 @@ bool Collision::withinBoundingCapsule(Collision& collider) {
 	return !count;
 
 }
-
+*/
 void Collision::setCenterOffset(const glm::vec3& centerOffset) {
 	this->centerOffset = centerOffset;
 }
@@ -149,23 +151,24 @@ bool Collision::isColliding(Collision& collider) {
 
 	switch (type) {
 
-	case BoundaryShape::BOX:
-		return withinBoundingBox(collider);
+		case BoundaryShape::BOX:
+			return withinBoundingBox(collider);
 
-	case BoundaryShape::CUBE:
-		return withinBoundingCube(collider);
+		case BoundaryShape::CUBE:
+			return withinBoundingCube(collider);
 
-	case BoundaryShape::CIRCLE:
-		return withinBoundingCircle(collider);
+		case BoundaryShape::CIRCLE:
+			return withinBoundingCircle(collider);
 
-	case BoundaryShape::SPHERE:
-		return withinBoundingSphere(collider);
+		case BoundaryShape::SPHERE:
+			return withinBoundingSphere(collider);
+	/*
+		case BoundaryShape::CAPSULE:
+			return withinBoundingCapsule(collider);
 
-	case BoundaryShape::CAPSULE:
-		return withinBoundingCapsule(collider);
-
-	case BoundaryShape::STADIUM:
-		return withinBoundingStadium(collider);
+		case BoundaryShape::STADIUM:
+			return withinBoundingStadium(collider);
+	*/
 
 	}
 

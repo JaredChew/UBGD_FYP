@@ -1,68 +1,82 @@
 #pragma once
 
-#include "animation2D.h"
-#include <memory>
+#include <glad/glad.h>
 
-class Timer;
+#include <vector>
 
-struct Animation2DInfo
-{
+class Animator2D {
+
 private:
 	const int SECOND_TO_NANOSECOND = 100000000;
 
 public:
-	std::shared_ptr<Animation2D> m_animation2D;
-	unsigned long long int m_elapseTime;
 
-public:
-	Animation2DInfo()
-	{
-		m_animation2D = nullptr;
-		m_elapseTime = 0;
-	}
+	enum class AnimationMode { ONE_SHOT, LOOP };
 
-	Animation2DInfo(Animation2D& animation2D, const unsigned long long int& elapseTime = 0)
-	{
-		m_animation2D = std::make_shared<Animation2D>(animation2D);
-		m_elapseTime = ((elapseTime < 0.0f) ? 0.0f : elapseTime);
-	}
-
-	Animation2DInfo(Animation2D* animation2D, const unsigned long long int& elapseTime = 0)
-	{
-		m_animation2D = std::shared_ptr<Animation2D>(animation2D);
-		m_elapseTime = ((elapseTime < 0) ? 0 : elapseTime);
-	}
-
-};
-
-class Animator2D
-{
 private:
-	std::vector<Animation2DInfo> m_animation2DInfos;
 
-	GLuint m_currentAnimationIndex;
-	GLuint m_nextAnimationIndex;
+	AnimationMode mode;
 
-	GLsizei m_totalAnimationSize;
+	GLuint rawAnimationRow;
+	GLuint rawAnimationCol;
+	GLuint rawTotalAnimationFrame;
 
-	unsigned long long int m_animation2D_TotalElapseTimer;
-	unsigned long long int m_animation2D_CurrentElapseTimer;
+	GLsizei eachNorRowSize;
+	GLsizei eachNorColSize;
 
-	Timer* timer;
+	GLuint totalKeyFrames;
+	GLuint keyFrameIndex; //, totalPassedFrames;
+
+	GLuint currentAnimationIndex;
+	GLuint nextAnimationIndex;
+
+	GLsizei totalAnimationSize;
+
+	std::vector<GLuint> keyFrames; // The Animation2D itself
+
+	//need to use unsigned long long int or is float and int enough?
+	unsigned long long int totalAnimationFrameRate;
+	unsigned long long int eachAnimationFrameRate;
+	unsigned long long int targetAnimationFrameRate;
+	unsigned long long int currentFrameRate;
+
+	unsigned long long int totalElapseTimer;
+	unsigned long long int currentElapseTimer;
+
+private:
+
+	void updateAnimation(const float& deltaTime_Seconds);
+
 
 public:
-	Animator2D();
-	Animator2D(Timer* timer);
+
+	Animator2D(const GLuint& row, const GLuint& column, const AnimationMode& mode = AnimationMode::ONE_SHOT);
 	~Animator2D();
 
-	bool addAnimation2DInfo(const Animation2DInfo& animation2DInfo);
-	bool setAnimation2DInfos(const GLuint& size, Animation2DInfo* animation2DInfos);
+	void update(const float& deltaTime_Seconds);
+
+	void restartAnimation();
+	void clearKeyFrame();
+
+	const bool& addKeyFrame(const GLuint& whichRow, const GLuint& whichColumn);
+	const bool& addKeyFrame(const GLuint& index);
+
+	const bool& setKeyFrame(const GLuint& size, GLuint* indexs);
+	const bool& setKeyFrameOrderDependSize();
+
+	void setAnimationMode(const AnimationMode& mode);
+	void setAnimationFrameRate(const GLuint& frameRateInSecond); // One second have how many key frame
+	void setAnimationFrameRate(const double& timeOfScenod); // One second have how many key frame
 
 	bool setNextAnimationIndex(const GLuint& index);
 
-	void update();
+	const unsigned long long int& const getAnimationFrameRateInSecond() const;
 
-	Animation2D& getCurrentAnimation2D();
+	const GLuint& const getCurrentKeyFrame() const;
+	const GLuint& const getCurrentKeyFrameIndex() const;
+
+	const AnimationMode& const getAnimationMode() const;
+
 	GLuint& getCurrentAnimationIndex();
 	GLuint& getNextAnimationIndex();
 
