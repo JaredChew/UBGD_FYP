@@ -171,12 +171,6 @@
     <ClCompile Include="src\edtaa3func.c">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.cpp">
-      <Filter>Source Files\Data Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.cpp">
-      <Filter>Source Files\Data Structures</Filter>
-    </ClCompile>
     <ClCompile Include="src\Modules BackEnd\library.cpp">
       <Filter>Source Files\Modules\Back End</Filter>
     </ClCompile>
@@ -295,12 +289,6 @@
     </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\audio.h">
       <Filter>Header Files\Modules\Front End</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.h">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.h">
-      <Filter>Header Files\Data Structures</Filter>
     </ClInclude>
     <ClInclude Include="src\Modules BackEnd\library.h">
       <Filter>Header Files\Modules\Back End</Filter>

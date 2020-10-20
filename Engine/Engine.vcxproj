@@ -11,8 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.cpp" />
-    <ClCompile Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.cpp" />
     <ClCompile Include="src\Compound\animation2D.cpp" />
     <ClCompile Include="src\Compound\animator2D.cpp" />
     <ClCompile Include="src\Compound\mesh.cpp" />
@@ -56,8 +54,6 @@
     <ClCompile Include="src\vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitPacker.h" />
-    <ClInclude Include="..\..\Data Communication and Networking\Assignment 1\Assignment 1\bitSplitter.h" />
     <ClInclude Include="src\Compound\animation2D.h" />
     <ClInclude Include="src\Compound\animator2D.h" />
     <ClInclude Include="src\Compound\mesh.h" />
