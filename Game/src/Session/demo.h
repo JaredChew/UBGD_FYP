@@ -8,6 +8,7 @@
 class Texture;
 class Mesh;
 class Transform;
+class Text;
 
 class Demo : public Session {
 
@@ -16,6 +17,7 @@ private:
 	Texture* texture;
 	Mesh* mesh;
 	Transform* transform;
+	Text* text;
 
 private:
 

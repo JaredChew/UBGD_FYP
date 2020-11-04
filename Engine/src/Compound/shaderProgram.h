@@ -10,6 +10,7 @@
 #include <string>
 
 class Window;
+class Texture;
 
 class ShaderProgram {
 private:
@@ -31,8 +32,8 @@ public:
 	bool isProgram();
 	void deleteProgram();
 
-	bool uniform_defaultImage(const std::string& uniformName = "sampler2d", const GLuint& index = 0);
-	bool uniform_additionalImage(const std::string& uniformName, const GLuint& index, const GLuint& textureID);
+	bool uniform_Sampler(Texture& textureID, const std::string& uniformName = "sampler2d", const GLuint& index = 0);
+	bool uniform_Sampler(const GLuint& textureID, const std::string& uniformName = "sampler2d", const GLuint& index = 0);
 
 	bool uniform_1int(const std::string& uniformName, const GLint& value);
 	bool uniform_2int(const std::string& uniformName, const GLint& firstValue, const GLint& secondValue);
@@ -53,9 +54,8 @@ public:
 	bool uniform_2float_v(const std::string& uniformName, const GLsizei& size, const GLfloat* pointer);
 	bool uniform_3float_v(const std::string& uniformName, const GLsizei& size, const GLfloat* pointer);
 	bool uniform_4float_v(const std::string& uniformName, const GLsizei& size, const GLfloat* pointer);
-	
-	bool uniform_Matrix4fv(const std::string& uniformName, const glm::mat4x4& mvpMatrix);
 
+	bool uniform_Matrix4fv(const std::string& uniformName, const glm::mat4& matrix);
 
 	// |*   Getters   *|
 	const GLuint& const getGprogramID() const;

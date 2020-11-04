@@ -39,6 +39,7 @@
     <ClCompile Include="src\Modules FrontEnd\audio.cpp" />
     <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp" />
     <ClCompile Include="src\Modules FrontEnd\pathNode.cpp" />
+    <ClCompile Include="src\Modules FrontEnd\Text.cpp" />
     <ClCompile Include="src\Specification\entity.cpp" />
     <ClCompile Include="src\Specification\session.cpp" />
     <ClCompile Include="src\texture-atlas.c" />
@@ -84,6 +85,7 @@
     <ClInclude Include="src\Modules FrontEnd\audio.h" />
     <ClInclude Include="src\Modules FrontEnd\pathFinder.h" />
     <ClInclude Include="src\Modules FrontEnd\pathNode.h" />
+    <ClInclude Include="src\Modules FrontEnd\Text.h" />
     <ClInclude Include="src\Specification\entity.h" />
     <ClInclude Include="src\Specification\resource.h" />
     <ClInclude Include="src\Specification\session.h" />
@@ -165,7 +167,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Freetype-GL\include;$(SolutionDir)Dependencies\FmodEx\include;$(SolutionDir)Dependencies\JSON11\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\SOIL2\include;$(SolutionDir)Dependencies\ASSIMP\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Freetype\include;$(SolutionDir)Dependencies\FmodEx\include;$(SolutionDir)Dependencies\JSON11\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -175,7 +177,7 @@
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;fmodex_vc.lib;soil2-debug.lib;assimp-vc142-mtd.lib;OpenAL32.lib;%(AdditionalDependencies);box2d.lib;openAL32.lib</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\SOIL2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\Freetype-GL\lib;$(SolutionDir)Dependencies\FmodEx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\SOIL2\lib;$(SolutionDir)Dependencies\ASSIMP\lib;$(SolutionDir)Dependencies\Freetype\lib;$(SolutionDir)Dependencies\FmodEx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3dll.lib;opengl32.lib;assimp-vc142-mtd.lib;soil2-debug.lib;freetype-gl.lib;fmodex_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>

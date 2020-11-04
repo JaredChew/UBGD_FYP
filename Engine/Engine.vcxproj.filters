@@ -124,6 +124,9 @@
     <ClCompile Include="src\Modules BackEnd\eventHandle.cpp">
       <Filter>Source Files\Module</Filter>
     </ClCompile>
+    <ClCompile Include="src\Modules FrontEnd\Text.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Compound\animator2D.h">
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="src\Manipulators\renderer.h">
       <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules FrontEnd\Text.h">
+      <Filter>Source Files\Module</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

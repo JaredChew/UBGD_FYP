@@ -14,6 +14,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Modules FrontEnd/Text.h"
+
 Demo::Demo() {
 
 	texture = new Texture("../Media/TreasureNormal.png");
@@ -23,6 +25,8 @@ Demo::Demo() {
 
 	Renderer::getInstance()->useMesh(mesh);
 	//Renderer::getInstance()->useTexture(texture->getTextureID());
+
+	text = new Text("../Fonts/arial.ttf", 48);
 
 }
 
@@ -38,6 +42,7 @@ void Demo::render() {
 
 	Renderer::getInstance()->useTexture(texture->getTextureID());
 	Renderer::getInstance()->render(transform->getModelMatrix());
+	text->renderText("byebye~", 0.0f, 0.0f, 1.0f);
 	Renderer::getInstance()->renderToScreen();
 
 	/*

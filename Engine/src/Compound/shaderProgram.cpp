@@ -6,6 +6,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
+#include "texture.h"
+
 //Shader shader[2];
 
 // |*   Constructors   *|
@@ -55,18 +57,33 @@ void ShaderProgram::deleteProgram()
 	 glDeleteProgram(m_programID);
 }
 
-bool ShaderProgram::uniform_defaultImage(const std::string& uniformName, const GLuint& index)
+bool ShaderProgram::uniform_Sampler(Texture& textureID, const std::string& uniformName, const GLuint& index)
 {
-	GLuint uniformLocation = getUniformLocation(m_programID, uniformName.c_str());
-	if (uniformLocation == -1) return false;
+	if (index < 32)
+	{
+		GLuint uniformLocation = getUniformLocation(m_programID, uniformName.c_str());
+		if (uniformLocation == -1) return false;
 
-	glUniform1i(uniformLocation, 0);
-	return true;
+		glActiveTexture(GL_TEXTURE0 + index);
+		glBindTexture(GL_TEXTURE_2D, textureID.getTextureID());
 
+		glUniform1i(uniformLocation, index);
+
+		glActiveTexture(GL_TEXTURE0);
+
+		return true;
+	}
+	else
+	{
+		printf("Image index %u can not more than 31!!!\n", index);
+		return false;
+
+	}
 }
-bool ShaderProgram::uniform_additionalImage(const std::string& uniformName, const GLuint& index, const GLuint& textureID)
+
+bool ShaderProgram::uniform_Sampler(const GLuint& textureID, const std::string& uniformName, const GLuint& index)
 {
-	if (index > 0) 
+	if (index < 32)
 	{
 		GLuint uniformLocation = getUniformLocation(m_programID, uniformName.c_str());
 		if (uniformLocation == -1) return false;
@@ -80,15 +97,9 @@ bool ShaderProgram::uniform_additionalImage(const std::string& uniformName, cons
 
 		return true;
 	}
-	else if (index == 0) 
+	else
 	{
-		printf("Index 0 can not use %s, much use default_image!\n", index, __func__);
-		return false;
-
-	}
-	else 
-	{
-		printf("Index %u can not less than 1!!!\n", index);
+		printf("Image index %u can not more than 31!!!\n", index);
 		return false;
 
 	}
@@ -243,12 +254,12 @@ bool ShaderProgram::uniform_4float_v(const std::string& uniformName, const GLsiz
 
 }
 
-bool ShaderProgram::uniform_Matrix4fv(const std::string& uniformName, const glm::mat4x4& mvpMatrix)
+bool ShaderProgram::uniform_Matrix4fv(const std::string& uniformName, const glm::mat4& matrix)
 {
 	GLuint uniformLocation = getUniformLocation(m_programID, uniformName.c_str());
 	if (uniformLocation == -1) return false;
 
-	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
 	return true;
 
 }
