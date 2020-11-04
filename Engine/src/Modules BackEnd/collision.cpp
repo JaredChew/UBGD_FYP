@@ -1,8 +1,10 @@
 #include "collision.h"
 
-#include "../Compound/transform.h"
-
 #include <utility>
+
+#include <glm/trigonometric.hpp>
+
+#include "../Compound/transform.h"
 
 Collision::Collision(Transform* const transform, const glm::vec4& dimension, const BoundaryShape& type) : transform(transform) {
 
@@ -49,23 +51,14 @@ bool Collision::withinBoundingCube(Collision& collider) {
 
 }
 
-bool Collision::withinBoundingCircle(Collision& collider) {
+bool Collision::withinBoundingRadius(Collision& collider) {
 
-	int count = 0;
+	float distance = abs(glm::length(getCenterPoint() - collider.getCenterPoint()));
 
-	//
+	distance -= getBoundaryRadius();
+	distance -= collider.getBoundaryRadius();
 
-	return !count;
-
-}
-
-bool Collision::withinBoundingSphere(Collision& collider) {
-
-	int count = 0;
-
-	//
-
-	return !count;
+	return distance < 0;
 
 }
 /*
@@ -129,9 +122,9 @@ glm::vec2& const Collision::getBoundaryDepth() {
 
 }
 
-glm::vec2& const Collision::getBoundaryRadius() {
+float& const Collision::getBoundaryRadius() {
 
-	return glm::vec2();
+	return boundary.w;
 
 }
 
@@ -157,11 +150,8 @@ bool Collision::isColliding(Collision& collider) {
 		case BoundaryShape::CUBE:
 			return withinBoundingCube(collider);
 
-		case BoundaryShape::CIRCLE:
-			return withinBoundingCircle(collider);
-
-		case BoundaryShape::SPHERE:
-			return withinBoundingSphere(collider);
+		case BoundaryShape::RADIUS:
+			return withinBoundingRadius(collider);
 	/*
 		case BoundaryShape::CAPSULE:
 			return withinBoundingCapsule(collider);

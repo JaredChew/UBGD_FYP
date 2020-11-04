@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Compound\animation2D.cpp" />
     <ClCompile Include="src\Compound\animator2D.cpp" />
     <ClCompile Include="src\Compound\mesh.cpp" />
     <ClCompile Include="src\Compound\Model.cpp" />
@@ -29,8 +28,6 @@
     <ClCompile Include="src\Manipulators\system.cpp" />
     <ClCompile Include="src\Manipulators\shader.cpp" />
     <ClCompile Include="src\Manipulators\renderer.cpp" />
-    <ClCompile Include="src\Math\generalMath.cpp" />
-    <ClCompile Include="src\Math\straightLineEquation.cpp" />
     <ClCompile Include="src\Modules BackEnd\collision.cpp" />
     <ClCompile Include="src\Modules BackEnd\camera.cpp" />
     <ClCompile Include="src\Modules BackEnd\keyboard.cpp" />
@@ -56,7 +53,6 @@
     <ClCompile Include="src\vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Compound\animation2D.h" />
     <ClInclude Include="src\Compound\animator2D.h" />
     <ClInclude Include="src\Compound\mesh.h" />
     <ClInclude Include="src\Compound\Model.h" />
@@ -76,8 +72,6 @@
     <ClInclude Include="src\Manipulators\system.h" />
     <ClInclude Include="src\Manipulators\shader.h" />
     <ClInclude Include="src\Manipulators\renderer.h" />
-    <ClInclude Include="src\Math\generalMath.h" />
-    <ClInclude Include="src\Math\straightLineEquation.h" />
     <ClInclude Include="src\Modules BackEnd\collision.h" />
     <ClInclude Include="src\Modules BackEnd\camera.h" />
     <ClInclude Include="src\Modules BackEnd\keyboard.h" />

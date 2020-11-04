@@ -8,7 +8,7 @@
 
 Demo::Demo() {
 
-	texture = new Texture("../Media/back.bmp");
+	texture = new Texture("../Media/fish.bmp");
 	mesh = new Mesh(Mesh::DefaultGeometry::SQUARE);
 	transform = new Transform();
 
@@ -27,7 +27,7 @@ void Demo::update() {
 
 void Demo::render() {
 
-	Renderer::getInstance()->render(transform->getModelMatrix());
-	Renderer::getInstance()->renderToScreen();
+	Renderer::getInstance()->render(glm::mat4(1.0f));
+	//Renderer::getInstance()->renderToScreen();
 
 }

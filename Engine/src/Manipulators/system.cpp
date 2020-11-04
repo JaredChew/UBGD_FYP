@@ -29,14 +29,6 @@ bool System::initOpenGL() {
 
 	}
 
-	//Set window hints
-	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4); //3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6); //3
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		Logger::getInstance()->errorLog("Failed to initialize OpenGL context");
 		return false;

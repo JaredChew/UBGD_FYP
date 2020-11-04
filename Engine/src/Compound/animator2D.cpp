@@ -181,12 +181,6 @@ const bool& Animator2D::setKeyFrameOrderDependSize()
 
 }
 
-void Animator2D::setAnimationMode(const AnimationMode& mode)
-{
-	this->mode = mode;
-
-}
-
 void Animator2D::setAnimationFrameRate(const GLuint& frameRateInSecond)
 {
 	if (frameRateInSecond == 0) // If this frame rate equals to zero than don't let it process divide
@@ -219,14 +213,6 @@ void Animator2D::setAnimationFrameRate(const double& timeOfScenod)
 
 }
 
-const unsigned long long int& const Animator2D::getAnimationFrameRateInSecond() const { return eachAnimationFrameRate; }
-
-const GLuint& const Animator2D::getCurrentKeyFrame() const { return keyFrames[keyFrameIndex]; }
-
-const GLuint& const Animator2D::getCurrentKeyFrameIndex() const { return keyFrameIndex; }
-
-const Animator2D::AnimationMode& const Animator2D::getAnimationMode() const { return mode; }
-
 bool Animator2D::setNextAnimationIndex(const GLuint& index) {
 
 	if (nextAnimationIndex == index) { return true; }
@@ -247,6 +233,12 @@ bool Animator2D::setNextAnimationIndex(const GLuint& index) {
 
 }
 
+void Animator2D::setAnimationMode(const AnimationMode& mode)
+{
+	this->mode = mode;
+
+}
+
 GLuint& Animator2D::getCurrentAnimationIndex()
 {
 	return currentAnimationIndex;
@@ -256,3 +248,11 @@ GLuint& Animator2D::getNextAnimationIndex()
 {
 	return nextAnimationIndex;
 }
+
+const unsigned long long int& const Animator2D::getAnimationFrameRateInSecond() const { return eachAnimationFrameRate; }
+
+const GLuint& const Animator2D::getCurrentKeyFrame() const { return keyFrames[keyFrameIndex]; }
+
+const GLuint& const Animator2D::getCurrentKeyFrameIndex() const { return keyFrameIndex; }
+
+const Animator2D::AnimationMode& const Animator2D::getAnimationMode() const { return mode; }

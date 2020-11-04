@@ -46,7 +46,7 @@
       <Filter>Source Files\Sessions</Filter>
     </ClCompile>
     <ClCompile Include="src\global.cpp">
-      <Filter>Source Files\Specifications</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
