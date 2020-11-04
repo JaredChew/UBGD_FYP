@@ -41,9 +41,17 @@ public:
 
 class EventHandle {
 
+private:
+
+	static EventHandle instance;
+
 public:
 
 	std::vector<Event> event;
+
+public:
+
+	static EventHandle& getInstance();
 
 public:
 

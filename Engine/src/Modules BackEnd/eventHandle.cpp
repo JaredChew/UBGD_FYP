@@ -27,6 +27,12 @@ void Event::invoke()
 
 // ------------------- |*     Event Handle     *| -------------------
 
+EventHandle& EventHandle::getInstance()
+{
+	return instance;
+
+}
+
 EventHandle::EventHandle()
 {
 	this->event.clear();

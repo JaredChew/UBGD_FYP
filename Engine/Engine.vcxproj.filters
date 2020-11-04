@@ -237,14 +237,14 @@
     <ClInclude Include="src\Specification\session.h">
       <Filter>Source Files\Specification</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manipulators\renderer.h">
-      <Filter>Source Files\Specification</Filter>
-    </ClInclude>
     <ClInclude Include="src\Data Structure\node2D.hpp">
       <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
     <ClInclude Include="src\Modules BackEnd\eventHandle.h">
       <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manipulators\renderer.h">
+      <Filter>Source Files\Manipulator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
