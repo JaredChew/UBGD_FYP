@@ -21,7 +21,7 @@ public:
 
 public:
 
-	Camera(const glm::vec3 &position = glm::vec3(0.0f), const glm::vec3 &rotation = glm::vec3(0.0f), const glm::vec2 &dimension = glm::vec2(1.0f));
+	Camera(const glm::vec3 &position = glm::vec3(0.0f), const glm::vec3 &rotation = glm::vec3(0.0f), const glm::vec3 &dimension = glm::vec3(1.0f));
 	~Camera();
 
 	void setProjectionPerspective(const float& fov, const float& windowRatio, const float& near, const float& far);

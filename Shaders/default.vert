@@ -1,4 +1,4 @@
-#version 460 core
+#version 330 core
 
 attribute vec3 vPosition;
 attribute vec4 vColor;

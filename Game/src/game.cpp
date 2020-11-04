@@ -14,6 +14,8 @@
 #include "Modules BackEnd/keyboard.h"
 #include "Modules BackEnd/mouse.h"
 
+#include "Session/Testing_Scene.h"
+
 #include "Manipulators/renderer.h"
 
 #include "Compound/transform.h"
@@ -25,16 +27,42 @@ Game::Game() {
 	keyboard = new Keyboard(Global::window);
 	mouse = new Mouse(Global::window);
 
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera = new Camera(glm::vec3(0.0f, 0.0f,-5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	camera->setProjectionPerspective(glm::radians(FOV), Global::window->getWindowRatio(), 0.3f, 1000.0f);
-	//camera->setProjectionOrthographic(-WINDOW_WIDTH, WINDOW_WIDTH, -WINDOW_HEIGHT, WINDOW_HEIGHT, 0.5f, 300.0f);
+	float w = 0.0f, h = 0.0f;
+	float winH = static_cast<float>(Global::window->getHeight()), winW = static_cast<float>(Global::window->getWidth());
+	if (winH < winW)
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * winH / winW * FOV;
+	}
+	else if (winH > winW)
+	{
+		w = 0.1f * winW / winH * FOV;
+		h = 0.1f * FOV;
+	}
+	else
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * FOV;
+	}
+
+	//wireframe mode
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glLineWidth(2.5f);
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+	//glPointSize(10.0f);
+
+	//camera->setProjectionPerspective(glm::radians(FOV), Global::window->getWindowRatio(), 0.3f, 1000.0f);
+	camera->setProjectionOrthographic(-w, w, -h, h, 0.3f, 300.0f);
 
 
 	Renderer::start(WINDOW_WIDTH, WINDOW_HEIGHT);
 	Renderer::getInstance()->useWindow(Global::window->getWindow());
 	Renderer::getInstance()->useCamera(camera);
 
+	//session = new Testing_Scene();
 	session = new Demo();
 
 }
