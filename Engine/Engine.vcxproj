@@ -30,6 +30,7 @@
     <ClCompile Include="src\Manipulators\renderer.cpp" />
     <ClCompile Include="src\Modules BackEnd\collision.cpp" />
     <ClCompile Include="src\Modules BackEnd\camera.cpp" />
+    <ClCompile Include="src\Modules BackEnd\eventHandle.cpp" />
     <ClCompile Include="src\Modules BackEnd\keyboard.cpp" />
     <ClCompile Include="src\Modules BackEnd\library.cpp" />
     <ClCompile Include="src\Modules BackEnd\mouse.cpp" />
@@ -74,6 +75,7 @@
     <ClInclude Include="src\Manipulators\renderer.h" />
     <ClInclude Include="src\Modules BackEnd\collision.h" />
     <ClInclude Include="src\Modules BackEnd\camera.h" />
+    <ClInclude Include="src\Modules BackEnd\eventHandle.h" />
     <ClInclude Include="src\Modules BackEnd\keyboard.h" />
     <ClInclude Include="src\Modules BackEnd\library.h" />
     <ClInclude Include="src\Modules BackEnd\mouse.h" />

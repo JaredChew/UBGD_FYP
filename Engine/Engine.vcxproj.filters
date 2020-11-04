@@ -121,6 +121,9 @@
     <ClCompile Include="src\Manipulators\renderer.cpp">
       <Filter>Source Files\Manipulator</Filter>
     </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\eventHandle.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Compound\animator2D.h">
@@ -239,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="src\Data Structure\node2D.hpp">
       <Filter>Source Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\eventHandle.h">
+      <Filter>Source Files\Module</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
