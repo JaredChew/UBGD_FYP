@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Compound\animation2D.cpp" />
     <ClCompile Include="src\Compound\animator2D.cpp" />
     <ClCompile Include="src\Compound\mesh.cpp" />
     <ClCompile Include="src\Compound\Model.cpp" />
@@ -19,6 +18,8 @@
     <ClCompile Include="src\Compound\texture.cpp" />
     <ClCompile Include="src\Compound\transform.cpp" />
     <ClCompile Include="src\Data Structure\bitData.cpp" />
+    <ClCompile Include="src\Data Structure\bitPacker.cpp" />
+    <ClCompile Include="src\Data Structure\bitSplitter.cpp" />
     <ClCompile Include="src\distance-field.c" />
     <ClCompile Include="src\edtaa3func.c" />
     <ClCompile Include="src\glad.c" />
@@ -27,10 +28,9 @@
     <ClCompile Include="src\Manipulators\system.cpp" />
     <ClCompile Include="src\Manipulators\shader.cpp" />
     <ClCompile Include="src\Manipulators\renderer.cpp" />
-    <ClCompile Include="src\Math\generalMath.cpp" />
-    <ClCompile Include="src\Math\straightLineEquation.cpp" />
     <ClCompile Include="src\Modules BackEnd\collision.cpp" />
     <ClCompile Include="src\Modules BackEnd\camera.cpp" />
+    <ClCompile Include="src\Modules BackEnd\eventHandle.cpp" />
     <ClCompile Include="src\Modules BackEnd\keyboard.cpp" />
     <ClCompile Include="src\Modules BackEnd\library.cpp" />
     <ClCompile Include="src\Modules BackEnd\mouse.cpp" />
@@ -54,7 +54,6 @@
     <ClCompile Include="src\vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Compound\animation2D.h" />
     <ClInclude Include="src\Compound\animator2D.h" />
     <ClInclude Include="src\Compound\mesh.h" />
     <ClInclude Include="src\Compound\Model.h" />
@@ -63,6 +62,8 @@
     <ClInclude Include="src\Compound\transform.h" />
     <ClInclude Include="src\Data Structure\binaryTree.hpp" />
     <ClInclude Include="src\Data Structure\bitData.h" />
+    <ClInclude Include="src\Data Structure\bitPacker.h" />
+    <ClInclude Include="src\Data Structure\bitSplitter.h" />
     <ClInclude Include="src\Data Structure\circularQueue.hpp" />
     <ClInclude Include="src\Data Structure\doubleLinkedList.hpp" />
     <ClInclude Include="src\Data Structure\hashMap.hpp" />
@@ -72,10 +73,9 @@
     <ClInclude Include="src\Manipulators\system.h" />
     <ClInclude Include="src\Manipulators\shader.h" />
     <ClInclude Include="src\Manipulators\renderer.h" />
-    <ClInclude Include="src\Math\generalMath.h" />
-    <ClInclude Include="src\Math\straightLineEquation.h" />
     <ClInclude Include="src\Modules BackEnd\collision.h" />
     <ClInclude Include="src\Modules BackEnd\camera.h" />
+    <ClInclude Include="src\Modules BackEnd\eventHandle.h" />
     <ClInclude Include="src\Modules BackEnd\keyboard.h" />
     <ClInclude Include="src\Modules BackEnd\library.h" />
     <ClInclude Include="src\Modules BackEnd\mouse.h" />
@@ -94,6 +94,28 @@
     <ClInclude Include="src\Utilities\logger.h" />
     <ClInclude Include="src\Utilities\random.h" />
     <ClInclude Include="src\Utilities\timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shaders\animation2D.frag" />
+    <None Include="..\Shaders\animation2D.vert" />
+    <None Include="..\Shaders\bloom.frag" />
+    <None Include="..\Shaders\blur.frag" />
+    <None Include="..\Shaders\colourBlend.frag" />
+    <None Include="..\Shaders\default.frag" />
+    <None Include="..\Shaders\default.vert" />
+    <None Include="..\Shaders\depth.frag" />
+    <None Include="..\Shaders\dijkstra.frag" />
+    <None Include="..\Shaders\gameOfLife.frag" />
+    <None Include="..\Shaders\initTextureColour.frag" />
+    <None Include="..\Shaders\lightingSprite.frag" />
+    <None Include="..\Shaders\lightingSprite.vert" />
+    <None Include="..\Shaders\mouseToScreen.frag" />
+    <None Include="..\Shaders\skybox.frag" />
+    <None Include="..\Shaders\skybox.vert" />
+    <None Include="..\Shaders\spriteAnimation.frag" />
+    <None Include="..\Shaders\spriteAnimation.vert" />
+    <None Include="..\Shaders\texelModify.frag" />
+    <None Include="..\Shaders\textureBlend.frag" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7D417D45-F05D-4255-A75C-1AAAADF5DB07}</ProjectGuid>

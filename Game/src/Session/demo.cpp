@@ -16,8 +16,8 @@
 
 Demo::Demo() {
 
-	glEnable(GL_TEXTURE_2D);
 	texture = new Texture("../Media/TreasureNormal.png");
+
 	mesh = new Mesh(Mesh::DefaultGeometry::SQUARE);
 	transform = new Transform();
 
@@ -39,6 +39,7 @@ void Demo::render() {
 	Renderer::getInstance()->useTexture(texture->getTextureID());
 	Renderer::getInstance()->render(transform->getModelMatrix());
 	Renderer::getInstance()->renderToScreen();
+
 	/*
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
 
@@ -60,14 +61,6 @@ void Demo::render() {
 
 	}
 
-	
-	static bool oneTiem = false;
-	if (!oneTiem)
-	{
-		//System::saveTextureToImage("../Media/abc01.png", texture->getTextureID(), 512, 512);
-		oneTiem = true;
-	}
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	if (System::checkIsFramebufferReady()) {
@@ -86,6 +79,5 @@ void Demo::render() {
 
 	}
 	*/
-	
 	
 }

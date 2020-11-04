@@ -1,100 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{77ca3453-493f-4df6-9817-f4f812772234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utilities">
-      <UniqueIdentifier>{1e2aa3ae-0b09-4f87-b16c-f62717666e20}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{90e062a0-0b2b-401e-88c5-752cfbc5f271}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Utilities">
-      <UniqueIdentifier>{9f9b4c7c-1ac1-479f-b57b-16a01500b679}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Data Structures">
-      <UniqueIdentifier>{9dc8bdef-9dbb-408f-89a9-6cb327d7c024}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules">
-      <UniqueIdentifier>{f12c548e-1942-4dc6-8bbe-662c76ec575b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules">
-      <UniqueIdentifier>{4a2c34d5-6859-40c5-a35b-6b6726ca89d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Data Structures">
-      <UniqueIdentifier>{3e4b6b08-dc10-4d0e-ab37-defb603d38f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Compound">
-      <UniqueIdentifier>{e65d2059-44f3-42dd-8dc3-969138a15c1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Compound">
-      <UniqueIdentifier>{895a4916-0725-44ae-95a8-7a9e17f295b2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Manipulators">
-      <UniqueIdentifier>{bf9c3a92-09ef-4ee8-a2cc-f8d6acbed51a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Manipulators">
-      <UniqueIdentifier>{1c3c1bc4-7e43-4278-bfd3-3487dbd4d062}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Specification">
-      <UniqueIdentifier>{93fadb4f-fac6-46d5-a5a6-f9e09e1d27c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Specification">
-      <UniqueIdentifier>{c0d1c290-2b8d-4e5c-b281-811262935827}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules\Front End">
-      <UniqueIdentifier>{d79d4645-8d4c-400e-9514-ec50593a93d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\Front End">
-      <UniqueIdentifier>{9b188326-20f4-4c5d-be16-cb11a2954f4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules\Back End">
-      <UniqueIdentifier>{76d04c22-b346-47b9-bfd1-97902ff9e381}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\Back End">
-      <UniqueIdentifier>{ff7eb30f-ce2a-40fe-947e-e7d9982badad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Modules\Front End\Pathfinding">
-      <UniqueIdentifier>{2e4ca00f-471a-4791-ae7f-56ef9140a452}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Modules\Front End\Pathfinding">
-      <UniqueIdentifier>{82eb01e5-e23a-41c4-9efd-0c7f458d4c91}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Math\straightLineEquation.cpp">
-      <Filter>Source Files\Math</Filter>
+    <ClCompile Include="src\vector.c">
+      <Filter>Internal Dependencies</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\transform.cpp">
+    <ClCompile Include="src\utf8-utils.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture-atlas.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texture-font.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\json11.cpp">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\edtaa3func.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\distance-field.c">
+      <Filter>Internal Dependencies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\animator2D.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manipulators\geometry.cpp">
-      <Filter>Source Files\Manipulators</Filter>
+    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manipulators\shader.cpp">
-      <Filter>Source Files\Manipulators</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Specification\entity.cpp">
-      <Filter>Source Files\Specification</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Specification\session.cpp">
-      <Filter>Source Files\Specification</Filter>
+    <ClCompile Include="src\Data Structure\bitData.cpp">
+      <Filter>Source Files\Data Structures</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\bitOperation.cpp">
-      <Filter>Source Files\Utilities</Filter>
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Data Structure\bitPacker.cpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Data Structure\bitSplitter.cpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\collision.cpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\camera.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\crypto.cpp">
       <Filter>Source Files\Utilities</Filter>
@@ -102,11 +55,32 @@
     <ClCompile Include="src\Utilities\debug.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\Specification\entity.cpp">
+      <Filter>Source Files\Specification</Filter>
+    </ClCompile>
     <ClCompile Include="src\Utilities\generalUtil.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\logger.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\Model.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\mesh.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\window.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\physics.cpp">
+      <Filter>Source Files\Module</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\library.cpp">
+      <Filter>Source Files\Specification</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manipulators\geometry.cpp">
+      <Filter>Source Files\Manipulator</Filter>
     </ClCompile>
     <ClCompile Include="src\Utilities\random.cpp">
       <Filter>Source Files\Utilities</Filter>
@@ -114,211 +88,260 @@
     <ClCompile Include="src\Utilities\timer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\camera.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\keyboard.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\mouse.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\physics.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\window.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\pathNode.cpp">
-      <Filter>Source Files\Modules\Front End\Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp">
-      <Filter>Source Files\Modules\Front End\Pathfinding</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Data Structure\bitData.cpp">
-      <Filter>Source Files\Data Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Math\generalMath.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="src\glad.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\json11.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture-atlas.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture-font.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\vector.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\collision.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules FrontEnd\audio.cpp">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\distance-field.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utf8-utils.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\edtaa3func.c">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Modules BackEnd\library.cpp">
-      <Filter>Source Files\Modules\Back End</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Compound\animation2D.cpp">
-      <Filter>Source Files\Compound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Compound\animator2D.cpp">
-      <Filter>Source Files\Compound</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Compound\shaderProgram.cpp">
-      <Filter>Source Files\Compound</Filter>
+    <ClCompile Include="src\Compound\transform.cpp">
+      <Filter>Source Files\Manipulator</Filter>
     </ClCompile>
     <ClCompile Include="src\Compound\texture.cpp">
-      <Filter>Source Files\Compound</Filter>
+      <Filter>Source Files\Manipulator</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\mesh.cpp">
-      <Filter>Source Files\Compound</Filter>
+    <ClCompile Include="src\Compound\shaderProgram.cpp">
+      <Filter>Source Files\Manipulator</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\Model.cpp">
-      <Filter>Header Files\Compound</Filter>
+    <ClCompile Include="src\Modules BackEnd\keyboard.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
-    <ClCompile Include="src\Manipulators\renderer.cpp">
-      <Filter>Source Files\Manipulators</Filter>
+    <ClCompile Include="src\Modules BackEnd\mouse.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
     <ClCompile Include="src\Manipulators\system.cpp">
-      <Filter>Source Files\Manipulators</Filter>
+      <Filter>Source Files\Manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manipulators\shader.cpp">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules FrontEnd\pathFinder.cpp">
+      <Filter>Source Files\Module\Path Finding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules FrontEnd\pathNode.cpp">
+      <Filter>Source Files\Module\Path Finding</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Specification\session.cpp">
+      <Filter>Source Files\Specification</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Manipulators\renderer.cpp">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Modules BackEnd\eventHandle.cpp">
+      <Filter>Source Files\Module</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Math\straightLineEquation.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\binaryTree.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\linkedList.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\node2D.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\doubleLinkedList.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\hashMap.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\circularQueue.hpp">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Math\generalMath.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Compound\transform.h">
-      <Filter>Header Files\Compound</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manipulators\geometry.h">
-      <Filter>Header Files\Manipulators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Manipulators\shader.h">
-      <Filter>Header Files\Manipulators</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Specification\entity.h">
-      <Filter>Header Files\Specification</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Specification\session.h">
-      <Filter>Header Files\Specification</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\bitOperation.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\crypto.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\debug.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\generalUtil.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\logger.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\random.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Utilities\timer.h">
-      <Filter>Header Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\camera.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\keyboard.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\mouse.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\physics.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\window.h">
-      <Filter>Header Files\Modules\Back End</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\pathFinder.h">
-      <Filter>Header Files\Modules\Front End\Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules FrontEnd\pathNode.h">
-      <Filter>Header Files\Modules\Front End\Pathfinding</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Data Structure\bitData.h">
-      <Filter>Header Files\Data Structures</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\collision.h">
-      <Filter>Header Files\Modules\Back End</Filter>
+    <ClInclude Include="src\Compound\animator2D.h">
+      <Filter>Source Files\Compound</Filter>
     </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\audio.h">
-      <Filter>Header Files\Modules\Front End</Filter>
+      <Filter>Source Files\Module</Filter>
     </ClInclude>
-    <ClInclude Include="src\Modules BackEnd\library.h">
-      <Filter>Header Files\Modules\Back End</Filter>
+    <ClInclude Include="src\Data Structure\binaryTree.hpp">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Specification\resource.h">
-      <Filter>Header Files\Specification</Filter>
+    <ClInclude Include="src\Data Structure\bitData.h">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\texture.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Utilities\bitOperation.h">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\shaderProgram.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Data Structure\bitPacker.h">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\animator2D.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Data Structure\bitSplitter.h">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\animation2D.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Data Structure\circularQueue.hpp">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\mesh.h">
-      <Filter>Header Files\Compound</Filter>
+    <ClInclude Include="src\Modules BackEnd\camera.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\collision.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\crypto.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\debug.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data Structure\doubleLinkedList.hpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Specification\entity.h">
+      <Filter>Source Files\Specification</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\generalUtil.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\logger.h">
+      <Filter>Source Files\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\Compound\Model.h">
-      <Filter>Header Files\Compound</Filter>
+      <Filter>Source Files\Compound</Filter>
     </ClInclude>
-    <ClInclude Include="src\Manipulators\renderer.h">
-      <Filter>Header Files\Manipulators</Filter>
+    <ClInclude Include="src\Compound\mesh.h">
+      <Filter>Source Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\window.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\physics.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data Structure\hashMap.hpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\library.h">
+      <Filter>Source Files\Specification</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manipulators\geometry.h">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\random.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data Structure\linkedList.hpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utilities\timer.h">
+      <Filter>Source Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\transform.h">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\texture.h">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\shaderProgram.h">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\keyboard.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\mouse.h">
+      <Filter>Source Files\Module</Filter>
     </ClInclude>
     <ClInclude Include="src\Manipulators\system.h">
-      <Filter>Header Files\Manipulators</Filter>
+      <Filter>Source Files\Manipulator</Filter>
     </ClInclude>
+    <ClInclude Include="src\Manipulators\shader.h">
+      <Filter>Source Files\Manipulator</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules FrontEnd\pathFinder.h">
+      <Filter>Source Files\Module\Path Finding</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules FrontEnd\pathNode.h">
+      <Filter>Source Files\Module\Path Finding</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Specification\resource.h">
+      <Filter>Source Files\Specification</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Specification\session.h">
+      <Filter>Source Files\Specification</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Manipulators\renderer.h">
+      <Filter>Source Files\Specification</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Data Structure\node2D.hpp">
+      <Filter>Source Files\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Modules BackEnd\eventHandle.h">
+      <Filter>Source Files\Module</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Shaders\animation2D.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\animation2D.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\blur.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\bloom.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\default.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\default.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\depth.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\dijkstra.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\gameOfLife.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\colourBlend.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\initTextureColour.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\lightingSprite.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\lightingSprite.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\mouseToScreen.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\skybox.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\skybox.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\spriteAnimation.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\spriteAnimation.vert">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\texelModify.frag">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Shaders\textureBlend.frag">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Internal Dependencies">
+      <UniqueIdentifier>{721bc8ad-116f-473e-ad03-b14bba0444a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{7c4ae4c8-a867-4866-b9a3-bb6aa89f59d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{d71a7277-d525-445d-bdb6-64d5f7cdbe53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Compound">
+      <UniqueIdentifier>{098c9306-00bd-4b9b-a9ea-0de39e165a67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manipulator">
+      <UniqueIdentifier>{6b3bee31-7df8-46f6-8f88-be9f4add588b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Module">
+      <UniqueIdentifier>{4c0c6e83-d264-4609-ab00-40b8f48c1a4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Specification">
+      <UniqueIdentifier>{f7925a70-25ac-4153-ae8b-b694ee21d1ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{5d0b20aa-b7ea-4c46-a137-3885cca7640e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Data Structures">
+      <UniqueIdentifier>{350e6a09-2c69-4ea5-92f7-30cccee4fb33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Module\Path Finding">
+      <UniqueIdentifier>{68e47d8b-e120-47e9-95f5-9719b3f592d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Module\Flocking">
+      <UniqueIdentifier>{6d0d4308-4727-466b-be44-d7baad125efc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

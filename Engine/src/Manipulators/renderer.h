@@ -31,6 +31,7 @@ private:
 	GLuint swapTexture[2];
 	GLuint frontBuffer;
 	GLuint backBuffer;
+	GLuint textureBinded;
 
 	int resolutionWidth;
 	int resolutionHeight;

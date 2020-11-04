@@ -14,7 +14,7 @@ private:
 
 public:
 
-	enum class BoundaryShape { BOX, CUBE, CIRCLE, SPHERE, STADIUM, CAPSULE };
+	enum class BoundaryShape { BOX, CUBE, RADIUS }; //, STADIUM, CAPSULE
 
 private:
 
@@ -23,21 +23,24 @@ private:
 	glm::vec4 boundary;
 	glm::vec3 centerOffset;
 
+	int entityCollidedID;
+
 private:
 
 	//element 1 is -x, element 2 is +x
 	glm::vec2& const getBoundaryWidth();
 	glm::vec2& const getBoundaryHeight();
 	glm::vec2& const getBoundaryDepth();
-	glm::vec2& const getBoundaryRadius();
+
+	float& const getBoundaryRadius();
 
 	bool withinBoundingBox(Collision& boundary);
-	bool withinBoundingCircle(Collision& boundary);
-	bool withinBoundingStadium(Collision& boundary);
+	//bool withinBoundingStadium(Collision& boundary);
 
 	bool withinBoundingCube(Collision& boundary);
-	bool withinBoundingSphere(Collision& boundary);
-	bool withinBoundingCapsule(Collision& boundary);
+	//bool withinBoundingCapsule(Collision& boundary);
+
+	bool withinBoundingRadius(Collision& boundary);
 
 public:
 
@@ -55,7 +58,5 @@ public:
 	BoundaryShape& const getBoundaryShape();
 
 	bool isColliding(Collision& boundary);
-
-	void update();
 
 };

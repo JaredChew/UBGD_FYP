@@ -1,14 +1,18 @@
 #include "collision.h"
 
-#include "../Compound/transform.h"
-
 #include <utility>
+
+#include <glm/trigonometric.hpp>
+
+#include "../Compound/transform.h"
 
 Collision::Collision(Transform* const transform, const glm::vec4& dimension, const BoundaryShape& type) : transform(transform) {
 
 	boundary = dimension / 2.0f;
 
 	centerOffset = glm::vec3(0.0f);
+
+	entityCollidedID = 0;
 
 	this->type = type;
 
@@ -47,26 +51,17 @@ bool Collision::withinBoundingCube(Collision& collider) {
 
 }
 
-bool Collision::withinBoundingCircle(Collision& collider) {
+bool Collision::withinBoundingRadius(Collision& collider) {
 
-	int count = 0;
+	float distance = abs(glm::length(getCenterPoint() - collider.getCenterPoint()));
 
-	//
+	distance -= getBoundaryRadius();
+	distance -= collider.getBoundaryRadius();
 
-	return !count;
-
-}
-
-bool Collision::withinBoundingSphere(Collision& collider) {
-
-	int count = 0;
-
-	//
-
-	return !count;
+	return distance < 0;
 
 }
-
+/*
 bool Collision::withinBoundingStadium(Collision& collider) {
 
 	int count = 0;
@@ -86,7 +81,7 @@ bool Collision::withinBoundingCapsule(Collision& collider) {
 	return !count;
 
 }
-
+*/
 void Collision::setCenterOffset(const glm::vec3& centerOffset) {
 	this->centerOffset = centerOffset;
 }
@@ -127,9 +122,9 @@ glm::vec2& const Collision::getBoundaryDepth() {
 
 }
 
-glm::vec2& const Collision::getBoundaryRadius() {
+float& const Collision::getBoundaryRadius() {
 
-	return glm::vec2();
+	return boundary.w;
 
 }
 
@@ -149,23 +144,21 @@ bool Collision::isColliding(Collision& collider) {
 
 	switch (type) {
 
-	case BoundaryShape::BOX:
-		return withinBoundingBox(collider);
+		case BoundaryShape::BOX:
+			return withinBoundingBox(collider);
 
-	case BoundaryShape::CUBE:
-		return withinBoundingCube(collider);
+		case BoundaryShape::CUBE:
+			return withinBoundingCube(collider);
 
-	case BoundaryShape::CIRCLE:
-		return withinBoundingCircle(collider);
+		case BoundaryShape::RADIUS:
+			return withinBoundingRadius(collider);
+	/*
+		case BoundaryShape::CAPSULE:
+			return withinBoundingCapsule(collider);
 
-	case BoundaryShape::SPHERE:
-		return withinBoundingSphere(collider);
-
-	case BoundaryShape::CAPSULE:
-		return withinBoundingCapsule(collider);
-
-	case BoundaryShape::STADIUM:
-		return withinBoundingStadium(collider);
+		case BoundaryShape::STADIUM:
+			return withinBoundingStadium(collider);
+	*/
 
 	}
 
