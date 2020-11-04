@@ -38,7 +38,7 @@ Renderer::Renderer(const int& resolutionWidth, const int& resolutionHeight) {
 	System::initDepthBufferTexture(depthBuffer, 1280, 720);
 
 	for (int i = 0; i < 2; ++i) {
-		System::initTexture(swapTexture[i], 1, 1280, 720);
+		System::initTexture(swapTexture[i], 2, 1280, 720);
 	}
 
 	renderQuality = 100;
@@ -90,8 +90,9 @@ void Renderer::swapScreenTexture() {
 	frontBuffer = swapTexture[(swapTextureIndex + 1) % 2];
 
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, backBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 
@@ -129,7 +130,7 @@ void Renderer::render(const glm::mat4& modelMatrix) {
 	switch (effectType) {
 
 		case Effects::NONE:
-			Shader::defaultDraw(glm::mat4(modelMatrix));
+			Shader::defaultDraw(glm::mat4(mvpMatrix));
 			break;
 
 		case Effects::BLUR:
@@ -155,6 +156,8 @@ void Renderer::renderToScreen() {
 
 	if (System::checkIsFramebufferReady()) {
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		glBindTexture(GL_TEXTURE_2D, frontBuffer);
 
 		Shader::defaultDraw(glm::mat4(1.0f));
@@ -163,15 +166,9 @@ void Renderer::renderToScreen() {
 
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-
 	swapScreenTexture();
-
-	glClear(GL_DEPTH_BUFFER_BIT);
 
 }
 

@@ -4,9 +4,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec2 &dimension) {
+Camera::Camera(const glm::vec3 &position, const glm::vec3 &rotation, const glm::vec3 &dimension) {
 
-	transform = new Transform();
+	transform = new Transform(position, rotation, dimension);
 
 	projectionMatrix = glm::mat4(1.0f);
 	orientation = glm::mat4(1.0f);

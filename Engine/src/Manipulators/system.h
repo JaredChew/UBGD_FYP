@@ -18,6 +18,7 @@ namespace System {
 
 	bool initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight);
 	bool initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height);
+	bool saveTextureToImage(const char* filename, GLuint& id, const GLsizei& width, const GLsizei& height);
 
 	bool initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight);
 

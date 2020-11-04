@@ -27,7 +27,7 @@ Game::Game() {
 	keyboard = new Keyboard(Global::window);
 	mouse = new Mouse(Global::window);
 
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera = new Camera(glm::vec3(0.0f, 0.0f,-5.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	float w = 0.0f, h = 0.0f;
 	float winH = static_cast<float>(Global::window->getHeight()), winW = static_cast<float>(Global::window->getWidth());
@@ -55,7 +55,7 @@ Game::Game() {
 	//glPointSize(10.0f);
 
 	//camera->setProjectionPerspective(glm::radians(FOV), Global::window->getWindowRatio(), 0.3f, 1000.0f);
-	camera->setProjectionOrthographic(-w, w, -h, h, 0.5f, 300.0f);
+	camera->setProjectionOrthographic(-w, w, -h, h, 0.3f, 300.0f);
 
 
 	Renderer::start(WINDOW_WIDTH, WINDOW_HEIGHT);
