@@ -113,14 +113,9 @@
     <ClCompile Include="src\Manipulators\shader.cpp">
       <Filter>Source Files\Manipulators</Filter>
     </ClCompile>
-    <ClCompile Include="src\Data Structure\bitData.cpp">
-      <Filter>Source Files\Data Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Data Structure\bitPacker.cpp">
-      <Filter>Source Files\Data Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Data Structure\bitSplitter.cpp">
-      <Filter>Source Files\Data Structures</Filter>
+
+    <ClCompile Include="src\Modules BackEnd\library.cpp">
+      <Filter>Source Files\Modules\Back End</Filter>
     </ClCompile>
     <ClCompile Include="src\Compound\animator2D.cpp">
       <Filter>Source Files\Compound</Filter>
@@ -239,8 +234,8 @@
       <Filter>Source Files\Modules\Back End</Filter>
     </ClInclude>
     <ClInclude Include="src\Modules FrontEnd\audio.h">
-      <Filter>Source Files\Modules\Front End</Filter>
-    </ClInclude>
+      <Filter>Header Files\Modules\Front End</Filter>
+  
     <ClInclude Include="src\Modules BackEnd\library.h">
       <Filter>Source Files\Modules\Back End</Filter>
     </ClInclude>

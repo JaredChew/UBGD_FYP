@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Entities">
       <UniqueIdentifier>{6027f170-3fd6-499a-aa6e-35c959cbafdc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Specifications">
+      <UniqueIdentifier>{4aa02ec8-c90c-47f7-a29e-37b06440bcbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\game.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="src\Session\demo.cpp">
       <Filter>Source Files\Sessions</Filter>
+    </ClCompile>
+    <ClCompile Include="src\global.cpp">
+      <Filter>Source Files\Specifications</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
