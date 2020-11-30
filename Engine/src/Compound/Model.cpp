@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+
 // Texture class
 unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {

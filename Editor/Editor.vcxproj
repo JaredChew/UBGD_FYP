@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Dear ImGUI\include;$(SolutionDir)Dependencies\JSON11\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\src;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLAD\include;$(SolutionDir)Dependencies\Dear ImGUI\include;$(SolutionDir)Dependencies\JSON11\include;$(SolutionDir)Dependencies\GLM\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -90,6 +90,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\editor.cpp" />
+    <ClCompile Include="src\global.cpp" />
     <ClCompile Include="src\ImGUI\imgui.cpp" />
     <ClCompile Include="src\ImGUI\imgui_demo.cpp" />
     <ClCompile Include="src\ImGUI\imgui_draw.cpp" />
@@ -101,7 +103,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h" />
+    <ClInclude Include="src\doubleLinkList.h" />
+    <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

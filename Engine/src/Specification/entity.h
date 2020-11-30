@@ -12,7 +12,7 @@ public:
 	std::list<Entity*> child;
 
 	Transform *transform;
-
+	
 	unsigned int id;
 	int group;
 	std::string name;

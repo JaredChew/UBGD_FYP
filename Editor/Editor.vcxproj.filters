@@ -18,6 +18,9 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\JSON11\json11.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\ImGUI\imgui.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -36,8 +39,11 @@
     <ClCompile Include="src\ImGUI\imgui_widgets.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\JSON11\json11.cpp">
-      <Filter>Resource Files</Filter>
+    <ClCompile Include="src\editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\global.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +51,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\editor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\doubleLinkList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

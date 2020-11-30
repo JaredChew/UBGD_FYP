@@ -6,6 +6,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+
+
 void Shader::defaultDraw(const glm::mat4 &mvpMatrix) {
 
 	static GLuint shaderProgramID = -1;
@@ -14,6 +16,8 @@ void Shader::defaultDraw(const glm::mat4 &mvpMatrix) {
 	static GLuint uMvpMatrix_Loc = -1;
 
 	static bool initCheck = false;
+
+
 
 start:
 

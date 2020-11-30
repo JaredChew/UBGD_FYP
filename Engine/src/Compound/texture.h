@@ -4,8 +4,12 @@
 class Texture {
 private:
 	GLuint textureID;
+
 	int width;
 	int height;
+
+	GLint internalFormat;
+	GLenum format;
 
 public:
 	// |*   Constructors   *|
@@ -14,9 +18,15 @@ public:
 	~Texture();
 
 
+	operator bool() const;
+
+
 	// |*   Getters   *|
-	const int& const getWidth(void);
-	const int& const getHeight(void);
+	int& getWidth(void);
+	int& getHeight(void);
+	GLint& getInternalFormat();
+	GLenum& getFormat();
+	void setSize(const GLsizei& width, const GLsizei& height);
 	GLuint& const getTextureID(void);
 
 };

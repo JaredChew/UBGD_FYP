@@ -5,33 +5,45 @@
 
 #include <vector>
 
-class Mesh {
+struct VertexArrayObject;
+struct Vertex;
 
+class Mesh {
+	
 public:
-	static enum class DefaultGeometry { TRIANGLE, SQUARE, CIRCLE, STADIUM, PYRAMID, CUBE, SPHERE, CONE, CYLINDER };
+	static enum class DefaultGeometry { TRIANGLE = 0, SQUARE, CIRCLE, STADIUM, PYRAMID, CUBE, SPHERE, CONE, CYLINDER, NONE };
 
 private:
-	GLuint vertexArrayObject;
-	GLuint vertexBufferObject;
-	GLuint elementBufferObject;
+	Mesh::DefaultGeometry geometryType;
 
-	std::vector<GLfloat> vertices;
-	std::vector<GLuint> indices;
+	VertexArrayObject* vao;
+	//GLuint vertexArrayObject;
+	//GLuint vertexBufferObject;
+	//GLuint elementBufferObject;
+
+	//std::vector<Vertex> vertices;
+	//std::vector<GLuint> indices;
 
 public:
 	Mesh(const char* directory);
-	Mesh(const DefaultGeometry& type);
+	Mesh(const Mesh::DefaultGeometry& type);
 	~Mesh();
 
-	const GLuint& getVBO();
-	const GLuint& getVAO();
-	const GLuint& getEBO();
+	void setGeometryType(const Mesh::DefaultGeometry& geometryType);
+	void setVertexArrayObject(VertexArrayObject* vertexArrayObject);
+	
+	const Mesh::DefaultGeometry& getGeometryType();
 
-	const GLfloat* getVerticesData();
-	const GLuint& getVerticesSize();
-	const std::vector<GLfloat>& getVertices();
+	VertexArrayObject* getVertexArrayObject();
+	//const GLuint& getVBO();
+	//const GLuint& getVAO();
+	//const GLuint& getEBO();
 
-	const std::vector<GLuint>& getIndices();
-	const GLuint& getIndicesSize();
+	//const Vertex* getVerticesData();
+	//const GLuint& getVerticesSize();
+	//const std::vector<Vertex>& getVertices();
+
+	//const std::vector<GLuint>& getIndices();
+	//const GLuint& getIndicesSize();
 
 };

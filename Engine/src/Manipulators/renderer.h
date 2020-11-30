@@ -66,6 +66,7 @@ public:
 	static void start(const int& resolutionWidth, const int& resolutionHeight);
 	static void end();
 
+
 	void render(const glm::mat4& modelMatrix);
 	void renderToScreen();
 

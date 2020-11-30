@@ -9,6 +9,8 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../Utilities/logger.h"
+#include "../Compound/texture.h"
+#include "../Compound/Vertex.h"
 
 static void System::error_callback(int error, const char* description) {
 
@@ -117,7 +119,7 @@ bool System::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentS
 
 }
 
-bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
+bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format) {
 
 	glGenTextures(size, &textureID);
 
@@ -132,8 +134,11 @@ bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &r
 
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+	
+	internalFormat = GL_RGBA;
+	format = GL_RGBA;
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, resolutionWidth, resolutionHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, resolutionWidth, resolutionHeight, 0, format, GL_UNSIGNED_BYTE, NULL);
 	
 	//glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -143,7 +148,7 @@ bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &r
 
 }
 
-bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height)
+bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height, GLint& internalFormat, GLenum& format)
 {
 	int channels = 0;
 
@@ -163,19 +168,20 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 
 	}
 
-	GLenum format = 0;
-
 	switch (channels) {
 
 	case SOIL_LOAD_L:
+		internalFormat = GL_RED;
 		format = GL_RED;
 		break;
 
 	case SOIL_LOAD_RGB:
+		internalFormat = GL_RGB;
 		format = GL_RGB;
 		break;
 
 	case SOIL_LOAD_RGBA:
+		internalFormat = GL_RGBA;
 		format = GL_RGBA;
 		break;
 
@@ -191,9 +197,9 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
 
-	//glGenerateMipmap(GL_TEXTURE_2D);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, (GLint)format, width, height, 0, format, GL_UNSIGNED_BYTE, image);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, image);
 
 	SOIL_free_image_data(image);
 
@@ -241,7 +247,7 @@ bool System::saveTextureToImage(const char* filename, GLuint& id, const GLsizei&
 
 }
 
-bool System::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight) {
+bool System::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format) {
 
 	glGenTextures(1, &textureID);
 
@@ -253,12 +259,25 @@ bool System::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionW
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, resolutionWidth, resolutionHeight, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_SHORT, NULL);
+	internalFormat = GL_DEPTH_COMPONENT32;
+	format = GL_DEPTH_COMPONENT;
+
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, resolutionWidth, resolutionHeight, 0, format, GL_UNSIGNED_SHORT, NULL);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return true ? textureID != 0 : false;
 
+}
+
+bool System::initDepthBufferTexture(Texture& texture, const GLuint& resolutionWidth, const GLuint& resolutionHeight)
+{
+	texture.getWidth() = resolutionWidth;
+	texture.getHeight() = resolutionHeight;
+
+	initDepthBufferTexture(texture.getTextureID(), texture.getWidth(), texture.getHeight(), texture.getInternalFormat(), texture.getFormat());
+
+	return false;
 }
 
 bool System::checkIsFramebufferReady() {
@@ -311,7 +330,7 @@ bool System::checkIsFramebufferReady() {
 
 }
 
-void System::loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const GLfloat* vertices, const GLuint& verticesSize, const GLuint* indices, const GLuint& indicesSize) {
+void System::loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const Vertex* vertices, const GLuint& verticesSize, const GLuint* indices, const GLuint& indicesSize) {
 
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
@@ -326,10 +345,12 @@ void System::loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const GLfloat* vert
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesSize * sizeof(GLuint), (void*)indices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0); //Position
+	glEnableVertexAttribArray(1); //Normal
 	glEnableVertexAttribArray(2); //TexCoord
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)0);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Position));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

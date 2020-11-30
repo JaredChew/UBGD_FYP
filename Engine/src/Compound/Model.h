@@ -11,6 +11,8 @@
 
 #include <SOIL2/stb_image.h>
 
+#include <utility>
+
 struct Vertex {
 	glm::vec3 Position;
 	glm::vec3 Normal;
@@ -103,6 +105,7 @@ public:
 	std::vector<Mesh2> meshes;
 	std::string directory;
 	bool gammaCorrection;
+	//std::vector < std::pair< Mesh2, std::vector<GLuint> > > mesh_textureIndex;
 
 public:
 	Model(std::string const& path, bool gamma = false);

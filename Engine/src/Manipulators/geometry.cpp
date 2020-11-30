@@ -1,8 +1,12 @@
 #include "geometry.h"
 
 #include <vector>
+#include "../Compound/VertexArrayObject.h"
+#include "../Compound/Vertex.h"
 
 #include <glm/gtc/constants.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
 
 void Geometry::squareLighting(GLuint& texture)
 {
@@ -443,8 +447,9 @@ void Geometry::circle(GLuint& texture)
 
 }
 
-void Geometry::generateTriangleMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+void Geometry::generateTriangleMesh(VertexArrayObject*& vertexArrayObject) {
 
+	/*
 	static GLfloat _vertices[] = {
 
 		-1.0f,  0.0f, 0.0f,
@@ -452,25 +457,46 @@ void Geometry::generateTriangleMesh(std::vector<GLfloat>& vertices, std::vector<
 		 1.0f,  0.0f, 0.0f
 
 	};
+	*/
+
+	static VertexArrayObject m_vao;
+
+	static Vertex m_vertices[] = {
+		//					Vertex							Normal					TexCoord
+		Vertex(glm::vec3( 0.0f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f, 1.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f))
+	};
+	
+	static GLuint m_indices[] = {
+		0, 2, 1
+	};
+
+	if (m_vao.vaoID == 0)
+	{
+		m_vao.init((sizeof(m_vertices) / sizeof(m_vertices[0])), m_vertices, (sizeof(m_indices) / sizeof(m_indices[0])), m_indices);
+	}
+
+	vertexArrayObject = &m_vao;
 
 }
 
-void Geometry::generateSquareMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+void Geometry::generateSquareMesh(VertexArrayObject*& vertexArrayObject) {
 
+	/*
 	static GLfloat _vertices[] = {
 
-			-1.0f,  1.0f, 0.0f,		0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f,		1.0f, 0.0f,
-
-			-1.0f, -1.0f, 0.0f,		0.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f,		1.0f, 1.0f
+		-1.0f,  1.0f,  0.0f,	 0.0f, 1.0f,
+		 1.0f,  1.0f,  0.0f,	 1.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f,	 0.0f, 0.0f,
+		 1.0f, -1.0f,  0.0f,	 1.0f, 0.0f,
 
 	};
 
 	static GLuint _indices[] = {
 
-		0, 1, 2,
-		1, 2, 3
+		1, 0, 2,
+		2, 3, 1
 
 	};
 
@@ -485,6 +511,30 @@ void Geometry::generateSquareMesh(std::vector<GLfloat>& vertices, std::vector<GL
 		indices.push_back(_indices[i]);
 
 	}
+	*/
+
+	static VertexArrayObject m_vao;
+
+	static Vertex m_vertices[] = {
+		//					Vertex							Normal					TexCoord
+		Vertex(glm::vec3(-0.5f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f,  0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f))
+	};
+
+	static GLuint m_indices[] = {
+		0, 2, 1,
+		3, 1, 2
+	};
+
+
+	if (m_vao.vaoID == 0)
+	{
+		m_vao.init((sizeof(m_vertices) / sizeof(m_vertices[0])), m_vertices, (sizeof(m_indices) / sizeof(m_indices[0])), m_indices);
+	}
+
+	vertexArrayObject = &m_vao;
 
 }
 
@@ -559,92 +609,154 @@ void Geometry::generatePyramidMesh(std::vector<GLfloat>& vertices, std::vector<G
 
 }
 
-void Geometry::generateCubeMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices) {
+void Geometry::generateCubeMesh(VertexArrayObject*& vertexArrayObject) {
 
+	/*
 	static GLfloat _vertices[] = {
 
 		// Front plane
-		-1.0f,  1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	0.0f, 1.0f,
-		 1.0f,  1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	1.0f, 1.0f,
-		-1.0f, -1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,	 0.0f, 1.0f,
+		 0.5f,  0.5f,  0.5f,	 1.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,	 0.0f, 0.0f,
+		 0.5f, -0.5f,  0.5f,	 1.0f, 0.0f,
 
-		 1.0f, -1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	1.0f, 0.0f,
-		-1.0f, -1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	0.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f,	 0.0f,  0.0f,  1.0f,	1.0f, 1.0f,
+		// Back plane
+		 0.5f,  0.5f, -0.5f,	 0.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,	 1.0f, 1.0f,
+		 0.5f, -0.5f, -0.5f,	 0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,	 1.0f, 0.0f,
 
+		// Left plane
+		-0.5f,  0.5f, -0.5f,	 0.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,	 1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	 0.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,	 1.0f, 0.0f,
 
-		 // Back plane			 	   
-		  0.5f,  0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	0.0f, 1.0f,
-		 -0.5f,  0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	1.0f, 1.0f,
-		  0.5f, -0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	0.0f, 0.0f,
+		// Right plane
+		 0.5f,  0.5f,  0.5f,	 0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,	 1.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,	 0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,	 1.0f, 0.0f,
 
-		 -0.5f, -0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	1.0f, 0.0f,
-		  0.5f, -0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	0.0f, 0.0f,
-		 -0.5f,  0.5f, -0.5f,	 0.0f,  0.0f, -1.0f,	1.0f, 1.0f,
+		// Top plane
+		-0.5f,  0.5f, -0.5f,	 0.0f, 1.0f,
+		 0.5f,  0.5f, -0.5f,	 1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,	 0.0f, 0.0f,
+		 0.5f,  0.5f,  0.5f,	 1.0f, 0.0f,
 
-
-		 // Left plane				   
-		 -0.5f, -0.5f,  0.5f,	-1.0f,  0.0f,  0.0f,	1.0f, 0.0f,
-		 -0.5f,  0.5f, -0.5f,	-1.0f,  0.0f,  0.0f,	0.0f, 1.0f,
-		 -0.5f,  0.5f,  0.5f,	-1.0f,  0.0f,  0.0f,	1.0f, 1.0f,
-
-		 -0.5f, -0.5f, -0.5f,	-1.0f,  0.0f,  0.0f,	0.0f, 0.0f,
-		 -0.5f,  0.5f,  0.5f,	-1.0f,  0.0f,  0.0f,	1.0f, 1.0f,
-		 -0.5f,  0.5f, -0.5f,	-1.0f,  0.0f,  0.0f,	0.0f, 1.0f,
-
-
-		 // Right plane				   		   
-		  0.5f,  0.5f,  0.5f,	 1.0f,  0.0f,  0.0f,	0.0f, 1.0f,
-		  0.5f,  0.5f, -0.5f,	 1.0f,  0.0f,  0.0f,	1.0f, 1.0f,
-		  0.5f, -0.5f,  0.5f,	 1.0f,  0.0f,  0.0f,	0.0f, 0.0f,
-
-		  0.5f, -0.5f, -0.5f,	 1.0f,  0.0f,  0.0f,	1.0f, 0.0f,
-		  0.5f, -0.5f,  0.5f,	 1.0f,  0.0f,  0.0f,	0.0f, 0.0f,
-		  0.5f,  0.5f, -0.5f,	 1.0f,  0.0f,  0.0f,	1.0f, 1.0f,
-
-
-		  // Top plane			 	   		   
-		  -0.5f,  0.5f, -0.5f,	 0.0f,  1.0f,  0.0f,	0.0f, 1.0f,
-		   0.5f,  0.5f, -0.5f,	 0.0f,  1.0f,  0.0f,	1.0f, 1.0f,
-		  -0.5f,  0.5f,  0.5f,	 0.0f,  1.0f,  0.0f,	0.0f, 0.0f,
-
-		   0.5f,  0.5f,  0.5f,	 0.0f,  1.0f,  0.0f,	1.0f, 0.0f,
-		  -0.5f,  0.5f,  0.5f,	 0.0f,  1.0f,  0.0f,	0.0f, 0.0f,
-		   0.5f,  0.5f, -0.5f,	 0.0f,  1.0f,  0.0f,	1.0f, 1.0f,
-
-
-		   // Bottom plane			 			   
-		   -0.5f, -0.5f,  0.5f,	 0.0f, -1.0f,  0.0f,	0.0f, 1.0f,
-			0.5f, -0.5f,  0.5f,	 0.0f, -1.0f,  0.0f,	1.0f, 1.0f,
-		   -0.5f, -0.5f, -0.5f,	 0.0f, -1.0f,  0.0f,	0.0f, 0.0f,
-
-			0.5f, -0.5f, -0.5f,	 0.0f, -1.0f,  0.0f,	1.0f, 0.0f,
-		   -0.5f, -0.5f, -0.5f,	 0.0f, -1.0f,  0.0f,	0.0f, 0.0f,
-			0.5f, -0.5f,  0.5f,	 0.0f, -1.0f,  0.0f,	1.0f, 1.0f
+		// Bottom plane
+		-0.5f, -0.5f,  0.5f,	 0.0f, 1.0f,
+		 0.5f, -0.5f,  0.5f,	 1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,	 0.0f, 0.0f,
+		 0.5f, -0.5f, -0.5f,	 1.0f, 0.0f
 
 
 	};
 
 	static GLuint _indices[] = {
 
-		0, 1, 2,
-		3, 2, 1,
+		1, 0, 2,
+		2, 3, 1,
 
-		4, 5, 6,
-		7, 6, 5,
+		5, 4, 6,
+		6, 7, 5,
 
-		8, 9, 10,
-		11, 10, 9,
+		9, 8, 10,
+		10, 11, 9,
 
-		12, 13, 14,
-		15, 14, 13,
+		13, 12, 14,
+		14, 15, 13,
 
-		16, 17, 18,
-		19, 18, 17,
+		17, 16, 18,
+		18, 19, 17,
 
-		20, 21, 22,
-		23, 22, 21
+		21, 20, 22,
+		22, 23, 21
 	};
+
+	for (int i = 0; i < sizeof(_vertices) / sizeof(GLfloat); ++i) {
+
+		vertices.push_back(_vertices[i]);
+
+	}
+
+	for (int i = 0; i < sizeof(_indices) / sizeof(GLuint); ++i) {
+
+		indices.push_back(_indices[i]);
+
+	}
+	*/
+
+	static VertexArrayObject m_vao;
+
+	static Vertex m_vertices[] = {
+
+		// Front plane
+		Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec3(0.0f,  0.0f,  1.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec3(0.0f,  0.0f,  1.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec3(0.0f,  0.0f,  1.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec3(0.0f,  0.0f,  1.0f),	glm::vec2(1.0f, 0.0f)),
+
+		// Back plane			 	   																 
+		Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec3(0.0f,  0.0f, -1.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec3(0.0f,  0.0f, -1.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec3(0.0f,  0.0f, -1.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec3(0.0f,  0.0f, -1.0f),	glm::vec2(1.0f, 0.0f)),
+
+		// Left plane				   																 
+		Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec3(-1.0f,  0.0f,  0.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec3(-1.0f,  0.0f,  0.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec3(-1.0f,  0.0f,  0.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec3(-1.0f,  0.0f,  0.0f),	glm::vec2(1.0f, 0.0f)),
+
+		// Right plane				   		   														 
+		Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec3(1.0f,  0.0f,  0.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec3(1.0f,  0.0f,  0.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec3(1.0f,  0.0f,  0.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec3(1.0f,  0.0f,  0.0f),	glm::vec2(1.0f, 0.0f)),
+
+		// Top plane			 	   		   														 
+		Vertex(glm::vec3(-0.5f,  0.5f, -0.5f),	glm::vec3(0.0f,  1.0f,  0.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f,  0.5f, -0.5f),	glm::vec3(0.0f,  1.0f,  0.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f,  0.5f,  0.5f),	glm::vec3(0.0f,  1.0f,  0.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3( 0.5f,  0.5f,  0.5f),	glm::vec3(0.0f,  1.0f,  0.0f),	glm::vec2(1.0f, 0.0f)),
+
+		// Bottom plane			 			   														 
+		Vertex(glm::vec3(-0.5f, -0.5f,  0.5f),	glm::vec3(0.0f, -1.0f,  0.0f),	glm::vec2(0.0f, 1.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f,  0.5f),	glm::vec3(0.0f, -1.0f,  0.0f),	glm::vec2(1.0f, 1.0f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f),	glm::vec3(0.0f, -1.0f,  0.0f),	glm::vec2(0.0f, 0.0f)),
+		Vertex(glm::vec3( 0.5f, -0.5f, -0.5f),	glm::vec3(0.0f, -1.0f,  0.0f),	glm::vec2(1.0f, 0.0f))
+
+	};
+
+	static GLuint m_indices[] = {
+
+		0, 2, 1,
+		3, 1, 2,
+
+		4, 6, 5,
+		7, 5, 6,
+
+		8, 10, 9,
+		11, 9, 10,
+
+		12, 14, 13,
+		15, 13, 14,
+
+		16, 18, 17,
+		19, 17, 18,
+
+		20, 22, 21,
+		23, 21, 22
+
+	};
+
+	if (m_vao.vaoID == 0)
+	{
+		m_vao.init((sizeof(m_vertices) / sizeof(m_vertices[0])), m_vertices, (sizeof(m_indices) / sizeof(m_indices[0])), m_indices);
+	}
+
+	vertexArrayObject = &m_vao;
 
 }
 

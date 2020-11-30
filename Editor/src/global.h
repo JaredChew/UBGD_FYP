@@ -2,8 +2,9 @@
 
 class Window;
 
+
 namespace Global {
 
-	Window* wnd;
+	extern Window* wnd;
 
 }

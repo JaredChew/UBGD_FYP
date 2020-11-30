@@ -17,6 +17,7 @@
     <ClCompile Include="src\Compound\shaderProgram.cpp" />
     <ClCompile Include="src\Compound\texture.cpp" />
     <ClCompile Include="src\Compound\transform.cpp" />
+    <ClCompile Include="src\Compound\VertexArrayObject.cpp" />
     <ClCompile Include="src\Data Structure\bitData.cpp" />
     <ClCompile Include="src\Data Structure\bitPacker.cpp" />
     <ClCompile Include="src\Data Structure\bitSplitter.cpp" />
@@ -61,6 +62,8 @@
     <ClInclude Include="src\Compound\shaderProgram.h" />
     <ClInclude Include="src\Compound\texture.h" />
     <ClInclude Include="src\Compound\transform.h" />
+    <ClInclude Include="src\Compound\Vertex.h" />
+    <ClInclude Include="src\Compound\VertexArrayObject.h" />
     <ClInclude Include="src\Data Structure\binaryTree.hpp" />
     <ClInclude Include="src\Data Structure\bitData.h" />
     <ClInclude Include="src\Data Structure\bitPacker.h" />

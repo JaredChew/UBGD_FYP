@@ -4,21 +4,41 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <list>
+#include <algorithm>
+#include <vector>
+#include <iterator>
 
 #include "Utilities/logger.h"
 #include "Modules BackEnd/window.h"
+#include "Manipulators/shader.h"
+#include "Manipulators/geometry.h"
+#include "Compound/mesh.h"
+#include "Compound/texture.h"
+#include "Modules BackEnd/camera.h"
+#include "Data Structure/linkedList.hpp"
+#include "Specification/entity.h"
+#include "Compound/transform.h"
+
+#include "Compound/VertexArrayObject.h"
 
 #include "defaultSettings.h"
 #include "global.h"
+#include "editor.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
 static void error_callback(int error, const char* description) {
+
 	Logger::getInstance()->customLog("GLFW ERROR", description);
 
 }
+
 
 int main(void) {
 
@@ -37,8 +57,8 @@ int main(void) {
 
 	//Set window hints
 	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_CONTEXT_CREATION_API, GLFW_NATIVE_CONTEXT_API);
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
@@ -86,18 +106,26 @@ int main(void) {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO();
-
+	ImGuiIO& io = ImGui::GetIO(); 
+	//(void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(Global::wnd->getWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 150");
-
+	
 	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsDark();
+	ImGui::StyleColorsClassic();
+
+	Editor::initEditor();
+	
 
 	//Window loop
 	while (!glfwWindowShouldClose(Global::wnd->getWindow())) {
-
+		
 		//Global::wnd->update();
 
 		// feed inputs to dear imgui, start new frame
@@ -105,15 +133,43 @@ int main(void) {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		//ImGui::DockSpace();
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				if (ImGui::MenuItem("Quit", "Alt+F4")) break;
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Edit"))
+			{
+				if (ImGui::MenuItem("TODO")) {
+					//do something
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+
+		bool show = true;
+		//ImGui::ShowDemoWindow(&show);
+		
 		// render your GUI
-		ImGui::Begin("Demo window");
-		ImGui::Button("Hello!");
-		ImGui::End();
+		Editor::showEditor_Hierarchy();
+		Editor::showEditor_Property();
+		Editor::showEditor_WorldEditor();
 
 		// Render dear imgui into screen
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+
+
+		int display_w, display_h;
+		glfwGetFramebufferSize(Global::wnd->getWindow(), &display_w, &display_h);
+		glViewport(0, 0, display_w, display_h);
 		//Swap front and back buffer
 		glfwSwapBuffers(Global::wnd->getWindow());
 
@@ -127,6 +183,8 @@ int main(void) {
 
 	delete Global::wnd;
 	Global::wnd = nullptr;
+
+	Editor::terminateEditor();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

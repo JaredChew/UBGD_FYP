@@ -1,5 +1,9 @@
 #include "Text.h"
 
+#include "ft2build.h"
+//#include <freetype/freetype.h>
+#include FT_FREETYPE_H
+
 Text::Text(const std::string& fontPath, const unsigned int& size)
 {
 	if (shader.getGprogramID() == 0) {

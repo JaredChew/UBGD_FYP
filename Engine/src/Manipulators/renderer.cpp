@@ -7,6 +7,7 @@
 #include "../Modules BackEnd/camera.h"
 #include "../Compound/mesh.h"
 #include "../Manipulators/shader.h" //temp
+#include "../Compound/VertexArrayObject.h"
 
 Renderer* Renderer::instance;
 
@@ -35,10 +36,13 @@ Renderer::Renderer(const int& resolutionWidth, const int& resolutionHeight) {
 
 	glGenFramebuffers(1, &frameBuffer);
 
-	System::initDepthBufferTexture(depthBuffer, 1280, 720);
+
+	GLint internalFormat;
+	 GLenum format;
+	System::initDepthBufferTexture(depthBuffer, 1280, 720, internalFormat, format);
 
 	for (int i = 0; i < 2; ++i) {
-		System::initTexture(swapTexture[i], 2, 1280, 720);
+		System::initTexture(swapTexture[i], 2, 1280, 720, internalFormat, format);
 	}
 
 	renderQuality = 100;
@@ -89,10 +93,10 @@ void Renderer::swapScreenTexture() {
 	backBuffer = swapTexture[swapTextureIndex];
 	frontBuffer = swapTexture[(swapTextureIndex + 1) % 2];
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, backBuffer, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, backBuffer, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
 
@@ -144,13 +148,16 @@ void Renderer::render(const glm::mat4& modelMatrix) {
 	}
 
 	bindMesh(mesh);
-	swapScreenTexture();
+	//swapScreenTexture();
 
 }
 
 void Renderer::renderToScreen() {
 
 	applyPostProcessing();
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	//glLineWidth(2.5f);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -168,6 +175,10 @@ void Renderer::renderToScreen() {
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, backBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	swapScreenTexture();
 
 }
@@ -180,8 +191,14 @@ void Renderer::effectRender(const Effects& type) {
 
 void Renderer::bindMesh(Mesh* const mesh) {
 
-	glBindVertexArray(mesh->getVAO());
-	glDrawElements(GL_TRIANGLES, mesh->getIndicesSize(), GL_UNSIGNED_INT, 0);
+	//for (size_t i = 0; i < mesh->getIndicesSize(); i++)
+	//{
+	//	printf("vao = %u, indice = %u  | ", mesh->getVAO(), mesh->getIndices()[i]);
+	//}
+	//printf("\n\n");
+	
+	glBindVertexArray(mesh->getVertexArrayObject()->vaoID);
+	glDrawElements(GL_TRIANGLES, mesh->getVertexArrayObject()->indicesSize, GL_UNSIGNED_INT, 0);
 
 }
 
