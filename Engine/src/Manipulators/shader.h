@@ -5,9 +5,13 @@
 
 #include <glm/mat4x4.hpp>
 
+class LightingContainer;
+class Material;
+
 namespace Shader {
 
 	void defaultDraw(const glm::mat4 &mvpMatrix);
+	void phongLightDraw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const Material& material, LightingContainer& lightingContainer);
 	void animation2DDraw(const glm::mat4& mvpMatrix, const float& row, const float& column, const float& eachRowNor, const float& eachColNor, const float& index);
 	void drawSkyBox(const glm::mat4& mvpMatrix);
 

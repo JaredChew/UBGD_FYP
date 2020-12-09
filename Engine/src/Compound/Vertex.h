@@ -4,11 +4,17 @@
 #include <glm/vec2.hpp>
 
 struct Vertex {
-	glm::vec3 Position;
-	glm::vec3 Normal;
-	glm::vec2 TexCoords;
-	//glm::vec3 Tangent;
-	//glm::vec3 Bitangent;
+	union {
+		struct {
+			glm::vec3 Position;
+			glm::vec3 Normal;
+			glm::vec2 TexCoords;
+		};
+		//glm::vec3 Tangent;
+		//glm::vec3 Bitangent;
+
+		float vertices[8];
+	};
 
 	Vertex()
 	{

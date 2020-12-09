@@ -1,8 +1,8 @@
 #version 330 core
 
-attribute vec3 vPosition;
-attribute vec4 vColor;
-attribute vec2 vTexCoord;
+layout (Location = 0) in vec3 vPosition;
+layout (Location = 1) in vec4 vColor;
+layout (Location = 2) in vec2 vTexCoord;
 
 varying vec2 fTexCoord;
 varying vec4 fColor;

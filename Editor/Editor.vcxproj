@@ -100,12 +100,14 @@
     <ClCompile Include="src\ImGUI\imgui_widgets.cpp" />
     <ClCompile Include="src\JSON11\json11.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PortableFileDialogs\example.cpp" />
+    <ClCompile Include="src\PortableFileDialogs\kill.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h" />
-    <ClInclude Include="src\doubleLinkList.h" />
     <ClInclude Include="src\editor.h" />
     <ClInclude Include="src\global.h" />
+    <ClInclude Include="src\PortableFileDialogs\portable-file-dialogs.h" />
     <ClInclude Include="src\widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

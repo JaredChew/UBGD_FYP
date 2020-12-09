@@ -9,26 +9,19 @@ struct VertexArrayObject;
 
 namespace Geometry {
 
-	typedef void(*SetVertexArrayBufferFunction)(const GLuint& shaderProgramID, GLuint& vertexArrayObject, GLfloat* vertices, const GLuint& verticesSize, GLuint* indices, const GLuint& indicesSize);
-
-	void squareLighting(GLuint& texture);
-
-	void cudeLighting(GLuint& texture);
-
-	void triangle(GLuint& texture);
-	void square(GLuint& texture);
-	void circle(GLuint& texture);
+	void generateRenderBoardMesh(VertexArrayObject*& vertexArrayObject);
 
 	void generateTriangleMesh(VertexArrayObject*& vertexArrayObject);
 	void generateSquareMesh(VertexArrayObject*& vertexArrayObject);
-	void generateCircleMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
-	//void generateStadiumMesh(const float& smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateCircleMesh(VertexArrayObject*& vertexArrayObject);
+	void generateStadiumMesh(VertexArrayObject*& vertexArrayObject);
 
-	void generatePyramidMesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generatePyramidMesh(VertexArrayObject*& vertexArrayObject);
 	void generateCubeMesh(VertexArrayObject*& vertexArrayObject);
-	void generateSphereMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
-	void generateConeMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
-	void generateCylinderMesh(const float &smoothness, std::vector<GLfloat>& vertices, std::vector<GLuint>& indices);
+	void generateSphereMesh(VertexArrayObject*& vertexArrayObject);
+	void generateConeMesh(VertexArrayObject*& vertexArrayObject);
+	void generateCylinderMesh(VertexArrayObject*& vertexArrayObject);
+	void generateTorusMesh(VertexArrayObject*& vertexArrayObject);
 
 }
 

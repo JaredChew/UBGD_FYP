@@ -98,22 +98,22 @@ void Game::freeCameraControl() {
 	if (glfwGetKey(Global::window->getWindow(), GLFW_KEY_Z) == GLFW_PRESS) {
 
 		glm::vec3 newRot(0.0f, temp, 0.0f);
-		camera->transform->setRotation(camera->transform->getRotation() + newRot);
+		camera->transform->setRotationLocal(camera->transform->getRotationLocal() + newRot);
 	}
 	if (glfwGetKey(Global::window->getWindow(), GLFW_KEY_C) == GLFW_PRESS) {
 
 		glm::vec3 newRot(0.0f, -temp, 0.0f);
-		camera->transform->setRotation(camera->transform->getRotation() + newRot);
+		camera->transform->setRotationLocal(camera->transform->getRotationLocal() + newRot);
 	}
 	if (glfwGetKey(Global::window->getWindow(), GLFW_KEY_W) == GLFW_PRESS) {
 
 		glm::vec3 newRot(temp, 0.0f, 0.0f);
-		camera->transform->setRotation(camera->transform->getRotation() + newRot);
+		camera->transform->setRotationLocal(camera->transform->getRotationLocal() + newRot);
 	}
 	if (glfwGetKey(Global::window->getWindow(), GLFW_KEY_S) == GLFW_PRESS) {
 
 		glm::vec3 newRot(-temp, 0.0f, 0.0f);
-		camera->transform->setRotation(camera->transform->getRotation() + newRot);
+		camera->transform->setRotationLocal(camera->transform->getRotationLocal() + newRot);
 	}
 	
 	

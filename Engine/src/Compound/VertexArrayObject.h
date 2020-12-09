@@ -4,6 +4,7 @@
 #include <glfw/glfw3.h>
 
 #include <stdlib.h>
+#include <vector>
 
 // |*  VSAPI = Vertex Shader Attribute Pointer Index  *|
 #define VSAPI_Sprite_Position 0
@@ -27,12 +28,14 @@ struct VertexArrayObject
 	GLint indicesSize;
 
 	VertexArrayObject();
+	VertexArrayObject(const GLint& vertexSize, Vertex* vertex, const GLint& indicesSize, GLuint* indices);
 	~VertexArrayObject();
 
-	void init(const GLint& verticesSize, Vertex* vertices, const GLint& indicesSize, GLuint* indices);
+	void init(const GLint& vertexSize, Vertex* vertex, const GLint& indicesSize, GLuint* indices);
 
 	void startGenerateVertexArrays();
-	void bindBufferData(const GLenum& target, const GLuint& bufferID, const GLsizeiptr& size, const void* pointer, const GLenum& usage);
+	void bindArrayBufferData(const GLsizeiptr& size, const void* pointer, const GLenum& usage);
+	void bindElementArrayBufferData(const GLsizeiptr& size, const void* pointer, const GLenum& usage);
 	void applyVertexAttribPointer(const GLuint& index, const GLint& size, const GLenum& type, const GLboolean& normalized, const GLsizei& stride, const void* pointer);
 	void finishGenerateVertexArrays();
 

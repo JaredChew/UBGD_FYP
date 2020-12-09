@@ -33,12 +33,13 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+
+
 static void error_callback(int error, const char* description) {
 
 	Logger::getInstance()->customLog("GLFW ERROR", description);
 
 }
-
 
 int main(void) {
 
@@ -159,6 +160,7 @@ int main(void) {
 		// render your GUI
 		Editor::showEditor_Hierarchy();
 		Editor::showEditor_Property();
+		Editor::showEditor_AssetTracker();
 		Editor::showEditor_WorldEditor();
 
 		// Render dear imgui into screen

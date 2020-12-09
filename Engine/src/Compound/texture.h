@@ -1,15 +1,19 @@
 #pragma once
 #include <glad/glad.h>
+#include <string>
 
 class Texture {
 private:
 	GLuint textureID;
+
+	std::string path;
 
 	int width;
 	int height;
 
 	GLint internalFormat;
 	GLenum format;
+
 
 public:
 	// |*   Constructors   *|
@@ -22,6 +26,7 @@ public:
 
 
 	// |*   Getters   *|
+	std::string& const getPath();
 	int& getWidth(void);
 	int& getHeight(void);
 	GLint& getInternalFormat();

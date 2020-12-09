@@ -15,6 +15,12 @@ private:
 		friend class DoubleLinkList;
 	};
 
+private:
+
+	Node* _head, * _tail;
+
+	int _size;
+
 public:
 
 	class iterator {
@@ -29,6 +35,12 @@ public:
 			_currentNode = node;
 			return *this;
 		}
+
+		//inline bool operator==(const DoubleLinkList<DataType>::iterator& firstIter, const DoubleLinkList<DataType>::iterator& secondIter)
+		//{ 
+		//	return (firstIter._currentNode == secondIter._currentNode);
+		//}
+
 		// Prefix
 		DoubleLinkList<DataType>::iterator& operator++()
 		{
@@ -52,12 +64,6 @@ public:
 			return _currentNode->data;
 		}
 	};
-
-private:
-
-	Node* _head, * _tail;
-
-	int _size;
 
 public:
 
@@ -91,14 +97,14 @@ public:
 
 	}
 
-	iterator begin()
+	DoubleLinkList<DataType>::iterator begin()
 	{
-		return iterator(_head);
+		return DoubleLinkList<DataType>::iterator(_head);
 	}
 
-	iterator end()
+	DoubleLinkList<DataType>::iterator end()
 	{
-		return iterator(nullptr);
+		return DoubleLinkList<DataType>::iterator(nullptr);
 	}
 
 	void push_back(DataType data) {
@@ -239,12 +245,13 @@ public:
 
 	}
 
-	void erase(int index) {
+	iterator erase(int index) {
 
-		if (index < 0 || index >= _size) return;
+		if (index < 0 || index >= _size) return iterator(nullptr);
 
 		Node* pre = nullptr;
 		Node* cur = _head;
+		Node* next = nullptr;
 
 		size_t i = 0;
 		while (i < index) {
@@ -271,11 +278,11 @@ public:
 		}
 		else
 		{
-			Node* temp = cur->next;
-			pre->next = temp;
-			if (temp != nullptr)
+			next = cur->next;
+			pre->next = next;
+			if (next != nullptr)
 			{
-				temp->previous = pre;
+				next->previous = pre;
 
 			}
 			else
@@ -287,11 +294,13 @@ public:
 		_size--;
 		delete cur;
 
+		return iterator(next);
+
 	}
 
-	void erase(Node* node) {
+	iterator erase(Node* node) {
 
-		if (node == nullptr) return;
+		if (node == nullptr || findIndex(node)) return iterator(nullptr);
 
 		Node* pre = node->previous;
 		Node* cur = node;
@@ -304,6 +313,8 @@ public:
 
 		_size--;
 		delete cur;
+
+		return iterator(temp);
 
 	}
 

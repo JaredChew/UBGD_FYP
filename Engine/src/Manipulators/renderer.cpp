@@ -7,7 +7,9 @@
 #include "../Modules BackEnd/camera.h"
 #include "../Compound/mesh.h"
 #include "../Manipulators/shader.h" //temp
-#include "../Compound/VertexArrayObject.h"
+#include "../Compound/vertexArrayObject.h"
+#include "../Compound/material.h"
+#include "../Compound/lightingContainer.h"
 
 Renderer* Renderer::instance;
 
@@ -16,6 +18,8 @@ Renderer::Renderer(const int& resolutionWidth, const int& resolutionHeight) {
 	//Init Opengl state
 	glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 	glClearDepth(1.0f); // Depth Buffer Setup
+
+	glEnable(GL_TEXTURE_2D);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);	// The Type Of Depth Testing To Do
@@ -38,7 +42,7 @@ Renderer::Renderer(const int& resolutionWidth, const int& resolutionHeight) {
 
 
 	GLint internalFormat;
-	 GLenum format;
+	GLenum format;
 	System::initDepthBufferTexture(depthBuffer, 1280, 720, internalFormat, format);
 
 	for (int i = 0; i < 2; ++i) {
@@ -53,9 +57,11 @@ Renderer::Renderer(const int& resolutionWidth, const int& resolutionHeight) {
 
 	effectType = Effects::NONE;
 
-	screenMesh = new Mesh(Mesh::DefaultGeometry::SQUARE);
+	screenMesh = new Mesh(Mesh::DefaultGeometry::RENDER_BOARD);
 
-	mesh = nullptr;
+	meshBinded = nullptr;
+	materialBinded = nullptr;
+	lightingContainerBinded = nullptr;
 	camera = nullptr;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
@@ -134,7 +140,9 @@ void Renderer::render(const glm::mat4& modelMatrix) {
 	switch (effectType) {
 
 		case Effects::NONE:
-			Shader::defaultDraw(glm::mat4(mvpMatrix));
+			Shader::phongLightDraw(modelMatrix, camera->getViewMatrix(), camera->getProjectionMatrix(), *materialBinded, *lightingContainerBinded);
+			//bindMaterial(materialBinded);
+			//Shader::defaultDraw(glm::mat4(mvpMatrix));
 			break;
 
 		case Effects::BLUR:
@@ -147,7 +155,8 @@ void Renderer::render(const glm::mat4& modelMatrix) {
 
 	}
 
-	bindMesh(mesh);
+	
+	bindMesh(meshBinded);
 	//swapScreenTexture();
 
 }
@@ -202,9 +211,27 @@ void Renderer::bindMesh(Mesh* const mesh) {
 
 }
 
+void Renderer::bindMaterial(Material* const material) {
+
+	for (size_t i = 0; i < 3; i++) {
+
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, materialBinded->textures[i]->getTextureID());
+	
+	}
+
+	glActiveTexture(GL_TEXTURE0);
+
+}
+
+void Renderer::useLightingContainer(LightingContainer* const lightingContainer)
+{
+	this->lightingContainerBinded = lightingContainer;
+}
+
 void Renderer::useMesh(Mesh* const mesh) {
 
-	this->mesh = mesh;
+	this->meshBinded = mesh;
 
 }
 
@@ -220,10 +247,9 @@ void Renderer::useCamera(Camera* const camera) {
 
 }
 
-void Renderer::useTexture(const GLuint& textureID) {
+void Renderer::useMaterial(Material* const  material) {
 
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	this->materialBinded = material;
 
 }
 

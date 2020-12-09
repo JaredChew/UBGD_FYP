@@ -9,6 +9,8 @@
 
 class Camera;
 class Mesh;
+class Material;
+class LightingContainer;
 
 class Renderer {
 
@@ -31,7 +33,7 @@ private:
 	GLuint swapTexture[2];
 	GLuint frontBuffer;
 	GLuint backBuffer;
-	GLuint textureBinded;
+	
 
 	int resolutionWidth;
 	int resolutionHeight;
@@ -49,7 +51,10 @@ private:
 
 	Mesh* screenMesh;
 
-	Mesh* mesh;
+	Mesh* meshBinded;
+	Material* materialBinded;
+	LightingContainer* lightingContainerBinded;
+
 	Camera* camera;
 
 private:
@@ -58,6 +63,7 @@ private:
 
 	void swapScreenTexture();
 	void bindMesh(Mesh* const mesh);
+	void bindMaterial(Material* const material);
 	void applyPostProcessing();
 
 public:
@@ -72,11 +78,12 @@ public:
 
 	void effectRender(const Effects& effectType);
 
+	void useLightingContainer(LightingContainer* const lightingContainer);
 	void useMesh(Mesh* const mesh);
 	//void useShader(const DefaultShader& type); //use custom
 	void useWindow(GLFWwindow* const window);
 	void useCamera(Camera* const camera);
-	void useTexture(const GLuint& textureID);
+	void useMaterial(Material* const  material);
 
 	void appendPostProcessing(const PostProcessing& type);
 	void detacthPostProcessing(const PostProcessing& type);

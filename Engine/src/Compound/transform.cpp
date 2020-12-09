@@ -28,17 +28,17 @@ void Transform::updateModelMatrix() {
 
 	modelMatrix =
 
+		glm::translate(glm::mat4(1.0f), glm::vec3(position))*
+
 		glm::scale(glm::mat4(1.0f), glm::vec3(dimension)) *
 		
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
-		
-		glm::translate(glm::mat4(1.0f), glm::vec3(position)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotationLocal.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(glm::mat4(1.0f), glm::radians(rotationLocal.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::rotate(glm::mat4(1.0f), glm::radians(rotationLocal.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(rotationLocal.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), glm::radians(rotationLocal.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
 
 		glm::scale(glm::mat4(1.0f), glm::vec3(dimensionLocal)) *
 

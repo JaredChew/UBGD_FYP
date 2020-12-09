@@ -11,6 +11,13 @@
 #include "../Utilities/logger.h"
 #include "../Compound/texture.h"
 #include "../Compound/Vertex.h"
+#include "../Compound/VertexArrayObject.h"
+#include "../Compound/mesh.h"
+#include "../Compound/material.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 static void System::error_callback(int error, const char* description) {
 
@@ -73,9 +80,9 @@ bool System::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentS
 	glAttachShader(programObject, vertexShader);
 	glAttachShader(programObject, fragmentShader);
 
-	glBindAttribLocation(programObject, 0, "vPosition");
-	glBindAttribLocation(programObject, 1, "vColor");
-	glBindAttribLocation(programObject, 2, "vTexCoord");
+	//glBindAttribLocation(programObject, 0, "vPosition");
+	//glBindAttribLocation(programObject, 1, "vColor");
+	//glBindAttribLocation(programObject, 2, "vTexCoord");
 
 	// Link the program
 	glLinkProgram(programObject);
@@ -122,9 +129,19 @@ bool System::initProgramObject_Shader(GLuint &programID, const GLuint &fragmentS
 bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format) {
 
 	glGenTextures(size, &textureID);
+	if (!textureID) {
+
+		Logger::getInstance()->errorLog("Texture generate error: can't generate %i texture!", size);
+		return false;
+
+	}
+
 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
+	internalFormat = GL_RGBA;
+	format = GL_RGBA;
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, resolutionWidth, resolutionHeight, 0, format, GL_UNSIGNED_BYTE, NULL);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -132,19 +149,9 @@ bool System::initTexture(GLuint &textureID, const GLsizei &size, const GLuint &r
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //GL_LINEAR
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //GL_LINEAR
 
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-	
-	internalFormat = GL_RGBA;
-	format = GL_RGBA;
-
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, resolutionWidth, resolutionHeight, 0, format, GL_UNSIGNED_BYTE, NULL);
-	
-	//glGenerateMipmap(GL_TEXTURE_2D);
-
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	return true ? textureID != 0 : false;
+	return true;
 
 }
 
@@ -152,13 +159,8 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 {
 	int channels = 0;
 
-	glGenTextures(1, &textureID);
 	stbi_set_flip_vertically_on_load(true);
-
 	unsigned char* image = SOIL_load_image(dir, &width, &height, &channels, SOIL_LOAD_AUTO);
-
-	
-
 	if (!image) {
 
 		Logger::getInstance()->errorLog("SOIL loading error: %s", SOIL_last_result());
@@ -168,6 +170,16 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 
 	}
 
+	glGenTextures(1, &textureID);
+	if (!textureID) {
+
+		Logger::getInstance()->errorLog("Texture generate error: can't generate a texture!");
+		return false;
+
+	}
+	
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	
 	switch (channels) {
 
 	case SOIL_LOAD_L:
@@ -186,20 +198,16 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 		break;
 
 	}
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, image);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // magnifying = near, linear = gradient
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // minifying = far, nearest = more pixel
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, image);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // magnifying = near, linear = gradient
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // minifying = far, nearest = more pixel
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR); // GL_LINEAR); // magnifying = near, linear = gradient
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST); //GL_NEAREST); // minifying = far, nearest = more pixel
 
 	SOIL_free_image_data(image);
 
@@ -207,11 +215,11 @@ bool System::initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLi
 
 }
 
-bool System::saveTextureToImage(const char* filename, GLuint& id, const GLsizei& width, const GLsizei& height) {
+bool System::saveTextureToImage(const GLchar* filename, const GLuint& textureID, const GLsizei& width, const GLsizei& height) {
 
 	uint8_t* pixels = new uint8_t[width * height * 3];
 	// copy pixels from screen
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, width, height);
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);
 	glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, (GLvoid*)pixels);
@@ -358,6 +366,151 @@ void System::loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const Vertex* verti
 
 }
 
+static Texture* loadMaterialTextures(aiMaterial*& material, const aiTextureType& textureType, std::vector<Texture*>& textures_loaded, std::string& directory)
+{
+	if (material->GetTextureCount(textureType) == 0) return nullptr;
+
+	aiString str;
+	material->GetTexture(textureType, 0, &str);
+	std::string texturePath = directory + static_cast<std::string>(str.C_Str());
+
+	for (unsigned int j = 0; j < textures_loaded.size(); j++)
+	{
+		if (textures_loaded[j]->getPath().compare(texturePath) == 0)
+		{
+			return textures_loaded[j];
+		}
+	}
+
+	Texture* texture = new Texture(texturePath.c_str());
+	textures_loaded.push_back(texture);
+
+	return texture;
+
+}
+
+static Material* processMaterial(aiMesh*& mesh, const aiScene*& scene, std::vector<Texture*>& textures_loaded, std::string& directory)
+{
+	aiMaterial*& material = scene->mMaterials[mesh->mMaterialIndex];
+
+	Texture* diffuse = loadMaterialTextures(material, aiTextureType_DIFFUSE, textures_loaded, directory);
+	if (diffuse == nullptr)
+	{
+		diffuse = new Texture(512, 512);
+	}
+	Texture* specular = loadMaterialTextures(material, aiTextureType_SPECULAR, textures_loaded, directory);
+	if (specular == nullptr)
+	{
+		specular = new Texture(512, 512);
+	}
+	Texture* emissive = loadMaterialTextures(material, aiTextureType_EMISSIVE, textures_loaded, directory);
+	if (emissive == nullptr)
+	{
+		emissive = new Texture(512, 512);
+	}
+	//loadTextures(material, aiTextureType_HEIGHT);
+	//loadTextures(material, aiTextureType_AMBIENT);
+
+	return new Material(diffuse, specular, emissive, 32.0f, false, glm::vec3(1.0f));
+
+}
+
+static Mesh* processMesh(aiMesh*& mesh, const aiScene*& scene)
+{
+	std::vector<Vertex> vertices;
+	std::vector<GLuint> indices;
+
+	for (size_t i = 0; i < mesh->mNumVertices; i++)
+	{
+		vertices.push_back(Vertex());
+
+		vertices[i].Position[0] = mesh->mVertices[i][0];
+		vertices[i].Position[1] = mesh->mVertices[i][1];
+		vertices[i].Position[2] = mesh->mVertices[i][2];
+
+		if (mesh->HasNormals())
+		{
+			vertices[i].Normal[0] = mesh->mNormals[i][0];
+			vertices[i].Normal[1] = mesh->mNormals[i][1];
+			vertices[i].Normal[2] = mesh->mNormals[i][2];
+		}
+
+		if (mesh->mTextureCoords[0])
+		{
+			vertices[i].TexCoords[0] = mesh->mTextureCoords[0][i][0];
+			vertices[i].TexCoords[1] = mesh->mTextureCoords[0][i][1];
+
+			//vector.x = mesh->mTangents[i].x;
+			//vector.y = mesh->mTangents[i].y;
+			//vector.z = mesh->mTangents[i].z;
+			//vertex.Tangent = vector;
+
+			//vector.x = mesh->mBitangents[i].x;
+			//vector.y = mesh->mBitangents[i].y;
+			//vector.z = mesh->mBitangents[i].z;
+			//vertex.Bitangent = vector;
+		}
+		else
+		{
+			vertices[i].TexCoords = glm::vec2(0.0f, 0.0f);
+		}
+
+	}
+
+	for (size_t i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace& face = mesh->mFaces[i];
+
+		for (size_t j = 0; j < face.mNumIndices; j++)
+		{
+			indices.push_back(face.mIndices[j]);
+		}
+	}
+
+	return new Mesh( new VertexArrayObject(vertices.size(), vertices.data(), indices.size(), indices.data()) );
+
+}
+
+static void processNode(const aiNode* node, const aiScene*& scene, std::vector<Mesh*>& meshes, std::vector<Material*>& materials, std::vector<Texture*>& textures_loaded, std::string& directory)
+{
+	for (size_t i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh*& mesh = scene->mMeshes[node->mMeshes[i]];
+
+		meshes.push_back(processMesh(mesh, scene));
+		materials.push_back(processMaterial(mesh, scene, textures_loaded, directory));
+	}
+
+	for (size_t i = 0; i < node->mNumChildren; i++)
+	{
+		processNode(node->mChildren[i], scene, meshes, materials, textures_loaded, directory);
+	}
+
+}
+
+void System::loadModel(const GLchar* dir, std::vector<Mesh*>& meshes, std::vector<Material*>& materials)
+{
+	if (meshes.size() > 0) meshes.clear();
+	if (materials.size() > 0) materials.clear();
+
+	std::string directory(dir);
+	directory = directory.substr(0, directory.find_last_of('/') + 1);
+
+	std::vector<Texture*> textures_loaded;
+
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(dir, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		Logger::getInstance()->errorLog("ERROR::ASSIMP:: %s\n", importer.GetErrorString());
+		return;
+	}
+
+	processNode(scene->mRootNode, scene, meshes, materials, textures_loaded, directory);
+
+}
+
 bool System::loadShaderRaw(GLuint& shaderID, const GLenum& type, const char *shaderSrc) {
 
 	GLint compiled;
@@ -382,13 +535,13 @@ bool System::loadShaderRaw(GLuint& shaderID, const GLenum& type, const char *sha
 
 		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLen);
 
-		if (infoLen == 0) {
+		if (infoLen > 1) {
 
 			char infoLog[4096];
 
 			glGetShaderInfoLog(shaderID, infoLen, NULL, infoLog);
 
-			Logger::getInstance()->warningLog("Failed to compile shader %s", static_cast<std::string>(infoLog));
+			Logger::getInstance()->warningLog("Failed to compile shader %s", infoLog);
 
 		}
 
@@ -492,5 +645,98 @@ void System::applyBillboard(glm::mat4& modelViewMatrix) {
 	glm::value_ptr(modelViewMatrix)[8] = 0.0;
 	glm::value_ptr(modelViewMatrix)[9] = 0.0;
 	glm::value_ptr(modelViewMatrix)[10] = 1.0;
+
+}
+
+static std::string processMeshToVertexArrayObjectData(aiMesh*& mesh)
+{
+	std::string data = "";
+
+	data = "static Vertex m_vertices[] = {\n";
+	data += "\t//					Vertex							Normal					TexCoord\n";
+
+	for (size_t i = 0; i < mesh->mNumVertices; i++)
+	{
+		data += "\tVertex(glm::vec3(" + std::to_string(mesh->mVertices[i][0]);
+		data += "f, " + std::to_string(mesh->mVertices[i][1]);
+		data += "f, " + std::to_string(mesh->mVertices[i][2]);
+
+		if (mesh->HasNormals())
+		{
+			data += "f), glm::vec3(" + std::to_string(mesh->mNormals[i][0]);
+			data += "f, " + std::to_string(mesh->mNormals[i][1]);
+			data += "f, " + std::to_string(mesh->mNormals[i][2]);
+		}
+		else
+		{
+			data += "f), glm::vec3(0.0f, 0.0f, 0.0";
+		}
+
+		if (mesh->mTextureCoords[0])
+		{
+			data += "f), glm::vec2(" + std::to_string(mesh->mTextureCoords[0][i][0]);
+			data += "f, " + std::to_string(mesh->mTextureCoords[0][i][1]) + "f))";
+		}
+		else
+		{
+			data += "f), glm::vec2(0.0f, 0.0f))";
+		}
+		if (i < (mesh->mNumVertices - 1)) data += ",";
+		data += "\n";
+	}
+	data += "};\n\n";
+	data += "static GLuint m_indices[] = {\n";
+	for (size_t i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace& face = mesh->mFaces[i];
+
+		data += "\t";
+		for (size_t j = 0; j < face.mNumIndices; j++)
+		{
+			data += std::to_string(face.mIndices[j]);
+			if(i < (mesh->mNumFaces - 1) || j < (face.mNumIndices -1)) data += ",";
+		}
+		data += "\n";
+	}
+	data += "};\n\n";
+
+	return data;
+}
+
+static std::string processNodeToVertexArrayObjectData(const aiNode* node, const aiScene*& scene)
+{
+	std::string data = "";
+	for (size_t i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh*& mesh = scene->mMeshes[node->mMeshes[i]];
+
+		data += std::string(processMeshToVertexArrayObjectData(mesh));
+	}
+
+	for (size_t i = 0; i < node->mNumChildren; i++)
+	{
+		data += std::string(processNodeToVertexArrayObjectData(node->mChildren[i], scene));
+	}
+
+	return data;
+
+}
+
+void System::loadModelToVertexArrayObjectData(const GLchar* modelDir, const GLchar* saveFileDir)
+{
+	Assimp::Importer importer;
+	const aiScene* scene = importer.ReadFile(modelDir, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	{
+		Logger::getInstance()->errorLog("ERROR::ASSIMP:: %s\n", importer.GetErrorString());
+		return;
+	}
+
+	std::string text = processNodeToVertexArrayObjectData(scene->mRootNode, scene);
+
+	std::ofstream MyFile(std::string(saveFileDir) + ".txt");
+	MyFile << text.c_str();
+	MyFile.close();
 
 }

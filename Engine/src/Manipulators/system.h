@@ -5,11 +5,14 @@
 
 #include <vector>
 #include <string>
+#include <map>
 
 #include <glm/mat4x4.hpp>
 
 class Texture;
 struct Vertex;
+class Mesh;
+class Material;
 
 namespace System {
 
@@ -21,14 +24,16 @@ namespace System {
 
 	bool initTexture(GLuint &textureID, const GLsizei &size, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format);
 	bool initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height, GLint& internalFormat, GLenum& format);
-	bool saveTextureToImage(const char* filename, GLuint& id, const GLsizei& width, const GLsizei& height);
+	bool saveTextureToImage(const GLchar* filename, const GLuint& textureID, const GLsizei& width, const GLsizei& height);
 
-	bool initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format);
-	bool initDepthBufferTexture(Texture& texture, const GLuint& resolutionWidth, const GLuint& resolutionHeight);
+	bool initDepthBufferTexture(GLuint &textureID, const GLuint& resolutionWidth, const GLuint& resolutionHeight, GLint& internalFormat, GLenum& format);
+	bool initDepthBufferTexture(Texture& texture, const GLuint &resolutionWidth, const GLuint& resolutionHeight);
 
 	bool checkIsFramebufferReady();
 
 	void loadMesh(GLuint& vbo, GLuint& ebo, GLuint& vao, const Vertex* vertices, const GLuint& verticesSize, const GLuint* indices, const GLuint& indicesSize);
+	
+	void loadModel(const GLchar* dir, std::vector<Mesh*>& meshes, std::vector<Material*>& materials);
 
 	bool loadShaderRaw(GLuint& shaderID, const GLenum& type, const char *shaderSrc);
 	bool loadShaderFromFile(GLuint& shaderID, const GLenum& type, const std::string& path);
@@ -38,5 +43,8 @@ namespace System {
 	void editTexel(const GLuint &textureID, const int &xOffset, const int &yOffset, const uint8_t &r, const uint8_t &g, const uint8_t &b);
 
 	void applyBillboard(glm::mat4& modelViewMatrix);
+
+
+	void loadModelToVertexArrayObjectData(const GLchar* modelDir, const GLchar* saveFileDir);
 
 }

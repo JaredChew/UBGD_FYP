@@ -4,11 +4,14 @@
 //#include <freetype/freetype.h>
 #include FT_FREETYPE_H
 
+static ShaderProgram shader;
+static glm::mat4 screenMatrix;
+
 Text::Text(const std::string& fontPath, const unsigned int& size)
 {
 	if (shader.getGprogramID() == 0) {
 
-		shader.init("Text.vert", "Text.frag");
+		shader.init("../Shaders/Text.vert", "../Shaders/Text.frag");
 		changeTextScreenSize(1280, 700);
 	}
 

@@ -4,8 +4,8 @@
 
 #define WINDOW_TITLE "OpenGL Engine"
 
-#define WINDOW_WIDTH 1920
-#define WINDOW_HEIGHT 1080
+#define WINDOW_WIDTH 1600
+#define WINDOW_HEIGHT 900
 
 #define WINDOW_RATIO (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT
 

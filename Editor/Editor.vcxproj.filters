@@ -45,6 +45,12 @@
     <ClCompile Include="src\global.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\PortableFileDialogs\example.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PortableFileDialogs\kill.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\defaultSettings.h">
@@ -59,8 +65,8 @@
     <ClInclude Include="src\editor.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\doubleLinkList.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\PortableFileDialogs\portable-file-dialogs.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

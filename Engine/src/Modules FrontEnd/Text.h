@@ -9,10 +9,6 @@
 #include <map>
 #include <string>
 
-
-
-
-
 struct Character {
 	unsigned int TextureID; // ID handle of the glyph texture
 	glm::ivec2   Size;      // Size of glyph
@@ -23,9 +19,6 @@ struct Character {
 class Text {
 
 private:
-
-	static ShaderProgram shader;
-	static glm::mat4 screenMatrix;
 
 	unsigned int VAO, VBO;
 	std::map<GLchar, Character> characters;

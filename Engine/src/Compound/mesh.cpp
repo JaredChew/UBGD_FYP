@@ -5,16 +5,10 @@
 
 #include "VertexArrayObject.h"
 
-Mesh::Mesh(const char* directory) {
-
-	//load vertices from file
-	this->geometryType = Mesh::DefaultGeometry::NONE;
+Mesh::Mesh(VertexArrayObject* vertexArrayObject) {
 	
-	vao = new VertexArrayObject();
-
-	//vao->init(vertices.size(), vertices.data(), indices.size(), indices.data());
-
-	//System::loadMesh(vertexBufferObject, elementBufferObject, vertexArrayObject, );
+	isCustom = true;
+	vao = vertexArrayObject;
 
 }
 
@@ -26,21 +20,23 @@ Mesh::Mesh(const Mesh::DefaultGeometry& type) {
 
 Mesh::~Mesh()
 { 
-	VertexArrayObject* temp;
-	Geometry::generateSquareMesh(temp);
-
-	if (this->geometryType == Mesh::DefaultGeometry::NONE && vao != temp)
-	{
-		vao->clear();
+	if (isCustom)
 		delete vao;
-	}
+
 }
 
 void Mesh::setGeometryType(const Mesh::DefaultGeometry& type)
 {
-	this->geometryType = type;
+	if (isCustom)
+		delete vao;
+
+	isCustom = false;
 
 	switch (type) {
+
+	case DefaultGeometry::RENDER_BOARD:
+		Geometry::generateRenderBoardMesh(vao);
+		break;
 
 	case DefaultGeometry::TRIANGLE:
 		Geometry::generateTriangleMesh(vao);
@@ -51,18 +47,15 @@ void Mesh::setGeometryType(const Mesh::DefaultGeometry& type)
 		break;
 
 	case DefaultGeometry::CIRCLE:
-		vao = new VertexArrayObject();
-		//Geometry::generateCircleMesh(100, vertices, indices);
+		Geometry::generateCircleMesh(vao);
 		break;
 
 	case DefaultGeometry::STADIUM:
-		vao = new VertexArrayObject();
-		//Geometry::generateStadiumMesh(100, vertices, indices);
+		Geometry::generateStadiumMesh(vao);
 		break;
 
 	case DefaultGeometry::PYRAMID:
-		vao = new VertexArrayObject();
-		//Geometry::generatePyramidMesh(vertices, indices);
+		Geometry::generatePyramidMesh(vao);
 		break;
 
 	case DefaultGeometry::CUBE:
@@ -70,26 +63,20 @@ void Mesh::setGeometryType(const Mesh::DefaultGeometry& type)
 		break;
 
 	case DefaultGeometry::SPHERE:
-		vao = new VertexArrayObject();
-		//Geometry::generateSphereMesh(100, vertices, indices);
+		Geometry::generateSphereMesh(vao);
 		break;
 
 	case DefaultGeometry::CONE:
-		vao = new VertexArrayObject();
-		//Geometry::generateConeMesh(100, vertices, indices);
+		Geometry::generateConeMesh(vao);
 		break;
 
 	case DefaultGeometry::CYLINDER:
-		vao = new VertexArrayObject();
-		//Geometry::generateCylinderMesh(100, vertices, indices);
+		Geometry::generateCylinderMesh(vao);
 		break;
 
-	// User wrongly setup to model, just set it to default vao
-	case DefaultGeometry::NONE:
-		vao = new VertexArrayObject();
-		//Geometry::generateSquareMesh(vao);
+	case DefaultGeometry::TORUS:
+		Geometry::generateTorusMesh(vao);
 		break;
-
 
 	}
 
@@ -97,48 +84,15 @@ void Mesh::setGeometryType(const Mesh::DefaultGeometry& type)
 
 void Mesh::setVertexArrayObject(VertexArrayObject* vertexArrayObject)
 {
-	this->geometryType = Mesh::DefaultGeometry::NONE;
 	vao = vertexArrayObject;
 }
 
-const Mesh::DefaultGeometry& Mesh::getGeometryType()
+const bool& Mesh::getIsCustom()
 {
-	return geometryType;
+	return isCustom;
 }
 
 VertexArrayObject* Mesh::getVertexArrayObject()
 {
 	return vao;
 }
-
-/*
-const Vertex* Mesh::getVerticesData() {
-
-	return vertices.data();
-
-}
-
-const GLuint& Mesh::getVerticesSize() {
-
-	return vertices.size();
-
-}
-
-const std::vector<Vertex>& Mesh::getVertices() {
-
-	return vertices;
-
-}
-
-const std::vector<GLuint>& Mesh::getIndices() {
-
-	return indices;
-
-}
-
-const GLuint& Mesh::getIndicesSize() {
-
-	return indices.size();
-
-}
-*/

@@ -8,16 +8,20 @@
 // |*   Constructors   *|
 Texture::Texture(const GLchar* dir) {
 
-	System::initTexture(dir, textureID, width, height, internalFormat, format);
+	this->path = std::string(dir);
+
+	System::initTexture(this->path.c_str(), this->textureID, this->width, this->height, this->internalFormat, this->format);
 
 }
 
-Texture::Texture( const int& width, const int& height) {
+Texture::Texture(const int& width, const int& height) {
 
+	this->path = "";
+	
 	this->width = width;
 	this->height = height;
 
-	System::initTexture(textureID, 1, this->width, this->height, internalFormat, format);
+	System::initTexture(this->textureID, 1, this->width, this->height, this->internalFormat, this->format);
 
 }
 
@@ -31,6 +35,11 @@ Texture::operator bool() const
 	return (textureID != 0);
 }
 
+
+std::string& const Texture::getPath()
+{
+	return path;
+}
 
 // |*   Getters   *|
 int& Texture::getWidth(void)

@@ -2,21 +2,23 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 #include "Specification/session.h"
 
-class Texture;
-class Mesh;
-class Transform;
 class Text;
+
+struct GameObject;
+
+struct LightingContainer;
 
 class Demo : public Session {
 
 private:
 
-	Texture* texture;
-	Mesh* mesh;
-	Transform* transform;
+	std::vector<GameObject*> gameObjects;
+	LightingContainer* lightingContainer;
+
 	Text* text;
 
 private:

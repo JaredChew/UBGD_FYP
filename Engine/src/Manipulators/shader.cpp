@@ -3,6 +3,8 @@
 #include "system.h"
 
 #include "../Utilities/logger.h"
+#include "../Compound/material.h"
+#include "../Compound/lightingContainer.h"
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -57,6 +59,300 @@ start:
 		}
 
 		goto start;
+
+	}
+
+}
+
+void Shader::phongLightDraw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const Material& material, LightingContainer& lightingContainer)
+{
+
+	static GLuint shaderProgramID = -1;
+
+
+	static GLint uMaterual_Diffuse_Loc = -1;
+	static GLint uMaterual_DiffuseColor_Loc = -1;
+	static GLint uMaterual_Specular_Loc = -1;
+	static GLint uMaterual_Emission_Loc = -1;
+	static GLint uMaterual_Shininess_Loc = -1;
+
+	static GLint uDirectionLightAmount_Loc = -1;
+	static GLint uPointLightAmount_Loc = -1;
+	static GLint uSpotLightAmount_Loc = -1;
+
+	static GLint uDirectionLight_Direction_Loc[MAX_DIRECTION_LIGHTS];
+	static GLint uDirectionLight_Ambient_Loc[MAX_DIRECTION_LIGHTS];
+	static GLint uDirectionLight_Diffuse_Loc[MAX_DIRECTION_LIGHTS];
+	static GLint uDirectionLight_Specular_Loc[MAX_DIRECTION_LIGHTS];
+
+	static GLint uPointLight_Position_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Constant_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Linear_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Quadratic_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Ambient_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Diffuse_Loc[MAX_POINT_LIGHTS];
+	static GLint uPointLight_Specular_Loc[MAX_POINT_LIGHTS];
+
+	static GLint uSpotLight_Position_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Direction_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_CutOff_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_OuterCutOff_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Constant_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Linear_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Quadratic_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Ambient_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Diffuse_Loc[MAX_SPOT_LIGHTS];
+	static GLint uSpotLight_Specular_Loc[MAX_SPOT_LIGHTS];
+
+	static GLint uModelMatrix_Loc = -1;
+	static GLint uViewMatrix_Loc = -1;
+	static GLint uProjectionMatrix_Loc = -1;
+
+
+	static bool initCheck = false;
+	
+	size_t directionLightAmount = lightingContainer.getDirectionLights().size();
+	size_t pointLightAmount = lightingContainer.getPointLights().size();
+	size_t spotLightAmount = lightingContainer.getSpotLights().size();
+
+start2:
+
+	if (shaderProgramID != -1) {
+
+		glUseProgram(shaderProgramID);
+
+		glUniformMatrix4fv(uModelMatrix_Loc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniformMatrix4fv(uViewMatrix_Loc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+		glUniformMatrix4fv(uProjectionMatrix_Loc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, material.textures[0]->getTextureID());
+		
+		glActiveTexture(GL_TEXTURE0 + 1);
+		glBindTexture(GL_TEXTURE_2D, material.textures[1]->getTextureID());
+
+		glActiveTexture(GL_TEXTURE0 + 2);
+		glBindTexture(GL_TEXTURE_2D, material.textures[2]->getTextureID());
+
+		glActiveTexture(GL_TEXTURE0);
+
+		glUniform1i(uMaterual_Diffuse_Loc, 0);
+		glUniform3fv(uMaterual_DiffuseColor_Loc, 1, glm::value_ptr(material.color));
+		glUniform1i(uMaterual_Specular_Loc, 1);
+		glUniform1i(uMaterual_Emission_Loc, 2);
+		glUniform1f(uMaterual_Shininess_Loc, material.shininess);
+
+		glUniform1i(uDirectionLightAmount_Loc, directionLightAmount);
+		glUniform1i(uPointLightAmount_Loc, pointLightAmount);
+		glUniform1i(uSpotLightAmount_Loc, spotLightAmount);
+
+		
+		for (size_t i = 0; i < directionLightAmount; i++)
+		{
+			glUniform3fv(uDirectionLight_Direction_Loc[i], 1, glm::value_ptr(lightingContainer.getDirectionLights()[i]->direction));
+			glUniform3fv(uDirectionLight_Ambient_Loc[i], 1, glm::value_ptr(lightingContainer.getDirectionLights()[i]->ambient));
+			glUniform3fv(uDirectionLight_Diffuse_Loc[i], 1, glm::value_ptr(lightingContainer.getDirectionLights()[i]->diffuse));
+			glUniform3fv(uDirectionLight_Specular_Loc[i], 1, glm::value_ptr(lightingContainer.getDirectionLights()[i]->specular));
+		}
+
+		for (size_t i = 0; i < pointLightAmount; i++)
+		{
+			glUniform3fv(uPointLight_Position_Loc[i], 1, glm::value_ptr(lightingContainer.getPointLights()[i]->position));
+			glUniform1f(uPointLight_Constant_Loc[i], lightingContainer.getPointLights()[i]->constant);
+			glUniform1f(uPointLight_Linear_Loc[i], lightingContainer.getPointLights()[i]->linear);
+			glUniform1f(uPointLight_Quadratic_Loc[i], lightingContainer.getPointLights()[i]->quadratic);
+			glUniform3fv(uPointLight_Ambient_Loc[i], 1, glm::value_ptr(lightingContainer.getPointLights()[i]->ambient));
+			glUniform3fv(uPointLight_Diffuse_Loc[i], 1, glm::value_ptr(lightingContainer.getPointLights()[i]->diffuse));
+			glUniform3fv(uPointLight_Specular_Loc[i], 1, glm::value_ptr(lightingContainer.getPointLights()[i]->specular));
+		}
+
+		for (size_t i = 0; i < spotLightAmount; i++)
+		{
+			glUniform3fv(uSpotLight_Position_Loc[i], 1, glm::value_ptr(lightingContainer.getSpotLights()[i]->position));
+			glUniform3fv(uSpotLight_Direction_Loc[i], 1, glm::value_ptr(lightingContainer.getSpotLights()[i]->direction));
+			glUniform1f(uSpotLight_CutOff_Loc[i], lightingContainer.getSpotLights()[i]->cutOff);
+			glUniform1f(uSpotLight_OuterCutOff_Loc[i], lightingContainer.getSpotLights()[i]->outerCutOff);
+			glUniform1f(uSpotLight_Constant_Loc[i], lightingContainer.getSpotLights()[i]->constant);
+			glUniform1f(uSpotLight_Linear_Loc[i], lightingContainer.getSpotLights()[i]->linear);
+			glUniform1f(uSpotLight_Quadratic_Loc[i], lightingContainer.getSpotLights()[i]->quadratic);
+			glUniform3fv(uSpotLight_Ambient_Loc[i], 1, glm::value_ptr(lightingContainer.getSpotLights()[i]->ambient));
+			glUniform3fv(uSpotLight_Diffuse_Loc[i], 1, glm::value_ptr(lightingContainer.getSpotLights()[i]->diffuse));
+			glUniform3fv(uSpotLight_Specular_Loc[i], 1, glm::value_ptr(lightingContainer.getSpotLights()[i]->specular));
+		}
+
+	}
+	else {
+
+		GLuint vertexShaderID;
+		GLuint fragmentShaderID;
+
+		System::loadShaderFromFile(vertexShaderID, GL_VERTEX_SHADER, "../Shaders/phong.vert");
+		System::loadShaderFromFile(fragmentShaderID, GL_FRAGMENT_SHADER, "../Shaders/phong.frag");
+
+		if (!System::initProgramObject_Shader(shaderProgramID, fragmentShaderID, vertexShaderID)) {
+			Logger::getInstance()->warningLog("Failed to init \"Phong\" shader program");
+			return;
+		}
+
+		if (!initCheck) {
+
+			glUseProgram(shaderProgramID);
+
+
+			uMaterual_Diffuse_Loc = glGetUniformLocation(shaderProgramID, "uMaterial.diffuse");
+			uMaterual_DiffuseColor_Loc = glGetUniformLocation(shaderProgramID, "uMaterial.diffuseColor");
+			uMaterual_Specular_Loc = glGetUniformLocation(shaderProgramID, "uMaterial.specular");
+			uMaterual_Emission_Loc = glGetUniformLocation(shaderProgramID, "uMaterial.emission");
+			uMaterual_Shininess_Loc = glGetUniformLocation(shaderProgramID, "uMaterial.shininess");
+
+			uDirectionLightAmount_Loc = glGetUniformLocation(shaderProgramID, "uDirectionLightAmount");
+			uPointLightAmount_Loc = glGetUniformLocation(shaderProgramID, "uPointLightAmount");
+			uSpotLightAmount_Loc = glGetUniformLocation(shaderProgramID, "uSpotLightAmount");
+
+			for (size_t i = 0; i < MAX_DIRECTION_LIGHTS; i++)
+			{
+				std::string tempDirection = "uDirectionLights[" + std::to_string(i) + "].direction";
+				std::string tempAmbient = "uDirectionLights[" + std::to_string(i) + "].ambient";
+				std::string tempDiffuse = "uDirectionLights[" + std::to_string(i) + "].diffuse";
+				std::string tempSpecular = "uDirectionLights[" + std::to_string(i) + "].specular";
+
+				uDirectionLight_Direction_Loc[i] = glGetUniformLocation(shaderProgramID, tempDirection.c_str());
+				uDirectionLight_Ambient_Loc[i] = glGetUniformLocation(shaderProgramID, tempAmbient.c_str());
+				uDirectionLight_Diffuse_Loc[i] = glGetUniformLocation(shaderProgramID, tempDiffuse.c_str());
+				uDirectionLight_Specular_Loc[i] = glGetUniformLocation(shaderProgramID, tempSpecular.c_str());
+			}
+
+			uDirectionLight_Direction_Loc[0] = glGetUniformLocation(shaderProgramID, "uDirectionLights[0].direction");
+			uDirectionLight_Ambient_Loc[0] = glGetUniformLocation(shaderProgramID, "uDirectionLights[0].ambient");
+			uDirectionLight_Diffuse_Loc[0] = glGetUniformLocation(shaderProgramID, "uDirectionLights[0].diffuse");
+			uDirectionLight_Specular_Loc[0] = glGetUniformLocation(shaderProgramID, "uDirectionLights[0].specular");
+
+			for (size_t i = 0; i < MAX_POINT_LIGHTS; i++)
+			{
+				std::string tempPosition = "uPointLights[" + std::to_string(i) + "].position";
+				std::string tempConstant = "uPointLights[" + std::to_string(i) + "].constant";
+				std::string tempLinear = "uPointLights[" + std::to_string(i) + "].linear";
+				std::string tempQuadratic = "uPointLights[" + std::to_string(i) + "].quadratic";
+				std::string tempAmbient = "uPointLights[" + std::to_string(i) + "].ambient";
+				std::string tempDiffuse = "uPointLights[" + std::to_string(i) + "].diffuse";
+				std::string tempSpecular = "uPointLights[" + std::to_string(i) + "].specular";
+
+				uPointLight_Position_Loc[i] = glGetUniformLocation(shaderProgramID, tempPosition.c_str());
+				uPointLight_Constant_Loc[i] = glGetUniformLocation(shaderProgramID, tempConstant.c_str());
+				uPointLight_Linear_Loc[i] = glGetUniformLocation(shaderProgramID, tempLinear.c_str());
+				uPointLight_Quadratic_Loc[i] = glGetUniformLocation(shaderProgramID, tempQuadratic.c_str());
+				uPointLight_Ambient_Loc[i] = glGetUniformLocation(shaderProgramID, tempAmbient.c_str());
+				uPointLight_Diffuse_Loc[i] = glGetUniformLocation(shaderProgramID, tempDiffuse.c_str());
+				uPointLight_Specular_Loc[i] = glGetUniformLocation(shaderProgramID, tempSpecular.c_str());
+			}
+
+			for (size_t i = 0; i < MAX_SPOT_LIGHTS; i++)
+			{
+				std::string tempPosition = "uSpotLights[" + std::to_string(i) + "].position";
+				std::string tempDirection = "uSpotLights[" + std::to_string(i) + "].direction";
+				std::string tempCutOff = "uSpotLights[" + std::to_string(i) + "].cutOff";
+				std::string tempOuterCutOff = "uSpotLights[" + std::to_string(i) + "].outerCutOff";
+				std::string tempConstant = "uSpotLights[" + std::to_string(i) + "].constant";
+				std::string tempLinear = "uSpotLights[" + std::to_string(i) + "].linear";
+				std::string tempQuadratic = "uSpotLights[" + std::to_string(i) + "].quadratic";
+				std::string tempAmbient = "uSpotLights[" + std::to_string(i) + "].ambient";
+				std::string tempDiffuse = "uSpotLights[" + std::to_string(i) + "].diffuse";
+				std::string tempSpecular = "uSpotLights[" + std::to_string(i) + "].specular";
+
+				uSpotLight_Position_Loc[i] = glGetUniformLocation(shaderProgramID, tempPosition.c_str());
+				uSpotLight_Direction_Loc[i] = glGetUniformLocation(shaderProgramID, tempDirection.c_str());
+				uSpotLight_CutOff_Loc[i] = glGetUniformLocation(shaderProgramID, tempCutOff.c_str());
+				uSpotLight_OuterCutOff_Loc[i] = glGetUniformLocation(shaderProgramID, tempOuterCutOff.c_str());
+				uSpotLight_Constant_Loc[i] = glGetUniformLocation(shaderProgramID, tempConstant.c_str());
+				uSpotLight_Linear_Loc[i] = glGetUniformLocation(shaderProgramID, tempLinear.c_str());
+				uSpotLight_Quadratic_Loc[i] = glGetUniformLocation(shaderProgramID, tempQuadratic.c_str());
+				uSpotLight_Ambient_Loc[i] = glGetUniformLocation(shaderProgramID, tempAmbient.c_str());
+				uSpotLight_Diffuse_Loc[i] = glGetUniformLocation(shaderProgramID, tempDiffuse.c_str());
+				uSpotLight_Specular_Loc[i] = glGetUniformLocation(shaderProgramID, tempSpecular.c_str());
+			}
+
+			uModelMatrix_Loc = glGetUniformLocation(shaderProgramID, "uModelMatrix");
+			uViewMatrix_Loc = glGetUniformLocation(shaderProgramID, "uViewMatrix");
+			uProjectionMatrix_Loc = glGetUniformLocation(shaderProgramID, "uProjectionMatrix");
+
+
+			if (uMaterual_Diffuse_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uMaterial.diffuse\" not found"); }
+			if (uMaterual_DiffuseColor_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uMaterial.diffuseColor\" not found"); }
+			if (uMaterual_Specular_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uMaterial.specular\" not found"); }
+			if (uMaterual_Emission_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uMaterial.emission\" not found"); }
+			if (uMaterual_Shininess_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uMaterial.shininess\" not found"); }
+
+			if (uDirectionLightAmount_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uDirectionLightAmount\" not found"); }
+			if (uPointLightAmount_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uPointLightAmount\" not found"); }
+			if (uSpotLightAmount_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uSpotLightAmount\" not found"); }
+			
+			for (size_t i = 0; i < MAX_DIRECTION_LIGHTS; i++)
+			{
+				std::string tempDirection = "SHADER_PROGRAM_PHONG uniform \"uDirectionLights[" + std::to_string(i) + "].direction\" not found";
+				std::string tempAmbient = "SHADER_PROGRAM_PHONG uniform \"uDirectionLights[" + std::to_string(i) + "].ambient\" not found";
+				std::string tempDiffuse = "SHADER_PROGRAM_PHONG uniform \"uDirectionLights[" + std::to_string(i) + "].diffuse\" not found";
+				std::string tempSpecular = "SHADER_PROGRAM_PHONG uniform \"uDirectionLights[" + std::to_string(i) + "].specular\" not found";
+
+				if (uDirectionLight_Direction_Loc[i] == -1) { Logger::getInstance()->warningLog(tempDirection.c_str()); }
+				if (uDirectionLight_Ambient_Loc[i] == -1) { Logger::getInstance()->warningLog(tempAmbient.c_str()); }
+				if (uDirectionLight_Diffuse_Loc[i] == -1) { Logger::getInstance()->warningLog(tempDiffuse.c_str()); }
+				if (uDirectionLight_Specular_Loc[i] == -1) { Logger::getInstance()->warningLog(tempSpecular.c_str()); }
+			}
+
+			for (size_t i = 0; i < MAX_POINT_LIGHTS; i++)
+			{
+				std::string tempPosition = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].position\" not found";
+				std::string tempConstant = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].constant\" not found";
+				std::string tempLinear = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].linear\" not found";
+				std::string tempQuadratic = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].quadratic\" not found";
+				std::string tempAmbient = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].ambient\" not found";
+				std::string tempDiffuse = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].diffuse\" not found";
+				std::string tempSpecular = "SHADER_PROGRAM_PHONG uniform \"uPointLights[" + std::to_string(i) + "].specular\" not found";
+
+				if (uPointLight_Position_Loc[i] == -1) { Logger::getInstance()->warningLog(tempPosition.c_str()); }
+				if (uPointLight_Constant_Loc[i] == -1) { Logger::getInstance()->warningLog(tempConstant.c_str()); }
+				if (uPointLight_Linear_Loc[i] == -1) { Logger::getInstance()->warningLog(tempLinear.c_str()); }
+				if (uPointLight_Quadratic_Loc[i] == -1) { Logger::getInstance()->warningLog(tempQuadratic.c_str()); }
+				if (uPointLight_Ambient_Loc[i] == -1) { Logger::getInstance()->warningLog(tempAmbient.c_str()); }
+				if (uPointLight_Diffuse_Loc[i] == -1) { Logger::getInstance()->warningLog(tempDiffuse.c_str()); }
+				if (uPointLight_Specular_Loc[i] == -1) { Logger::getInstance()->warningLog(tempSpecular.c_str()); }
+			}
+
+			for (size_t i = 0; i < MAX_SPOT_LIGHTS; i++)
+			{
+				std::string tempPosition = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].position\" not found";
+				std::string tempDirection = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].direction\" not found";
+				std::string tempCutOff = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].cutOff\" not found";
+				std::string tempOuterCutOff = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].outerCutOff\" not found";
+				std::string tempConstant = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].constant\" not found";
+				std::string tempLinear = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].linear\" not found";
+				std::string tempQuadratic = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].quadratic\" not found";
+				std::string tempAmbient = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].ambient\" not found";
+				std::string tempDiffuse = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].diffuse\" not found";
+				std::string tempSpecular = "SHADER_PROGRAM_PHONG uniform \"uSpotLights[" + std::to_string(i) + "].specular\" not found";
+
+				if (uSpotLight_Position_Loc[i] == -1) { Logger::getInstance()->warningLog(tempPosition.c_str()); }
+				if (uSpotLight_Direction_Loc[i] == -1) { Logger::getInstance()->warningLog(tempDirection.c_str()); }
+				if (uSpotLight_CutOff_Loc[i] == -1) { Logger::getInstance()->warningLog(tempCutOff.c_str()); }
+				if (uSpotLight_OuterCutOff_Loc[i] == -1) { Logger::getInstance()->warningLog(tempOuterCutOff.c_str()); }
+				if (uSpotLight_Constant_Loc[i] == -1) { Logger::getInstance()->warningLog(tempConstant.c_str()); }
+				if (uSpotLight_Linear_Loc[i] == -1) { Logger::getInstance()->warningLog(tempLinear.c_str()); }
+				if (uSpotLight_Quadratic_Loc[i] == -1) { Logger::getInstance()->warningLog(tempQuadratic.c_str()); }
+				if (uSpotLight_Ambient_Loc[i] == -1) { Logger::getInstance()->warningLog(tempAmbient.c_str()); }
+				if (uSpotLight_Diffuse_Loc[i] == -1) { Logger::getInstance()->warningLog(tempDiffuse.c_str()); }
+				if (uSpotLight_Specular_Loc[i] == -1) { Logger::getInstance()->warningLog(tempSpecular.c_str()); }
+			}
+
+			if (uModelMatrix_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uModelMatrix\" not found"); }
+			if (uViewMatrix_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uViewMatrix\" not found"); }
+			if (uProjectionMatrix_Loc == -1) { Logger::getInstance()->warningLog("SHADER_PROGRAM_PHONG uniform \"uProjectionMatrix\" not found"); }
+
+
+			initCheck = true;
+
+		}
+
+		goto start2;
 
 	}
 

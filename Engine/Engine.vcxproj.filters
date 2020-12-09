@@ -1,28 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\vector.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utf8-utils.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture-atlas.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\texture-font.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
     <ClCompile Include="src\json11.cpp">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="src\glad.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\edtaa3func.c">
-      <Filter>Internal Dependencies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\distance-field.c">
       <Filter>Internal Dependencies</Filter>
     </ClCompile>
     <ClCompile Include="src\Compound\animator2D.cpp">
@@ -63,9 +45,6 @@
     </ClCompile>
     <ClCompile Include="src\Utilities\logger.cpp">
       <Filter>Source Files\Utilities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Compound\Model.cpp">
-      <Filter>Source Files\Compound</Filter>
     </ClCompile>
     <ClCompile Include="src\Compound\mesh.cpp">
       <Filter>Source Files\Compound</Filter>
@@ -127,7 +106,13 @@
     <ClCompile Include="src\Modules FrontEnd\Text.cpp">
       <Filter>Source Files\Module</Filter>
     </ClCompile>
-    <ClCompile Include="src\Compound\VertexArrayObject.cpp">
+    <ClCompile Include="src\Compound\model.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\material.cpp">
+      <Filter>Source Files\Compound</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Compound\vertexArrayObject.cpp">
       <Filter>Source Files\Compound</Filter>
     </ClCompile>
   </ItemGroup>
@@ -179,9 +164,6 @@
     </ClInclude>
     <ClInclude Include="src\Utilities\logger.h">
       <Filter>Source Files\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Compound\Model.h">
-      <Filter>Source Files\Compound</Filter>
     </ClInclude>
     <ClInclude Include="src\Compound\mesh.h">
       <Filter>Source Files\Compound</Filter>
@@ -255,11 +237,23 @@
     <ClInclude Include="src\Modules FrontEnd\Text.h">
       <Filter>Source Files\Module</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\VertexArrayObject.h">
+    <ClInclude Include="src\Compound\material.h">
       <Filter>Source Files\Compound</Filter>
     </ClInclude>
-    <ClInclude Include="src\Compound\Vertex.h">
+    <ClInclude Include="src\Compound\model.h">
       <Filter>Source Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\vertex.h">
+      <Filter>Source Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\vertexArrayObject.h">
+      <Filter>Source Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Compound\lightingContainer.h">
+      <Filter>Source Files\Compound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Editor\src\doubleLinkList.h">
+      <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
