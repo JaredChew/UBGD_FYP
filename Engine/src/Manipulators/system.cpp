@@ -255,6 +255,11 @@ bool System::saveTextureToImage(const GLchar* filename, const GLuint& textureID,
 
 }
 
+void System::loadImageToGLFWimage(const GLchar* dir, GLFWimage& image)
+{
+	image.pixels = SOIL_load_image(dir, &image.width, &image.height, 0, SOIL_LOAD_RGBA);
+}
+
 bool System::initDepthBufferTexture(GLuint &textureID, const GLuint &resolutionWidth, const GLuint &resolutionHeight, GLint& internalFormat, GLenum& format) {
 
 	glGenTextures(1, &textureID);
@@ -494,12 +499,24 @@ void System::loadModel(const GLchar* dir, std::vector<Mesh*>& meshes, std::vecto
 	if (materials.size() > 0) materials.clear();
 
 	std::string directory(dir);
-	directory = directory.substr(0, directory.find_last_of('/') + 1);
+	if (directory.find_last_of('/') != std::string::npos)
+	{
+		directory = directory.substr(0, directory.find_last_of('/') + 1);
+	}
+	else if (directory.find_last_of('\\') != std::string::npos) 
+	{
+		directory = directory.substr(0, directory.find_last_of('\\') + 1);
+	}
+	else
+	{
+		Logger::getInstance()->errorLog("Model path are invalid!");
+		return;
+	}
 
 	std::vector<Texture*> textures_loaded;
 
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(dir, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	const aiScene* scene = importer.ReadFile(dir, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{

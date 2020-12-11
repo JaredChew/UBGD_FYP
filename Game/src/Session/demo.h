@@ -20,6 +20,7 @@ private:
 	LightingContainer* lightingContainer;
 
 	Text* text;
+	Text* text2;
 
 private:
 

@@ -22,6 +22,7 @@
 #include "Data Structure/linkedList.hpp"
 #include "Specification/entity.h"
 #include "Compound/transform.h"
+#include "Manipulators/system.h"
 
 #include "Compound/VertexArrayObject.h"
 
@@ -32,7 +33,6 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
 
 
 static void error_callback(int error, const char* description) {
@@ -103,6 +103,10 @@ int main(void) {
 		return -1;
 
 	}
+
+	GLFWimage icon;
+	System::loadImageToGLFWimage("icon/icon.png", icon);
+	glfwSetWindowIcon(Global::wnd->getWindow(), 1, &icon);
 
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();

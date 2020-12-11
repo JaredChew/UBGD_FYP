@@ -165,6 +165,26 @@ void Game::gameLoop() {
 	session->postUpdate();
 	session->render();
 
+	float w = 0.0f, h = 0.0f;
+	float winH = static_cast<float>(Global::window->getHeight()), winW = static_cast<float>(Global::window->getWidth());
+	if (winH < winW)
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * winH / winW * FOV;
+	}
+	else if (winH > winW)
+	{
+		w = 0.1f * winW / winH * FOV;
+		h = 0.1f * FOV;
+	}
+	else
+	{
+		w = 0.1f * FOV;
+		h = 0.1f * FOV;
+	}
+
+	camera->setProjectionOrthographic(-w, w, -h, h, 0.1f, 3000.0f);
+
 	mouse->postUpdate();
 	keyboard->postUpdate();
 

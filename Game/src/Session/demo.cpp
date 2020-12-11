@@ -28,7 +28,6 @@
 struct GameObject : public Entity
 {
 private:
-	Texture* texture;
 	Material* material;
 	Mesh* mesh;
 
@@ -38,8 +37,7 @@ public:
 	GameObject(Texture* texture, Mesh* mesh)
 	{
 		this->mesh = mesh;
-		this->texture = texture;
-		model = new Model(this->mesh, new Material(this->texture, 32.0f, false));
+		model = new Model(this->mesh, new Material(texture, 32.0f, false));
 	}
 	GameObject(std::string path)
 	{
@@ -47,7 +45,6 @@ public:
 	}
 	~GameObject()
 	{
-		delete texture;
 		delete material;
 		delete mesh;
 		delete model;
@@ -63,52 +60,40 @@ Demo::Demo() {
 	direction->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
 	direction->specular = glm::vec3(0.5f, 0.5f, 0.5f);
 
-	PointLight* point = new PointLight;
-	point->position = glm::vec3(0.7f, 0.2f, 2.0f);
-	point->constant = 1.0f;
-	point->linear = 0.09f;
-	point->quadratic = 0.032f;
-	point->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
-	point->diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-	point->specular = glm::vec3(1.0f, 1.0f, 1.0f);
-
 	lightingContainer = new LightingContainer(true);
 	lightingContainer->addDirectionLight(direction);
-	lightingContainer->addPointLight(point);
 
+	PointLight* point;
+	for (size_t i = 0; i < 3; i++)
+	{
+		point = new PointLight;
+		if(i == 0)
+			point->position = glm::vec3(0.7f, 0.2f, 2.0f);
+		if (i == 1)
+			point->position = glm::vec3(-0.7f, 0.2f, -2.0f);
+		else
+			point->position = glm::vec3(0.2f, 2.0f, 2.0f);
+		point->constant = 1.0f;
+		point->linear = 0.09f;
+		point->quadratic = 0.032f;
+		point->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
+		point->diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+		point->specular = glm::vec3(1.0f, 1.0f, 1.0f);
 
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::CUBE)));
-	gameObjects.back()->transform->setPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+		lightingContainer->addPointLight(point);
+	}
 
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::RENDER_BOARD)));
-	gameObjects.back()->transform->setPosition(glm::vec3(4.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back( new GameObject( new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::CYLINDER) ) );
-	gameObjects.back()->transform->setPosition(glm::vec3(3.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::CIRCLE)));
+	Texture* texture = new Texture("../Assets/Medias/glass.png");
+	gameObjects.push_back(new GameObject(texture, new Mesh(Mesh::DefaultGeometry::TORUS)));
 	gameObjects.back()->transform->setPosition(glm::vec3(2.0f, 0.0f, 0.0f));
 
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::SPHERE)));
-	gameObjects.back()->transform->setPosition(glm::vec3(1.0f, 0.0f, 0.0f));
+	gameObjects.push_back(new GameObject(texture, new Mesh(Mesh::DefaultGeometry::SPHERE)));
+	gameObjects.back()->transform->setPosition(glm::vec3(0.0f, 0.0f, -1.0f));
 
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::STADIUM)));
-	gameObjects.back()->transform->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::TORUS)));
-	gameObjects.back()->transform->setPosition(glm::vec3(-1.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::CONE)));
+	gameObjects.push_back(new GameObject(texture, new Mesh(Mesh::DefaultGeometry::CYLINDER)));
 	gameObjects.back()->transform->setPosition(glm::vec3(-2.0f, 0.0f, 0.0f));
 
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::TRIANGLE)));
-	gameObjects.back()->transform->setPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::PYRAMID)));
-	gameObjects.back()->transform->setPosition(glm::vec3(-4.0f, 0.0f, 0.0f));
-
-	gameObjects.push_back(new GameObject(new Texture("../Media/glass.png"), new Mesh(Mesh::DefaultGeometry::SQUARE)));
-	gameObjects.back()->transform->setPosition(glm::vec3(-5.0f, 0.0f, 0.0f));
+	
 
 	//gameObjects.push_back( new GameObject("../Media/backpack/backpack.obj") );
 	//gameObjects.back()->transform->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -121,14 +106,17 @@ Demo::Demo() {
 	//System::loadModelToVertexArrayObjectData("../Media/cude/torus.obj", "../torus");
 	//System::loadModelToVertexArrayObjectData("../Media/cude/stadium.obj", "../stadium");
 	
-	gameObjects.push_back(new GameObject("../Media/cude/cone.obj"));
-	gameObjects.back()->transform->setPosition(glm::vec3(0.0f, -1.0f, 0.0f));
+	//gameObjects.push_back(new GameObject("../Media/cude/cone.obj"));
+	//gameObjects.back()->transform->setPosition(glm::vec3(0.0f, -1.0f, 0.0f));
 
 	//gameObjects.push_back(new GameObject("../Media/cude/stadium.obj"));
 	//gameObjects.back()->transform->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
 	
-	text = new Text("../Fonts/arial.ttf", 48);
+	text = new Text("../Assets/Fonts/arial.ttf", 48);
 	text->changeTextScreenSize(Global::window->getWidth(), Global::window->getHeight());
+
+	text2 = new Text("../Assets/Fonts/GloriaHallelujah.ttf", 48);
+	text2->changeTextScreenSize(Global::window->getWidth(), Global::window->getHeight());
 
 	Renderer::getInstance()->useLightingContainer(lightingContainer);
 
@@ -158,7 +146,8 @@ void Demo::render() {
 		}
 	}
 
-	text->renderText("Testing", 500.0f, 500.0f, 100.0f, glm::vec3(0.9f, 0.3f, 1.0f));
+	text->renderText("Geometry", 555.0f, 500.0f, 80.0f, glm::vec3(0.4f, 0.4f, 1.0f));
+	text2->renderText("I Am Special Font!", 520.0f, 200.0f, 50.0f, glm::vec3(0.3f, 0.7f, 1.0f));
 	
 	Renderer::getInstance()->renderToScreen();
 

@@ -26,6 +26,8 @@ namespace System {
 	bool initTexture(const GLchar* dir, GLuint& textureID, GLint& width, GLint& height, GLint& internalFormat, GLenum& format);
 	bool saveTextureToImage(const GLchar* filename, const GLuint& textureID, const GLsizei& width, const GLsizei& height);
 
+	void loadImageToGLFWimage(const GLchar* dir, GLFWimage& image);
+
 	bool initDepthBufferTexture(GLuint &textureID, const GLuint& resolutionWidth, const GLuint& resolutionHeight, GLint& internalFormat, GLenum& format);
 	bool initDepthBufferTexture(Texture& texture, const GLuint &resolutionWidth, const GLuint& resolutionHeight);
 

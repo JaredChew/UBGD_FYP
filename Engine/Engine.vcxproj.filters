@@ -252,7 +252,7 @@
     <ClInclude Include="src\Compound\lightingContainer.h">
       <Filter>Source Files\Compound</Filter>
     </ClInclude>
-    <ClInclude Include="..\Editor\src\doubleLinkList.h">
+    <ClInclude Include="src\Data Structure\doubleLinkList.hpp">
       <Filter>Source Files\Data Structures</Filter>
     </ClInclude>
   </ItemGroup>

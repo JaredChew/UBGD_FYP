@@ -24,7 +24,7 @@ public:
 
 public:
 
-	Material(Texture* diffuse, Texture* specular = nullptr, Texture* emission = nullptr, float shininess = 32.0f, const bool& isDestroyTexturesWithMaterial = false, const glm::vec3& color = glm::vec3(1.0f));
+	Material(Texture* diffuse, Texture* specular, Texture* emission = nullptr, float shininess = 32.0f, const bool& isDestroyTexturesWithMaterial = false, const glm::vec3& color = glm::vec3(1.0f));
 	Material(Texture* diffuse, float shininess = 32.0f, const bool& isDestroyTexturesWithMaterial = false, const glm::vec3& color = glm::vec3(1.0f));
 	~Material();
 

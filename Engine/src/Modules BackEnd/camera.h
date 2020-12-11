@@ -12,6 +12,8 @@ class Camera {
 
 private:
 
+	enum ProjectionType { NONE, ORTHOGRAPHIC, PERSPECTIVE} projectionType;
+
 	glm::mat4 orientation;
 	glm::mat4 projectionMatrix;
 
@@ -32,5 +34,7 @@ public:
 
 	const glm::mat4& const getViewMatrix();
 	const glm::mat4& const getViewMatrixWithoutTranslate();
+
+	void update(const int& height, const int& width, const float& fov);
 
 };

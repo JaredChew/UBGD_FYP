@@ -3,6 +3,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <stdio.h>
+#include <dirent.h>
+
+#include <tchar.h>
+#include <fstream>
+#include <filesystem>
 
 //#include <memory>
 //#include "imgui_internal.h"
@@ -17,7 +23,10 @@
 #include "Modules BackEnd/camera.h"
 #include "Modules BackEnd/window.h"
 #include "Compound/vertexArrayObject.h"
-#include "Data Structure/doubleLinkList.h"
+#include "Data Structure/doubleLinkList.hpp"
+#include "Compound/lightingContainer.h"
+#include "Compound/material.h"
+#include "Compound/model.h"
 
 
 #include "global.h"
@@ -47,7 +56,124 @@ const std::string resourcesTexturePath[static_cast<int>(ResourcesTextureIndex::_
 
 Texture* resourcesTexture[static_cast<int>(ResourcesTextureIndex::__Index_Size)];
 
+struct AssetInfo {
+
+	enum AssetType
+	{
+		AssetType_Unknown = 0,
+		AssetType_Folder,
+		AssetType_Texture,
+		AssetType_Model,
+		AssetType_Font,
+		AssetType_Shader,
+		AssetType_Audio,
+		AssetType_TextDocument
+	} assetType;
+
+	std::string path;
+	std::string name;
+	
+	std::vector<AssetInfo> subdirectoriesAssetPaths;
+
+};
+
+std::string assetDragDropCell[] = {
+			"ASSET_UNKNOWN_CELL",
+			"ASSET_FOLDER_CELL",
+			"ASSET_TEXTURE_CELL",
+			"ASSET_MODEL_CELL",
+			"ASSET_FONT_CELL",
+			"ASSET_SHADER_CELL",
+			"ASSET_AUDIO_CELL",
+			"ASSET_TEXT_DOCUMENT_CELL"
+};
+
+AssetInfo::AssetType checkFileType(std::string type)
+{
+
+#define SOIL2_TYPE_MAX_AMOUNT 12
+#define ASSIMP_TYPE_MAX_AMOUNT 45
+#define FREETYPE_TYPE_MAX_AMOUNT 6
+#define FMOD_TYPE_MAX_AMOUNT 21
+#define	GLSL_TYPE_MAX_AMOUNT 21
+
+
+	if(type == ".txt") return AssetInfo::AssetType_TextDocument;
+
+
+	std::string SOIL2_supportType[SOIL2_TYPE_MAX_AMOUNT] = {
+		".bmp", ".png", ".jpg", ".bmp", ".tga", ".dds", ".psd", ".hdr", ".gif", ".pic", ".pkm", "pvr"
+	};
+	for (size_t i = 0; i < SOIL2_TYPE_MAX_AMOUNT; i++)
+	{
+		if (type == SOIL2_supportType[i]) return AssetInfo::AssetType_Texture;
+	}
+
+
+	//Ogre(".mesh.xml", ".skeleton.xml", ".material");
+	std::string ASSIMP_supportType[ASSIMP_TYPE_MAX_AMOUNT] = {
+		".dae", ".xml", ".blend", ".bvh", ".3ds", ".ase", ".obj", ".ply", ".dxf", ".ifc", ".nff",
+		".nff", ".smd", ".vta", ".mdl", ".md2", ".md3", ".pk3", ".mdc", ".md5mesh", ".md5anim", ".md5camera",
+		".x", ".q3o", ".q3s", ".raw", ".ac",".stl", ".dxf", ".irrmesh", ".xml", ".irr", ".xml", ".off",
+		".ter", ".mdl", ".hmp", ".ms3d", ".lwo", ".lws", ".lxo", ".csm", ".ply", ".cob", ".scn" 
+	};
+	for (size_t i = 0; i < ASSIMP_TYPE_MAX_AMOUNT; i++)
+	{
+		if (type == ASSIMP_supportType[i]) return AssetInfo::AssetType_Model;
+	}
+
+
+	std::string FREETYPE_supportType[FREETYPE_TYPE_MAX_AMOUNT] = {
+		".ttf", // TrueType fonts
+		".pfb", ".pfa", ".otf", // Postscript Type 1 fonts
+		".cid" // Postscript CID - keyed fonts
+		".cff" // OpenType CFF and CFF2, bare CFF, and CEF fonts (CEF is a derivative of CFF used by Adobe in its SVG viewer)
+	};
+	for (size_t i = 0; i < FREETYPE_TYPE_MAX_AMOUNT; i++)
+	{
+		if (type == FREETYPE_supportType[i]) return AssetInfo::AssetType_Font;
+	}
+
+
+	std::string FMOD_supportType[FMOD_TYPE_MAX_AMOUNT] = { 
+		".m3u", ".mp2", ".mp3", ".xma", ".wav", ".wax", ".wma"
+		".aiff", ".asf", "asx.", ".dls", ".flac", ".fsb", ".it",  ".midi", ".mod",
+		".ogg", // ogg vorbis
+		".pls", "s3m", ".vag", ".xm"	
+	};
+	for (size_t i = 0; i < FMOD_TYPE_MAX_AMOUNT; i++)
+	{
+		if (type == FMOD_supportType[i]) return AssetInfo::AssetType_Audio;
+	}
+
+
+	std::string GLSL_supportType[GLSL_TYPE_MAX_AMOUNT] = {
+		".vert", // GL_VERTEX_SHADER
+		
+		".cont", // GL 4.0 - GL_TESS_CONTROL_SHADER
+		".eval", // GL 4.0 - GL_TESS_EVALUATION_SHADER
+		".tess", // Tessellation Control and Evaluation Shaders
+		
+		".geom", // GL_GEOMETRY_SHADER
+		".flag", // GL_FRAGMENT_SHADER
+		".comp", // GL 4.3 or ARB_compute_shader - GL_COMPUTE_SHADER
+
+		".glsl"  // All in one
+	};
+	for (size_t i = 0; i < GLSL_TYPE_MAX_AMOUNT; i++)
+	{
+		if (type == GLSL_supportType[i]) return AssetInfo::AssetType_Shader;
+	}
+
+
+	return AssetInfo::AssetType::AssetType_Unknown;
+
+}
+
+std::vector<AssetInfo> resourcesAssetPaths;
+
 // End Resource Manager Item  ------
+
 
 
 
@@ -58,6 +184,9 @@ namespace Editor {
 
 	// Editor Manager Item Start   ++++++
 
+	std::string _currentPath = "";
+	std::string _assetPath = "";
+
 	struct EntityObjectGUI {
 
 		EntityObjectGUI* _parent;
@@ -66,8 +195,9 @@ namespace Editor {
 		Entity* _entity;
 
 		Mesh::DefaultGeometry _geometry;
-		Mesh* _mesh;
-		Texture* _texture;
+		Model* _model;
+		Material* _material;
+		//Texture* _texture;
 
 		bool visibility;
 
@@ -75,12 +205,13 @@ namespace Editor {
 
 	DoubleLinkList<EntityObjectGUI*> _entityObjectGUI_List;
 
-	ImGuiTextFilter _filter;
+	ImGuiTextFilter _filterHierarchy;
+	ImGuiTextFilter _filterAssetTracker;
 
 	ImGuiTreeNodeFlags _entityHaveChild_Flags = ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_SpanAvailWidth;
 	ImGuiTreeNodeFlags _entityNullChild_Flags = ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_NoTreePushOnOpen;
 
-
+	LightingContainer* _lightingContainer;
 
 	EntityObjectGUI* _selectedEntityObjectGUI;
 
@@ -95,6 +226,7 @@ namespace Editor {
 	Mesh::DefaultGeometry _selectedGeometryType;
 
 	int _selectedTextureIndex;
+	Material* _seletedMaterial;
 
 	Texture* _screenTexture;
 	Texture* _screenDepth;
@@ -117,10 +249,61 @@ namespace Editor {
 	void __editorHierarchyOwn_addEntityObject(EntityObjectGUI* entityObjectGUIData);
 	void __editorHierarchyOwn_addNewEntityObject();
 	void __editorHierarchyOwn_initSelectedEntityVariable(EntityObjectGUI* entityObjectGUI);
-	void __editorHierarchyOwn_showEntityToList(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount);
+	void __editorHierarchyOwn_showEntityToList(EntityObjectGUI* entityObjectGUI, int& index);
+	bool __editorHierarchyOwn_isOneOfChild(EntityObjectGUI* objectEntityObjectGUI, EntityObjectGUI* targetEntityObjectGUI);
+
+	void __editorAssetTrackerOwn_generateAssetList(const std::string& folderDir, std::vector<AssetInfo>& currentAseetList);
+
+	std::wstring getAbsoluteExecutionDirectory()
+	{
+		TCHAR szPath[MAX_PATH] = { 0 };
+		GetModuleFileName(NULL, szPath, MAX_PATH);
+		//(_tcsrchr(szPath, _T('\\')))[1] = 0;
+
+		std::wstring directory = L"";
+		for (size_t i = 0; i < MAX_PATH; i++)
+		{
+			if (szPath[i] == 0)
+				break;
+
+			directory += szPath[i];
+		}
+
+		return directory;
+
+	}
+
+	std::wstring getFileNameFromAbsoluteExecutionDirectory(std::wstring filename)
+	{
+		std::wstring path = getAbsoluteExecutionDirectory();
+		std::wstring currentFilename = L"";
+		while (true)
+		{
+			currentFilename = path.substr(path.find_last_of('\\') + 1, path.size());
+
+			if (currentFilename.size() <= 0)
+			{
+				return currentFilename;
+			}
+
+			if (currentFilename.compare(filename))
+			{
+				path += L"\\";
+				return path;
+			}
+
+			path = path.substr(0, path.find_last_of('\\'));
+
+		}
+	}
 
 	void initEditor()
 	{
+		//Texture* temp = new Texture();
+
+		_currentPath = std::filesystem::current_path().u8string();
+		_assetPath = _currentPath + "\\..\\Assets\\";
+
 		// Check that a backend is available
 		if (!pfd::settings::available())
 		{
@@ -132,8 +315,8 @@ namespace Editor {
 		pfd::settings::verbose(true);
 
 		// Notification
-		pfd::notify("Welcome to testing our game engine",
-			"Thank you for !",
+		pfd::notify("Welcome To Use Our Game Engine",
+			"Thank you for trying!",
 			pfd::icon::info);
 
 		for (size_t i = 0; i < (int)ResourcesTextureIndex::__Index_Size; i++)
@@ -147,7 +330,24 @@ namespace Editor {
 		glDeleteTextures(1, &_screenDepth->getTextureID());
 		System::initDepthBufferTexture(*_screenDepth, 0.0f, 0.0f);
 		
-		
+		DirectionLight* directionLight = new DirectionLight;
+		directionLight->direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+		directionLight->ambient = glm::vec3(0.7f, 0.7f, 0.7f);
+		directionLight->diffuse = glm::vec3(0.4f, 0.4f, 0.4f);
+		directionLight->specular = glm::vec3(0.5f, 0.5f, 0.5f);
+
+		PointLight* pointLight = new PointLight;
+		pointLight->position = glm::vec3(0.7f, 0.2f, 2.0f);
+		pointLight->constant = 100.0f;
+		pointLight->linear = 0.09f;
+		pointLight->quadratic = 0.032f;
+		pointLight->ambient = glm::vec3(0.05f, 0.05f, 0.05f);
+		pointLight->diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
+		pointLight->specular = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		_lightingContainer = new LightingContainer(true);
+		_lightingContainer->addDirectionLight(directionLight);
+		_lightingContainer->addPointLight(pointLight);
 
 	
 		_camera = new Camera(glm::vec3(0.0f, 0.0f, -20.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -192,9 +392,9 @@ namespace Editor {
 			newEntityObjectGUI->_entity->transform->setTransform(_camera->transform->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f));
 			newEntityObjectGUI->_entity->group = 0;
 
+			newEntityObjectGUI->_material = new Material(resourcesTexture[(int)ResourcesTextureIndex::Glass]);
 			newEntityObjectGUI->_geometry = Mesh::DefaultGeometry::SQUARE;
-			newEntityObjectGUI->_mesh = new Mesh(newEntityObjectGUI->_geometry);
-			newEntityObjectGUI->_texture = resourcesTexture[(int)ResourcesTextureIndex::Glass];
+			newEntityObjectGUI->_model = new Model(new Mesh(newEntityObjectGUI->_geometry), newEntityObjectGUI->_material);
 
 			newEntityObjectGUI->visibility = true;
 
@@ -208,6 +408,8 @@ namespace Editor {
 		}
 
 		__editorHierarchyOwn_initSelectedEntityVariable(_entityObjectGUI_List.findData(0));
+
+		__editorAssetTrackerOwn_generateAssetList(_assetPath, resourcesAssetPaths);
 
 	}
 
@@ -226,13 +428,7 @@ namespace Editor {
 		
 		_selectedGeometryType = _selectedEntityObjectGUI->_geometry;
 		
-		for (int i = 0; i < (int)ResourcesTextureIndex::__Index_Size; i++)
-		{
-			if (_selectedEntityObjectGUI->_texture->getTextureID() == resourcesTexture[i]->getTextureID())
-			{
-				_selectedTextureIndex = i;
-			}
-		}
+		_seletedMaterial = _selectedEntityObjectGUI->_material;
 
 	}
 
@@ -258,9 +454,9 @@ namespace Editor {
 		newEntityObjectGUI->_entity->transform->setTransform(_camera->transform->getPosition(), glm::vec3(0.0f), glm::vec3(1.0f));
 		newEntityObjectGUI->_entity->group = 0;
 
+		newEntityObjectGUI->_material = new Material(resourcesTexture[(int)ResourcesTextureIndex::Glass]);
 		newEntityObjectGUI->_geometry = Mesh::DefaultGeometry::SQUARE;
-		newEntityObjectGUI->_mesh = new Mesh(newEntityObjectGUI->_geometry);
-		newEntityObjectGUI->_texture = resourcesTexture[(int)ResourcesTextureIndex::Glass];
+		newEntityObjectGUI->_model = new Model(new Mesh(newEntityObjectGUI->_geometry), newEntityObjectGUI->_material);
 		
 		newEntityObjectGUI->visibility = true;
 
@@ -273,32 +469,104 @@ namespace Editor {
 
 	}
 
-	void __editorHierarchyOwn_deleteEntityObject(EntityObjectGUI* entityObjectGUIData, int index)
+	void __editorHierarchyOwn_deleteEntityObjectFromParent(EntityObjectGUI* entityObjectGUIData)
 	{
-		if (entityObjectGUIData->_parent == nullptr)
+		EntityObjectGUI* parent = entityObjectGUIData->_parent;
+		if (parent == nullptr)
 		{
-			_entityObjectGUI_List.erase(index);
-		}
-		else
-		{
-			for (auto iter = entityObjectGUIData->_parent->_entity->child.begin(); iter != entityObjectGUIData->_parent->_entity->child.end(); iter++)
+			for (auto iter = _entityObjectGUI_List.begin(); iter != _entityObjectGUI_List.end(); iter++)
 			{
-				if (*iter == entityObjectGUIData->_entity)
+				if (*iter == entityObjectGUIData)
 				{
-					iter = entityObjectGUIData->_parent->_entity->child.erase(iter);
+					auto temp = *iter;
+					iter = _entityObjectGUI_List.erase(iter);
+					
 					break;
 				}
 			}
-			entityObjectGUIData->_parent->_child.erase(index);
+		}
+		else
+		{
+			for (auto iter = parent->_entity->child.begin(); iter != parent->_entity->child.end(); iter++)
+			{
+				if (*iter == entityObjectGUIData->_entity)
+				{
+					iter = parent->_entity->child.erase(iter);
+					break;
+				}
+			}
+			for (auto iter = parent->_child.begin(); iter != parent->_child.end(); iter++)
+			{
+				if (*iter == entityObjectGUIData)
+				{
+					iter = parent->_child.erase(iter);
+					break;
+				}
+			}
+			
 
 			entityObjectGUIData->_entity->parent = nullptr;
 			entityObjectGUIData->_parent = nullptr;
 		}
 
-		for (size_t i = 0; i < entityObjectGUIData->_child.size(); i++)
+		for (auto iter = entityObjectGUIData->_child.begin(); iter != entityObjectGUIData->_child.end();)
 		{
-			__editorHierarchyOwn_deleteEntityObject(entityObjectGUIData->_child.findData(i), i);
+			auto temp = iter++;
+			__editorHierarchyOwn_deleteEntityObjectFromParent(*temp);
 		}
+
+	}
+
+	bool __editorHierarchyOwn_switchSelectedToAvailableRelationship(DoubleLinkList<EntityObjectGUI*>& parentEntityObjectGUIList, EntityObjectGUI* entityObjectGUIData, const bool& isNotParent)
+	{
+		for (auto iter = parentEntityObjectGUIList.begin(); iter != parentEntityObjectGUIList.end(); iter++)
+		{
+			if (*iter == entityObjectGUIData)
+			{
+				auto next = iter;
+				if (++next != parentEntityObjectGUIList.end())
+				{
+					__editorHierarchyOwn_initSelectedEntityVariable(*next);
+					return true;
+				}
+
+				auto prev = iter;
+				if (--prev != parentEntityObjectGUIList.end())
+				{
+					__editorHierarchyOwn_initSelectedEntityVariable(*prev);
+					return true;
+				}
+
+				if (isNotParent)
+				{
+					ImGui::OpenPopup("Delete Failed");
+					return false;
+				}
+				
+				__editorHierarchyOwn_initSelectedEntityVariable(entityObjectGUIData->_parent);
+				return true;
+
+			}
+		}
+		
+	}
+
+	void __editorHierarchyOwn_deleteEntityObject(EntityObjectGUI* entityObjectGUIData)
+	{
+		EntityObjectGUI* parent = entityObjectGUIData->_parent;
+		if (parent == nullptr) 
+		{
+			if (!__editorHierarchyOwn_switchSelectedToAvailableRelationship(_entityObjectGUI_List, entityObjectGUIData, true)) 
+			{
+				return;
+			}
+		}
+		else
+		{
+			__editorHierarchyOwn_switchSelectedToAvailableRelationship(parent->_child, entityObjectGUIData, false);
+		}
+
+		__editorHierarchyOwn_deleteEntityObjectFromParent(entityObjectGUIData);
 
 	}
 
@@ -324,7 +592,6 @@ namespace Editor {
 				if (temp == child->_entity)
 				{
 					iter = oldParent->_entity->child.erase(iter);
-					printf("Yes find it\n");
 					break;
 				}
 			}
@@ -349,7 +616,7 @@ namespace Editor {
 
 	}
 	
-	bool __editorHierarchyOwn_InheritDragDropAction(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	bool __editorHierarchyOwn_entityInheritDragDropAction(EntityObjectGUI* entityObjectGUI, int& index)
 	{
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -369,7 +636,7 @@ namespace Editor {
 
 	}
 
-	void __editorHierarchyOwn_DragDropAction(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	void __editorHierarchyOwn_entityDragDropAction(EntityObjectGUI* entityObjectGUI, int& index)
 	{
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
@@ -385,7 +652,12 @@ namespace Editor {
 			ImGui::EndDragDropSource();
 
 		}
-		
+
+		if (__editorHierarchyOwn_isOneOfChild(_draggingEntityObjectGUI, entityObjectGUI))
+		{
+			return;
+		}
+
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_CELL"))
@@ -431,7 +703,7 @@ namespace Editor {
 
 	}
 
-	void __editorHierarchyOwn_defineWithChildSelectedState(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	void __editorHierarchyOwn_defineWithChildSelectedState(EntityObjectGUI* entityObjectGUI, int& index)
 	{
 		ImGui::PushID(index);
 		bool isOpen = ImGui::TreeNodeEx(entityObjectGUI->_entity->name.c_str(), (_selectedEntityObjectGUI == entityObjectGUI) ? (_entityHaveChild_Flags | ImGuiTreeNodeFlags_Selected) : _entityHaveChild_Flags);
@@ -441,21 +713,21 @@ namespace Editor {
 		{
 			__editorHierarchyOwn_initSelectedEntityVariable(entityObjectGUI);
 		}
-
-		__editorHierarchyOwn_DragDropAction(entityObjectGUI, index, inheritCount);
+		
+		__editorHierarchyOwn_entityDragDropAction(entityObjectGUI, index);
 
 		if (isOpen)
 		{
 			for (int i = 0; i < entityObjectGUI->_child.size(); i++)
 			{
-				__editorHierarchyOwn_showEntityToList(entityObjectGUI->_child.findData(i), i, inheritCount);
+				__editorHierarchyOwn_showEntityToList(entityObjectGUI->_child.findData(i), i);
 			}
 			ImGui::TreePop();
 		}
 		
 	}
 
-	void __editorHierarchyOwn_defineWithoutChildSelectedState(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	void __editorHierarchyOwn_defineWithoutChildSelectedState(EntityObjectGUI* entityObjectGUI, int& index)
 	{
 		ImGui::PushID(index);
 		bool isOpen = ImGui::TreeNodeEx(entityObjectGUI->_entity->name.c_str(), (_selectedEntityObjectGUI == entityObjectGUI) ? (_entityNullChild_Flags | ImGuiTreeNodeFlags_Selected) : _entityNullChild_Flags);
@@ -466,7 +738,7 @@ namespace Editor {
 			__editorHierarchyOwn_initSelectedEntityVariable(entityObjectGUI);
 		}
 
-		__editorHierarchyOwn_DragDropAction(entityObjectGUI, index, inheritCount);
+		__editorHierarchyOwn_entityDragDropAction(entityObjectGUI, index);
 
 		if (isOpen)
 		{
@@ -494,15 +766,8 @@ namespace Editor {
 		return false;
 	}
 
-	void __editorHierarchyOwn_showEntityToList(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	void __editorHierarchyOwn_showEntityToList(EntityObjectGUI* entityObjectGUI, int& index)
 	{
-		++inheritCount;
-
-		if (ImGui::IsKeyDown(GLFW_KEY_DELETE) && (_draggingEntityObjectGUI == entityObjectGUI))
-		{
-			__editorHierarchyOwn_deleteEntityObject(entityObjectGUI, index);
-		}
-
 		ImGui::Separator();
 
 		ImGui::PushID(entityObjectGUI->_entity->name.c_str() + index);
@@ -514,14 +779,14 @@ namespace Editor {
 		{
 			_isDragging = false;
 		}
-		
+
 		if (ImGui::IsMouseDragging(ImGuiMouseButton_::ImGuiMouseButton_Left) && _isDragging && (_draggingEntityObjectGUI != entityObjectGUI))
 		{
 			
 			if (!__editorHierarchyOwn_isOneOfChild(_draggingEntityObjectGUI, entityObjectGUI))
 			{
 				ImGui::Selectable("P >", false, ImGuiSelectableFlags_::ImGuiSelectableFlags_None, ImVec2(18.0f, 0.0f));
-				__editorHierarchyOwn_InheritDragDropAction(entityObjectGUI, index, inheritCount);
+				__editorHierarchyOwn_entityInheritDragDropAction(entityObjectGUI, index);
 				ImGui::SameLine();
 			}
 			else
@@ -537,32 +802,74 @@ namespace Editor {
 			ImGui::Selectable("", false, ImGuiSelectableFlags_::ImGuiSelectableFlags_Disabled, ImVec2(18.0f, 0.0f));
 			if (_draggingEntityObjectGUI != entityObjectGUI) 
 			{
-				__editorHierarchyOwn_InheritDragDropAction(entityObjectGUI, index, inheritCount);
+				__editorHierarchyOwn_entityInheritDragDropAction(entityObjectGUI, index);
 			}
 			ImGui::SameLine();
 		}
 
 		if (entityObjectGUI->_child.size() != 0)
 		{
-			__editorHierarchyOwn_defineWithChildSelectedState(entityObjectGUI, index, inheritCount);
+			__editorHierarchyOwn_defineWithChildSelectedState(entityObjectGUI, index);
 		}
 		else
 		{
-			__editorHierarchyOwn_defineWithoutChildSelectedState(entityObjectGUI, index, inheritCount);
+			__editorHierarchyOwn_defineWithoutChildSelectedState(entityObjectGUI, index);
 		}
 
 		//ImGui::Text("%s", ImGui::IsItemClicked() ? "true" : "false"); ImGui::SameLine();
 
 	}
 
-	void __editorHierarchyOwn_filterEntityName(EntityObjectGUI* entityObjectGUI, int& index, int& inheritCount)
+	void __editorHierarchyOwn_filterEntityName(EntityObjectGUI* entityObjectGUI, int& index)
 	{
-		if (_filter.PassFilter(entityObjectGUI->_entity->name.c_str()))
+		if (_filterHierarchy.PassFilter(entityObjectGUI->_entity->name.c_str()))
 		{
-			__editorHierarchyOwn_showEntityToList(entityObjectGUI, index, inheritCount);
-			
+			__editorHierarchyOwn_showEntityToList(entityObjectGUI, index);
 		}
+	}
 
+	void __editorHierarchyOwn_generateEntityWindow()
+	{
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar;// | ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar;
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		ImGui::BeginChild("Entity", ImVec2(-FLT_MIN, -FLT_MIN), true, window_flags);
+		{
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("Entities Hierarchy");
+				ImGui::EndMenuBar();
+			}
+
+			// Always center this window when appearing
+			ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+			ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			if (ImGui::BeginPopupModal("Delete Failed", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+			{
+				ImGui::Text("The scene must at least have one Entity!!\n\n");
+				ImGui::NewLine();
+				ImGui::NewLine();
+				ImGui::Separator();
+
+				ImGui::Spacing();
+				ImGui::SameLine(ImGui::GetContentRegionAvailWidth() - 120);
+				if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+				ImGui::SetItemDefaultFocus();
+				ImGui::EndPopup();
+			}
+
+			if (ImGui::IsKeyPressed(GLFW_KEY_DELETE, false) && !_isDragging)
+			{
+				__editorHierarchyOwn_deleteEntityObject(_selectedEntityObjectGUI);
+			}
+
+			for (int i = 0; i < _entityObjectGUI_List.size(); i++)
+			{
+				__editorHierarchyOwn_filterEntityName(_entityObjectGUI_List.findData(i), i);
+			}
+
+		}
+		ImGui::EndChild();
+		ImGui::PopStyleVar();
 	}
 
 	void showEditor_Hierarchy()
@@ -579,32 +886,11 @@ namespace Editor {
 			ImGui::SameLine();
 			ImGui::PopStyleColor(3);
 
-			_filter.Draw();
+			_filterHierarchy.Draw();
 
 			ImGui::Separator();
 
-			ImGuiWindowFlags window_flags = ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar;// | ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar;
-			ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
-			ImGui::BeginChild("Entity", ImVec2(-FLT_MIN, -FLT_MIN), true, window_flags);
-			{
-
-				if (ImGui::BeginMenuBar())
-				{
-					ImGui::Text("Entities Hierarchy");
-					ImGui::EndMenuBar();
-				}
-
-				for (int i = 0; i < _entityObjectGUI_List.size(); i++)
-				{
-					int inheritCount = 0;
-					
-					__editorHierarchyOwn_filterEntityName(_entityObjectGUI_List.findData(i), i, inheritCount);
-					
-				}
-
-			}
-			ImGui::EndChild();
-			ImGui::PopStyleVar();
+			__editorHierarchyOwn_generateEntityWindow();
 
 		}
 		ImGui::End();
@@ -612,10 +898,30 @@ namespace Editor {
 
 	}
 
-	void __editorPropertyOwn_saveCursorPosition(const int& boolean)
+	void __editorPropertyOwn_saveCursorPosition(const int& boolean, const int& booleanInTyping)
 	{
 		static double mousePosX = 0.0f, mousePosY = 0.0f;
 		static int booleanState = 0;
+
+		if ((booleanState & boolean) > 0)
+		{
+			if ((booleanState & booleanInTyping) == 0)
+			{
+				if (ImGui::IsItemActive() && ImGui::IsMouseReleased(ImGuiMouseButton_::ImGuiMouseButton_Left))
+				{
+					booleanState |= booleanInTyping;
+				}
+			}
+			else if (!ImGui::IsItemActive())
+			{
+				booleanState -= boolean;
+				booleanState -= booleanInTyping;
+				mousePosX = mousePosY = 0.0f;
+			}
+			else
+				return;
+		}
+
 
 		if (ImGui::IsItemActive())
 		{
@@ -670,12 +976,15 @@ namespace Editor {
 			#define positionBoolean 1 << 0
 			#define rotationBoolean 1 << 1
 			#define scaleBoolean 1 << 2
+			#define positionInTypingBoolean 1 << 3
+			#define rotationInTypingBoolean 1 << 4
+			#define scaleInTypingBoolean 1 << 5
 
 			if (ImGui::DragFloat3("Position", glm::value_ptr(_selectedTranslation), 0.01f, -FLT_MIN, -FLT_MIN, "%.3f")) {
 
 				_selectedEntityObjectGUI->_entity->transform->setPosition(_selectedTranslation);
 			}
-			__editorPropertyOwn_saveCursorPosition(positionBoolean);
+			//__editorPropertyOwn_saveCursorPosition(positionBoolean, positionInTypingBoolean);
 
 			if (ImGui::DragFloat3("Rotation", glm::value_ptr(_selectedRotation), 0.025f, -FLT_MIN, -FLT_MIN, "%.3f")) {
 				_selectedRotation.x = glm::mod<float>(_selectedRotation.x, 360.0f);
@@ -684,13 +993,13 @@ namespace Editor {
 
 				_selectedEntityObjectGUI->_entity->transform->setRotation(_selectedRotation);
 			}
-			__editorPropertyOwn_saveCursorPosition(rotationBoolean);
+			//__editorPropertyOwn_saveCursorPosition(rotationBoolean, rotationInTypingBoolean);
 
 			if (ImGui::DragFloat3("Dimension", glm::value_ptr(_selectedDimension), 0.01f, -FLT_MIN, -FLT_MIN, "%.3f")) {
 
 				_selectedEntityObjectGUI->_entity->transform->setDimension(_selectedDimension);
 			}
-			__editorPropertyOwn_saveCursorPosition(scaleBoolean);
+			//__editorPropertyOwn_saveCursorPosition(scaleBoolean, scaleInTypingBoolean);
 
 		}
 		ImGui::EndChild();
@@ -709,6 +1018,16 @@ namespace Editor {
 				ImGui::EndMenuBar();
 			}
 
+			if (_selectedEntityObjectGUI->_model->getMesh().size() > 1)
+			{
+				_selectedEntityObjectGUI->_model->getMesh().resize(1);
+				_selectedEntityObjectGUI->_model->getMaterials().resize(1);
+				_selectedEntityObjectGUI->_model->getMesh()[0]->setGeometryType(_selectedEntityObjectGUI->_geometry);
+				_selectedEntityObjectGUI->_model->getMaterials()[0]->setTexture(Material::PhongTextureType::DIFFUSE, resourcesTexture[(int)_selectedGeometryType]);
+				_selectedEntityObjectGUI->_model->getMaterials()[0]->setTexture(Material::PhongTextureType::SPECULAR, resourcesTexture[(int)ResourcesTextureIndex::None]);
+				_selectedEntityObjectGUI->_model->getMaterials()[0]->setTexture(Material::PhongTextureType::EMISSION, resourcesTexture[(int)ResourcesTextureIndex::None]);
+			}
+
 			if (ImGui::BeginCombo("Mesh", _geometryTypesName[static_cast<int>(_selectedGeometryType)]))
 			{
 				for (int type = 0; type < IM_ARRAYSIZE(_geometryTypesName); type++)
@@ -720,7 +1039,7 @@ namespace Editor {
 						if (_selectedGeometryType != static_cast<Mesh::DefaultGeometry>(type))
 						{
 							// Switch mesh
-							_selectedEntityObjectGUI->_mesh->setGeometryType(_selectedEntityObjectGUI->_geometry = static_cast<Mesh::DefaultGeometry>(type));
+							_selectedEntityObjectGUI->_model->getMesh()[0]->setGeometryType(_selectedEntityObjectGUI->_geometry = static_cast<Mesh::DefaultGeometry>(type));
 
 						}
 
@@ -750,7 +1069,7 @@ namespace Editor {
 						if (_selectedTextureIndex != i)
 						{
 							// Switch mesh
-							_selectedEntityObjectGUI->_texture = resourcesTexture[i];
+							_selectedEntityObjectGUI->_material->textures[(int)Material::PhongTextureType::DIFFUSE] = resourcesTexture[i];
 
 						}
 
@@ -790,6 +1109,76 @@ namespace Editor {
 				ImGui::PopID();
 			}
 			*/
+
+		}
+
+		ImGui::EndChild();
+
+	}
+	static AssetInfo* _draggingAsset;
+	static AssetInfo* assetInfo = nullptr;
+	void __editorPropertyOwn_propertyDropModelAssetCellAction()
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(assetDragDropCell[(int)AssetInfo::AssetType_Model].c_str()))
+			{
+				//IM_ASSERT(payload->DataSize == sizeof(AssetInfo));
+				//AssetInfo* payload_index = (AssetInfo*)payload->Data;
+				
+				assetInfo = _draggingAsset;
+				std::string path = assetInfo->path.substr(_currentPath.size() + 1);
+				System::loadModel(path.c_str(), _selectedEntityObjectGUI->_model->getMesh(), _selectedEntityObjectGUI->_model->getMaterials());
+				_seletedMaterial = _selectedEntityObjectGUI->_material = _selectedEntityObjectGUI->_model->getMaterials()[0];
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
+
+	void __editorPropertyOwn_propertyDropTextureAssetCellAction(Material::PhongTextureType phongTextureTypeIndex)
+	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(assetDragDropCell[(int)AssetInfo::AssetType_Texture].c_str()))
+			{
+				//IM_ASSERT(payload->DataSize == sizeof(AssetInfo));
+				//AssetInfo* payload_index = (AssetInfo*)payload->Data;
+
+				std::string path = _draggingAsset->path.substr(_currentPath.size() + 1);
+				_seletedMaterial->textures[(int)phongTextureTypeIndex] = new Texture(path.c_str());
+				//printf(path.c_str());
+
+			}
+			ImGui::EndDragDropTarget();
+		}
+	}
+
+	void __editorPropertyOwn_modelComponent()
+	{
+		ImGui::Columns(1, NULL, false);
+
+		ImGui::BeginChild("Material Component", ImVec2(-FLT_MIN, 120.0f), true, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
+		{
+			if (ImGui::BeginMenuBar())
+			{
+				ImGui::Text("Material Component");
+				ImGui::EndMenuBar();
+			}
+
+			if(assetInfo != nullptr)
+				ImGui::Selectable(("Model - " + assetInfo->name).c_str());
+			else
+				ImGui::Selectable("Model - [NONE]");
+			__editorPropertyOwn_propertyDropModelAssetCellAction();
+
+			ImGui::Selectable(("Texture Diffuse : " + _seletedMaterial->textures[(int)Material::PhongTextureType::DIFFUSE]->getPath()).c_str());
+			__editorPropertyOwn_propertyDropTextureAssetCellAction(Material::PhongTextureType::DIFFUSE);
+
+			ImGui::Selectable(("Texture Specular : " + _seletedMaterial->textures[(int)Material::PhongTextureType::SPECULAR]->getPath()).c_str());
+			__editorPropertyOwn_propertyDropTextureAssetCellAction(Material::PhongTextureType::SPECULAR);
+
+			ImGui::Selectable(("Texture Emission : " + _seletedMaterial->textures[(int)Material::PhongTextureType::EMISSION]->getPath()).c_str());
+			__editorPropertyOwn_propertyDropTextureAssetCellAction(Material::PhongTextureType::EMISSION);
 
 		}
 
@@ -857,7 +1246,15 @@ namespace Editor {
 			ImGui::BeginChild("Editor", ImVec2(-FLT_MIN, -FLT_MIN), true);
 			{
 				__editorPropertyOwn_transformComponent();
-				__editorPropertyOwn_meshComponent();
+				static int meshType = 0;
+
+				ImGui::RadioButton("Default Geometry", &meshType, 0);
+				ImGui::RadioButton("Model", &meshType, 1);
+
+				if(meshType == 0)
+					__editorPropertyOwn_meshComponent();
+				else if(meshType == 1)
+					__editorPropertyOwn_modelComponent();
 			}
 			ImGui::EndChild();
 
@@ -871,11 +1268,16 @@ namespace Editor {
 		if (entityObjectGUI->visibility)
 		{
 			glm::mat4 mat = _camera->getProjectionMatrix() * _camera->getViewMatrix() * entityObjectGUI->_entity->transform->getModelMatrix();
-			Shader::defaultDraw(mat);
-			glBindTexture(GL_TEXTURE_2D, entityObjectGUI->_texture->getTextureID());
+			//Shader::defaultDraw(mat);
 
-			glBindVertexArray(entityObjectGUI->_mesh->getVertexArrayObject()->vaoID);
-			glDrawElements(GL_TRIANGLES, entityObjectGUI->_mesh->getVertexArrayObject()->indicesSize, GL_UNSIGNED_INT, 0);
+			for (size_t i = 0; i < entityObjectGUI->_model->getMesh().size(); i++)
+			{
+				Shader::phongLightDraw(entityObjectGUI->_entity->transform->getModelMatrix(), _camera->getViewMatrix(), _camera->getProjectionMatrix(), *entityObjectGUI->_model->getMaterials()[i], *_lightingContainer);
+
+				glBindVertexArray(entityObjectGUI->_model->getMesh()[i]->getVertexArrayObject()->vaoID);
+				glDrawElements(GL_TRIANGLES, entityObjectGUI->_model->getMesh()[i]->getVertexArrayObject()->indicesSize, GL_UNSIGNED_INT, 0);
+
+			}
 
 			for (size_t i = 0; i < entityObjectGUI->_child.size(); i++)
 			{
@@ -1081,34 +1483,217 @@ namespace Editor {
 		std::cout << "\n";
 	}
 
+	void testing2()
+	{
+		// Set verbosity to true
+		pfd::settings::verbose(true);
+
+		// Message box with nice message
+		auto m = pfd::message("Upgrade software?",
+			"Press OK to upgrade this software.\n"
+			"\n"
+			"By default, the software will update itself\n"
+			"automatically in 10 seconds.",
+			pfd::choice::ok_cancel,
+			pfd::icon::warning);
+
+		// Wait for an answer for up to 10 seconds
+		for (int i = 0; i < 10 && !m.ready(1000); ++i)
+			;
+
+		// Upgrade software if user clicked OK, or if user didn’t interact
+		bool upgrade = m.ready() ? m.result() == pfd::button::ok : m.kill();
+		if (upgrade)
+			std::cout << "Upgrading software!\n";
+		else
+			std::cout << "Not upgrading software.\n";
+		
+	}
+	
+	void __editorAssetTrackerOwn_assetDragDropAction(AssetInfo& assetInfo)
+	{
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			// Set payload to carry the index of our item (could be anything)
+			
+			ImGui::SetDragDropPayload(assetDragDropCell[(int)assetInfo.assetType].c_str(), &assetInfo, sizeof(AssetInfo));
+
+			_draggingAsset = &assetInfo;
+
+			// Display preview (could be anything, e.g. when dragging an image we could decide to display
+			// the filename and a small preview of the image, etc.)
+			ImGui::Text("Move %s", 
+				("[" + assetDragDropCell[(int)assetInfo.assetType] + "]" + assetInfo.name).c_str());
+			ImGui::EndDragDropSource();
+
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_TEXTURE_CELL"))
+			{
+				IM_ASSERT(payload->DataSize == sizeof(AssetInfo));
+				AssetInfo* payload_index = (AssetInfo*)payload->Data;
+
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+
+	}
+
+	void __editorAssetTrackerOwn_generateAssetList(const std::string& folderDir, std::vector<AssetInfo>& currentAseetList)
+	{
+		currentAseetList.clear();
+
+		DIR* dir;
+		struct dirent* ent;
+		
+		if ((dir = opendir(folderDir.c_str())) != NULL) {
+
+			int i = 0;
+
+			// print all the files and directories within directory
+			while ((ent = readdir(dir)) != NULL) {
+
+				if (i < 2) 
+				{
+					i++;
+					continue;
+				}
+
+				//printf("%s\n", ent->d_name);
+				std::string name(ent->d_name);
+				size_t loc = name.find_last_of(".");
+
+				if (loc != std::string::npos)
+				{
+					AssetInfo info;
+					info.name = ent->d_name;
+					info.path = folderDir + info.name;
+					info.assetType = checkFileType(name.substr(loc));
+					info.subdirectoriesAssetPaths.clear();
+					
+					currentAseetList.push_back(info);
+				}
+				else 
+				{
+					AssetInfo info;
+					info.name = ent->d_name;
+					info.path = folderDir + info.name + "\\";
+					info.assetType = AssetInfo::AssetType_Folder;
+					__editorAssetTrackerOwn_generateAssetList(info.path, info.subdirectoriesAssetPaths);
+
+					currentAseetList.push_back(info);
+				}
+			}
+			closedir(dir);
+		}
+		else {
+			// could not open directory
+			perror("");
+			return;
+		}
+	}
+
+	bool __editorAssetTrackerOwn_checkfolderSubdirectoriesIsInFilter(AssetInfo& assetInfo)
+	{
+		bool showParent = _filterAssetTracker.PassFilter(assetInfo.name.c_str());
+
+		for (auto iter = assetInfo.subdirectoriesAssetPaths.begin(); iter != assetInfo.subdirectoriesAssetPaths.end(); iter++)
+		{
+			if (__editorAssetTrackerOwn_checkfolderSubdirectoriesIsInFilter(*iter))
+			{
+				showParent = true;
+			}
+		}
+
+		return showParent;
+
+	}
+
+	void __editorAssetTrackerOwn_showAssetList(std::vector<AssetInfo>& currentAseetList)
+	{
+		
+		for (size_t i = 0; i < currentAseetList.size(); i++)
+		{
+			if (!__editorAssetTrackerOwn_checkfolderSubdirectoriesIsInFilter(currentAseetList[i])) continue;
+
+			switch (currentAseetList[i].assetType) {
+			case AssetInfo::AssetType::AssetType_Unknown:
+				ImGui::Text("[Unknown]       : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Texture:
+				ImGui::Text("[Texture]       : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_TextDocument:
+				ImGui::Text("[Text Document] : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Shader:
+				ImGui::Text("[Shader]        : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Model:
+				ImGui::Text("[Model]         : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Font:
+				ImGui::Text("[Font]          : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Folder:
+				ImGui::Text("[Folder]        : ");
+				break;
+
+			case AssetInfo::AssetType::AssetType_Audio:
+				ImGui::Text("[Audio]         : ");
+				break;
+
+			}
+			ImGui::SameLine();
+			if(ImGui::IsKeyDown(GLFW_KEY_P) && ImGui::IsWindowHovered())
+				ImGui::Selectable(currentAseetList[i].path.c_str());
+			else
+				ImGui::Selectable(currentAseetList[i].name.c_str());
+
+			__editorAssetTrackerOwn_assetDragDropAction(currentAseetList[i]);
+			
+			ImGui::Indent();
+			__editorAssetTrackerOwn_showAssetList(currentAseetList[i].subdirectoriesAssetPaths);
+			ImGui::Unindent();
+		}
+	}
+
 	void showEditor_AssetTracker()
 	{
 		if (ImGui::Begin("AssetTracker"))
 		{
-			if (ImGui::Button("open file"))
+			if (ImGui::Button("Refresh"))
 			{
-				auto f = pfd::open_file("Choose files to read", "C:\\",
-					{ "All Files", "*" },
-					pfd::opt::force_path);
+				//auto f = pfd::open_file("Choose files to read", _currentPath.c_str(), { "All Files", "*" }, pfd::opt::force_path);
 				//testing();
+				//testing2();
+				__editorAssetTrackerOwn_generateAssetList(_assetPath, resourcesAssetPaths);
 			}
-			/*
-			static std::shared_ptr<pfd::open_file> open_file;
+			ImGui::SameLine();
+			_filterAssetTracker.Draw();
 
-			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, (bool)open_file);
-			if (ImGui::Button("Open File"))
-				open_file = std::make_shared<pfd::open_file>("Choose file", "C:\\");
-			if (open_file && open_file->ready())
+			ImGuiWindowFlags window_flags = ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar;// | ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar;
+			ImGui::BeginChild("Asset File", ImVec2(-FLT_MIN, -FLT_MIN), true, window_flags);
 			{
-				auto result = open_file->result();
-				if (result.size())
-					std::cout << "Opened file " << result[0] << "\n";
-				open_file = nullptr;
+				if (ImGui::BeginMenuBar())
+				{
+					ImGui::Text("Assets");
+					ImGui::EndMenuBar();
+				}
+
+				__editorAssetTrackerOwn_showAssetList(resourcesAssetPaths);
+			
 			}
-			ImGui::PopItemFlag();
-			*/
-
-
+			ImGui::EndChild();
 		}
 		ImGui::End();
 	}

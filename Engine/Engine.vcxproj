@@ -51,7 +51,6 @@
     <ClCompile Include="src\Utilities\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Editor\src\doubleLinkList.h" />
     <ClInclude Include="src\Compound\animator2D.h" />
     <ClInclude Include="src\Compound\lightingContainer.h" />
     <ClInclude Include="src\Compound\material.h" />
@@ -68,6 +67,7 @@
     <ClInclude Include="src\Data Structure\bitSplitter.h" />
     <ClInclude Include="src\Data Structure\circularQueue.hpp" />
     <ClInclude Include="src\Data Structure\doubleLinkedList.hpp" />
+    <ClInclude Include="src\Data Structure\doubleLinkList.hpp" />
     <ClInclude Include="src\Data Structure\hashMap.hpp" />
     <ClInclude Include="src\Data Structure\linkedList.hpp" />
     <ClInclude Include="src\Data Structure\node2D.hpp" />
