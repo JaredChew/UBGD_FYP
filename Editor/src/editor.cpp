@@ -830,7 +830,7 @@ namespace Editor {
 
 	void __editorHierarchyOwn_generateEntityWindow()
 	{
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar;// | ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar;
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_::ImGuiWindowFlags_AlwaysHorizontalScrollbar;// | ImGuiWindowFlags_::ImGuiWindowFlags_NoScrollbar;
 		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
 		ImGui::BeginChild("Entity", ImVec2(-FLT_MIN, -FLT_MIN), true, window_flags);
 		{
